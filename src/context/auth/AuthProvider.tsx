@@ -1,6 +1,7 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { useAxios } from "../axios/AxiosProvider";
 import { IAuhToken } from "@/interfaces";
+import { useUserStore } from "@/store/user";
 
 interface IAuthContext {
 	logout: () => void;
@@ -30,6 +31,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
 	const [refreshToken, setRefreshToken] = useState("");
 	const [isAuthenticated, setIsAuthenticated] = useState(false);
 	const [isLoading, setIsLoading] = useState(true);
+	const setUser = useUserStore((state) => state.setUser);
 
 	function setAuthTokens(accessToken: string, refreshToken: string) {
 		setAccessToken(accessToken);
@@ -74,6 +76,8 @@ export function AuthProvider({ children }: AuthProviderProps) {
 					const { access_token, refresh_token } = response.data.auth;
 
 					setAuthTokens(access_token, refresh_token);
+
+					setUser(response.data?.user);
 				}
 			}
 		} catch (error) {

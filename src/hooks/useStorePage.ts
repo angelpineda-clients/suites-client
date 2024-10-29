@@ -1,7 +1,7 @@
 /* Libraries */
 import { useAxios } from "@/context/axios/AxiosProvider";
 /* store */
-import { useUserStore } from "@/store/stores";
+import { useUserStore } from "@/store/user";
 /* interfaces */
 import { IMeResponse, IProductResponse } from "@/interfaces";
 import { useUiContext } from "@/context/ui/UiProvider";

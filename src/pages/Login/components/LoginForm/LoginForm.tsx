@@ -4,6 +4,7 @@ import { Button, TextField } from "@mui/material";
 import { useAuth } from "@/context/auth/AuthProvider";
 import { useAxios } from "@/context/axios/AxiosProvider";
 import { IAuhToken } from "@/interfaces";
+import { useUserStore } from "@/store/user";
 
 type FormValues = {
 	email: string;
@@ -13,6 +14,7 @@ type FormValues = {
 const LoginForm = () => {
 	const auth = useAuth();
 	const { axiosInstance } = useAxios();
+	const setUser = useUserStore((state) => state.setUser);
 
 	const {
 		register,
@@ -48,6 +50,7 @@ const LoginForm = () => {
 
 			const { access_token, refresh_token } = response.data.auth;
 			auth.setAuthTokens(access_token, refresh_token);
+			setUser(response.data.user);
 		} catch (error) {}
 	};
 	return (
