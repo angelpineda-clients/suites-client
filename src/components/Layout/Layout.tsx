@@ -1,17 +1,15 @@
+import React from "react";
 import { extendTheme } from "@mui/material/styles";
-import DashboardIcon from "@mui/icons-material/Dashboard";
-import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
-import BarChartIcon from "@mui/icons-material/BarChart";
-import DescriptionIcon from "@mui/icons-material/Description";
+import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
+import BookOutlinedIcon from "@mui/icons-material/BookOutlined";
+import BedOutlinedIcon from "@mui/icons-material/BedOutlined";
 import LayersIcon from "@mui/icons-material/Layers";
-import { Navigation, Router } from "@toolpad/core/AppProvider";
+import { Navigation } from "@toolpad/core/AppProvider";
 import { DashboardLayout } from "@toolpad/core/DashboardLayout";
 import { useUserStore } from "@/store/user";
 import { useAuth } from "@/context/auth/AuthProvider";
-
-import { useNavigate } from "react-router";
-import React from "react";
 import { AppProvider } from "@toolpad/core/react-router-dom";
+import { Box, Button, Typography } from "@mui/material";
 
 interface LayoutProps {
 	children: React.ReactNode;
@@ -20,51 +18,38 @@ interface LayoutProps {
 const NAVIGATION: Navigation = [
 	{
 		kind: "header",
-		title: "Main items",
+		title: "Dashboard",
 	},
 	{
-		segment: "dashboard",
-		title: "Dashboard",
-		icon: <DashboardIcon />,
+		segment: "",
+		title: "Ventas",
+		icon: <ShoppingCartOutlinedIcon />,
 	},
 	{
 		segment: "orders",
-		title: "Orders",
-		icon: <ShoppingCartIcon />,
+		title: "Reservaciones",
+		icon: <BookOutlinedIcon />,
 	},
 	{
 		kind: "divider",
 	},
 	{
 		kind: "header",
-		title: "Analytics",
+		title: "Administracion",
 	},
 	{
-		segment: "reports",
-		title: "Reports",
-		icon: <BarChartIcon />,
-		children: [
-			{
-				segment: "sales",
-				title: "Sales",
-				icon: <DescriptionIcon />,
-			},
-			{
-				segment: "traffic",
-				title: "Traffic",
-				icon: <DescriptionIcon />,
-			},
-		],
+		segment: "rooms",
+		title: "Habitaciones",
+		icon: <BedOutlinedIcon />,
 	},
 	{
-		segment: "integrations",
-		title: "Integrations",
+		segment: "catalogs",
+		title: "Catalogos",
 		icon: <LayersIcon />,
 	},
 ];
 
 const demoTheme = extendTheme({
-	colorSchemes: { light: true, dark: true },
 	colorSchemeSelector: "class",
 	breakpoints: {
 		values: {
@@ -77,30 +62,35 @@ const demoTheme = extendTheme({
 	},
 });
 
-function useDemoRouter(initialPath: string): Router {
-	const [pathname, setPathname] = React.useState(initialPath);
+const BRANDING = {
+	title: "Suites Ordonez",
+	logo: "",
+};
 
-	const router = React.useMemo(() => {
-		return {
-			pathname,
-			searchParams: new URLSearchParams(),
-			navigate: (path: string | URL) => setPathname(String(path)),
-		};
-	}, [pathname]);
+function Logout() {
+	const user = useUserStore((state) => state.user);
+	const auth = useAuth();
 
-	return router;
+	return (
+		<Box sx={{ display: "flex", alignItems: "center" }}>
+			<Typography sx={{ mr: 2 }}>{user.name}</Typography>
+			<Button onClick={auth.logout} variant="outlined">
+				Logout
+			</Button>
+		</Box>
+	);
 }
 
 const Layout = ({ children }: LayoutProps) => {
-	const user = useUserStore((state) => state.user);
-	const auth = useAuth();
-	const navigate = useNavigate();
-
-	const router = useDemoRouter("/dashboard");
-
 	return (
-		<AppProvider navigation={NAVIGATION} router={router} theme={demoTheme}>
-			<DashboardLayout>{children}</DashboardLayout>
+		<AppProvider navigation={NAVIGATION} theme={demoTheme} branding={BRANDING}>
+			<DashboardLayout
+				slots={{
+					toolbarActions: Logout,
+				}}
+			>
+				{children}
+			</DashboardLayout>
 		</AppProvider>
 	);
 };

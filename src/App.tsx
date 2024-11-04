@@ -4,6 +4,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Login from "./pages/Login/Login";
 import ProtectedRoutes from "./components/ProtectedRoutes/ProtectedRoutes";
 import Dashboard from "./pages/Dashboard/Dashboard";
+import Catalogs from "./pages/Catalogs/Catalogs";
 
 function App() {
 	return (
@@ -13,6 +14,7 @@ function App() {
 
 				<Route element={<ProtectedRoutes />}>
 					<Route path="/" element={<Dashboard />} />
+					<Route path="/catalogs" element={<Catalogs />} />
 				</Route>
 
 				<Route path="*" element={<h2>404 Not found.</h2>} />
