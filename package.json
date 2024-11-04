@@ -15,6 +15,7 @@
     "@emotion/styled": "^11.13.0",
     "@mui/icons-material": "^6.1.5",
     "@mui/material": "^6.1.5",
+    "@mui/x-data-grid": "^7.22.0",
     "@toolpad/core": "^0.8.1",
     "axios": "^1.7.7",
     "path": "^0.12.7",
@@ -24,6 +25,7 @@
     "react-router": "^6.27.0",
     "react-router-dom": "^6.27.0",
     "react-toastify": "^10.0.6",
+    "uuid": "^11.0.2",
     "zustand": "^5.0.0"
   },
   "devDependencies": {
