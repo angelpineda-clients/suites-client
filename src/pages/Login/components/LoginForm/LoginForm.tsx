@@ -2,9 +2,10 @@
 import { useForm } from "react-hook-form";
 import { Button, TextField } from "@mui/material";
 import { useAuth } from "@/context/auth/AuthProvider";
-import { useAxios } from "@/context/axios/AxiosProvider";
+
 import { IAuhToken } from "@/interfaces";
 import { useUserStore } from "@/store/user";
+import axios from "axios";
 
 type FormValues = {
 	email: string;
@@ -13,7 +14,6 @@ type FormValues = {
 
 const LoginForm = () => {
 	const auth = useAuth();
-	const { axiosInstance } = useAxios();
 	const setUser = useUserStore((state) => state.setUser);
 
 	const {
@@ -43,7 +43,7 @@ const LoginForm = () => {
 
 	const onSubmit = async (data: FormValues) => {
 		try {
-			const response: IAuhToken = await axiosInstance?.post("/login", {
+			const response: IAuhToken = await axios?.post("/login", {
 				email: data?.email,
 				password: data?.password,
 			});

@@ -12,7 +12,9 @@ interface IShowModal {
 }
 
 interface IModalContext {
-	showModal: (value: IShowModal) => void;
+	showModal: (value: IShowModal) => {
+		closeModal: () => void;
+	};
 	removeModal: (id: string) => void;
 }
 
@@ -34,6 +36,10 @@ export const ModalProvider = ({ children }: Props) => {
 		let newModal = { id: uuid(), element, title };
 
 		setModals([...modals, newModal]);
+
+		return {
+			closeModal: () => removeModal(newModal.id),
+		};
 	}
 
 	/**
