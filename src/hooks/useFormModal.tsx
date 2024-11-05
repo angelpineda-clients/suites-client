@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { useForm } from "react-hook-form";
+import React from "react";
+import { FieldValues, useForm } from "react-hook-form";
 import { useModalContext } from "@/context/modals/ModalProvider";
 
 interface IShowFormModal {
@@ -15,11 +15,17 @@ export type IRequest = {
 	headers?: object;
 };
 
-const useFormModal = () => {
-	const formHook = useForm();
+function useFormModal({ defaultValues = {} }) {
+	const formHook = useForm(defaultValues);
 	const { showModal } = useModalContext();
 
-	function showFormModal({ title, children, request }: IShowFormModal) {
+	function showFormModal<T>({
+		title,
+		children,
+		request,
+	}: IShowFormModal): Promise<T> {
+		formHook.reset();
+
 		return new Promise((resolve, reject) => {
 			try {
 				const { closeModal } = showModal({
@@ -54,6 +60,6 @@ const useFormModal = () => {
 	}
 
 	return { showFormModal, formHook };
-};
+}
 
 export default useFormModal;

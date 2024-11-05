@@ -32,7 +32,7 @@ const ModalContainer = ({ modals }: Props) => {
 							alignItems="center"
 							paddingBottom={2}
 						>
-							<Typography variant="h3" component="h3">
+							<Typography variant="h6" component="h3">
 								{title}
 							</Typography>
 							<Button onClick={() => removeModal(id)} variant="contained">

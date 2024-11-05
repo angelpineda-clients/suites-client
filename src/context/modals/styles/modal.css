@@ -14,7 +14,8 @@
 	background-color: white;
 	border-radius: 8px;
 	min-height: 250px;
-	min-width: 250px;
+	height: min-content;
+	min-width: 450px;
 	color: black;
 	padding: 12px;
 }

@@ -1,15 +1,23 @@
 import { useState, useEffect } from "react";
 /* libraries */
-import Swal from "sweetalert2";
 import { Button, Stack, TextField } from "@mui/material";
-
 /* components */
 import useFormModal, { IRequest } from "@/hooks/useFormModal";
 import { services } from "@/services/services.service";
+import { customAlert } from "@/helpers/alertHelper";
+import { IService } from "@/interfaces/models";
+
+type Service = {
+	name: string;
+};
 
 const useServiceTable = () => {
-	const { showFormModal, formHook } = useFormModal();
-	const [rows, setRows] = useState([]);
+	const { showFormModal, formHook } = useFormModal<Service>({
+		defaultValues: {
+			name: "",
+		},
+	});
+	const [rows, setRows] = useState<IService>([]);
 	const formFields = {
 		name: formHook.register("name", {
 			required: {
@@ -49,14 +57,13 @@ const useServiceTable = () => {
 		}
 
 		try {
-			showFormModal({
-				title: "modal",
+			showFormModal<IService>({
+				title: data?.id ? "Editar servicio." : "Crear servicio.",
 				children: (
 					<Stack gap={2}>
 						<TextField
-							label="Servicio"
 							id="name"
-							value={formFields.name?.value}
+							label="Servicio"
 							defaultValue={data?.name || ""}
 							required
 							{...formFields.name}
@@ -69,13 +76,7 @@ const useServiceTable = () => {
 				request: request,
 			}).then((response) => {
 				if (response.status == true) {
-					Swal.fire({
-						title: "Todo bien!",
-						icon: "success",
-						timer: 2500,
-						timerProgressBar: true,
-						target: "header",
-					});
+					customAlert.success({});
 					setRows(response.data);
 				}
 			});
@@ -86,18 +87,7 @@ const useServiceTable = () => {
 
 	async function deleteService(data: any) {
 		try {
-			Swal.fire({
-				showConfirmButton: true,
-				confirmButtonColor: "#ff5733",
-				confirmButtonText: "Eliminar",
-				showCancelButton: true,
-				cancelButtonText: "Cancelar",
-				cancelButtonColor: "#1f1f1f",
-				icon: "warning",
-				title: "¿Eliminar?",
-				text: `¿Deseas eleminar ${data.name}? `,
-				target: "header",
-			}).then(async (response) => {
+			customAlert.warning({ name: data.name }).then(async (response) => {
 				if (response.isConfirmed) {
 					try {
 						const res = await services.remove(data.id);

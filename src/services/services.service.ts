@@ -1,16 +1,12 @@
+import { IServices } from "@/interfaces/models/IService";
 import axios from "axios";
-
-interface IService {
-	id: number;
-	name: string;
-}
 
 const services = {
 	getAll: async () => {
 		const response = await axios.get("/service");
 		const data = response.data;
 
-		const rows = data.map((service: IService) => {
+		const rows = data.map((service: IServices) => {
 			return {
 				id: service.id,
 				name: service.name,
@@ -19,7 +15,7 @@ const services = {
 
 		return rows;
 	},
-	update: async (id: number, values: any) => {
+	update: async (id: number, values: IServices) => {
 		try {
 			const response = await axios.put(`/service/${id}`, { ...values });
 			const data = response.data;
@@ -33,7 +29,7 @@ const services = {
 			return error;
 		}
 	},
-	create: async (service: string) => {
+	create: async (service: IServices) => {
 		try {
 			const response = await axios.post(`/service`, { ...service });
 
