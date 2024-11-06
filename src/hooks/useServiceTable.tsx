@@ -7,12 +7,8 @@ import { services } from "@/services/services.service";
 import { customAlert } from "@/helpers/alertHelper";
 import { IService } from "@/interfaces/models";
 
-type Service = {
-	name: string;
-};
-
 const useServiceTable = () => {
-	const { showFormModal, formHook } = useFormModal<Service>({
+	const { showFormModal, formHook } = useFormModal({
 		defaultValues: {
 			name: "",
 		},
