@@ -1,13 +1,13 @@
 /* Libraries */
 import { GridColDef } from "@mui/x-data-grid";
 import { Edit, Delete } from "@mui/icons-material";
+import { Button, Stack } from "@mui/material";
 /* components */
 import DataTable from "@/components/DataTable/DataTable";
-import useServiceTable from "@/hooks/useServiceTable";
-import { Button, Stack } from "@mui/material";
+import useSeasonTable from "@/hooks/useSeasonTable";
 
 const CatalogSeason = () => {
-	const { rows, handleForm, deleteService } = useServiceTable();
+	const { rows, handleForm, deleteService } = useSeasonTable();
 	const columns: GridColDef[] = [
 		{
 			field: "id",
@@ -30,12 +30,10 @@ const CatalogSeason = () => {
 			cellClassName: "actions",
 			minWidth: 250,
 			renderCell: (params) => {
+				const data = params.row;
 				return (
 					<Stack direction="row" gap={1}>
-						<Button
-							onClick={() => handleForm({ data: params.row })}
-							variant="contained"
-						>
+						<Button onClick={() => handleForm(data)} variant="contained">
 							Editar <Edit />
 						</Button>
 						<Button
@@ -57,7 +55,7 @@ const CatalogSeason = () => {
 			sx={{
 				p: 1,
 			}}
-			onClick={handleForm}
+			onClick={() => handleForm()}
 		>
 			Crear temporada
 		</Button>

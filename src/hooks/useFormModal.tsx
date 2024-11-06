@@ -1,5 +1,5 @@
 import React from "react";
-import { FieldValues, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { useModalContext } from "@/context/modals/ModalProvider";
 
 interface IShowFormModal {
@@ -47,11 +47,9 @@ function useFormModal({ defaultValues = {} }) {
 				async function onSubmit({ data, closeModal }: any) {
 					const response = await request.endpoint(data);
 
-					if (response.status == true) {
-						closeModal();
-						formHook.reset();
-						return resolve(response);
-					}
+					closeModal();
+					formHook.reset();
+					return resolve(response);
 				}
 			} catch (error) {
 				reject(error);
