@@ -1,5 +1,5 @@
 import { createContext, useContext } from "react";
-import axios, { AxiosInstance } from "axios";
+import axios from "axios";
 
 import { toast } from "react-toastify";
 
@@ -32,7 +32,7 @@ export default function AxiosProvider({ children }: AxiosProviderProps) {
 			return response.data;
 		},
 		function (error) {
-			toast.error(error.message || error.response.data.message);
+			toast.error(error.response.data.message || error.message);
 			return Promise.reject(error);
 		}
 	);

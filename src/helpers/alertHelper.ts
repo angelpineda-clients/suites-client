@@ -23,6 +23,8 @@ export const customAlert = {
 			title: title || "Todo bien!",
 			text: text || "",
 			icon: "success",
+			focusConfirm: true,
+			confirmButtonText: "Aceptar",
 		});
 	},
 	warning: ({ title, text, name }: IAlert) => {

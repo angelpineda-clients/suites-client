@@ -45,11 +45,18 @@ function useFormModal({ defaultValues = {} }) {
 				});
 
 				async function onSubmit({ data, closeModal }: any) {
-					const response = await request.endpoint(data);
+					try {
+						const response = await request.endpoint(data);
 
-					closeModal();
-					formHook.reset();
-					return resolve(response);
+						if (!response) {
+							const message = "Error al realizar la peticion del formulario";
+							reject(message);
+						}
+
+						closeModal();
+						formHook.reset();
+						return resolve(response);
+					} catch (error) {}
 				}
 			} catch (error) {
 				reject(error);

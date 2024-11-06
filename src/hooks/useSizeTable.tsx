@@ -4,17 +4,17 @@ import { Button, Stack, TextField } from "@mui/material";
 /* components */
 import useFormModal, { IRequest } from "@/hooks/useFormModal";
 import { customAlert } from "@/helpers/alertHelper";
-import { ISeason } from "@/interfaces/models";
-import { seasonService } from "@/services/season.service";
+import { ISize } from "@/interfaces/models";
+import { sizeService } from "@/services/size.service";
 
-const useSeasonTable = () => {
+const useSizeTable = () => {
 	const { showFormModal, formHook } = useFormModal({
 		defaultValues: {
 			name: "",
 			alias: "",
 		},
 	});
-	const [rows, setRows] = useState<ISeason[]>([]);
+	const [rows, setRows] = useState<ISize[]>([]);
 	const formFields = {
 		name: formHook.register("name", {
 			required: {
@@ -43,31 +43,31 @@ const useSeasonTable = () => {
 	 * fetch services
 	 */
 	async function fetchData() {
-		const response = await seasonService.getAll();
+		const response = await sizeService.getAll();
 		setRows(response);
 	}
 
-	async function handleForm(data?: ISeason) {
+	async function handleForm(data?: ISize) {
 		let request: IRequest;
 
 		if (data?.id) {
 			request = {
-				endpoint: (newData: ISeason) => seasonService.update(data.id, newData),
+				endpoint: (newData: ISize) => sizeService.update(data.id, newData),
 			};
 		} else {
 			request = {
-				endpoint: (newData: ISeason) => seasonService.create(newData),
+				endpoint: (newData: ISize) => sizeService.create(newData),
 			};
 		}
 
 		try {
-			showFormModal<ISeason[]>({
-				title: data?.id ? "Editar temporada." : "Crear temporada.",
+			showFormModal<ISize[]>({
+				title: data?.id ? "Editar tamaño." : "Crear tamaño.",
 				children: (
 					<Stack gap={2}>
 						<TextField
 							id="name"
-							label="Temporada"
+							label="Tamaño"
 							defaultValue={data?.name || ""}
 							required
 							{...formFields.name}
@@ -108,7 +108,7 @@ const useSeasonTable = () => {
 			customAlert.warning({ name: season.name }).then(async (response) => {
 				if (response.isConfirmed) {
 					try {
-						const data = await seasonService.remove(season?.id);
+						const data = await sizeService.remove(season?.id);
 
 						if (data) {
 							setRows(data);
@@ -129,4 +129,4 @@ const useSeasonTable = () => {
 	};
 };
 
-export default useSeasonTable;
+export default useSizeTable;

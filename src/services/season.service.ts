@@ -6,7 +6,7 @@ import { SeasonResponse } from "@/interfaces/SeasonResponse";
 import { toast } from "react-toastify";
 
 const seasonService = {
-	getAll: async (): Promise<ISeason[] | []> => {
+	getAll: async (): Promise<ISeason[] | undefined> => {
 		try {
 			const { response }: SeasonResponse = await axios.get("/season");
 
@@ -18,10 +18,8 @@ const seasonService = {
 		} catch (error: any) {
 			toast.error(error?.message);
 		}
-
-		return [];
 	},
-	create: async (season: ISeason): Promise<ISeason[] | []> => {
+	create: async (season: ISeason): Promise<ISeason[] | undefined> => {
 		try {
 			const { response }: SeasonResponse = await axios.post(`/season`, {
 				...season,
@@ -35,10 +33,11 @@ const seasonService = {
 		} catch (error: any) {
 			toast.error(error?.message);
 		}
-
-		return [];
 	},
-	update: async (id: number, season: ISeason): Promise<ISeason[] | []> => {
+	update: async (
+		id: number,
+		season: ISeason
+	): Promise<ISeason[] | undefined> => {
 		try {
 			const { response }: SeasonResponse = await axios.put(`/season/${id}`, {
 				...season,
@@ -51,10 +50,8 @@ const seasonService = {
 		} catch (error) {
 			console.error(error);
 		}
-
-		return [];
 	},
-	remove: async (id: number): Promise<ISeason[] | []> => {
+	remove: async (id: number): Promise<ISeason[] | undefined> => {
 		try {
 			const { response }: SeasonResponse = await axios.delete(`/season/${id}`);
 
@@ -65,8 +62,6 @@ const seasonService = {
 		} catch (error) {
 			console.error(error);
 		}
-
-		return [];
 	},
 };
 
