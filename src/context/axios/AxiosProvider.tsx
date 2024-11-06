@@ -24,7 +24,6 @@ export default function AxiosProvider({ children }: AxiosProviderProps) {
 			return config;
 		},
 		function (error) {
-			console.log(error);
 			return Promise.reject(error);
 		}
 	);
@@ -33,7 +32,7 @@ export default function AxiosProvider({ children }: AxiosProviderProps) {
 			return response.data;
 		},
 		function (error) {
-			toast.error(error.response.data.message);
+			toast.error(error.message || error.response.data.message);
 			return Promise.reject(error);
 		}
 	);
