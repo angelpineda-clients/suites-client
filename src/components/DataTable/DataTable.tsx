@@ -1,23 +1,24 @@
-import { Box, Button, Stack, Typography } from "@mui/material";
+import { Box, Stack, Typography } from "@mui/material";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 
 interface IDataTable {
 	title?: string;
 	rows: any[];
 	columns: GridColDef[];
-	onCreateRow: (value: any) => void;
+	headerActions: JSX.Element;
 }
 
-const DataTable = ({ title, columns, rows, onCreateRow }: IDataTable) => {
+const DataTable = ({ title, columns, rows, headerActions }: IDataTable) => {
 	return (
 		<Box
 			sx={{
 				border: "thin solid gray",
-				mt: 4,
 				padding: 2,
 				borderRadius: "8px",
-				width: "100%",
-				maxWidth: "75vw",
+				width: "1100px",
+				maxWidth: "90vw",
+				my: 2,
+				mx: "auto",
 			}}
 		>
 			<Stack
@@ -30,15 +31,8 @@ const DataTable = ({ title, columns, rows, onCreateRow }: IDataTable) => {
 				<Typography variant="h3" component="h2" my={2}>
 					{title}
 				</Typography>
-				<Button
-					variant="contained"
-					sx={{
-						p: 1,
-					}}
-					onClick={onCreateRow}
-				>
-					Create Row
-				</Button>
+
+				{headerActions}
 			</Stack>
 			<DataGrid
 				rows={rows}

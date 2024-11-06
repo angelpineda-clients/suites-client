@@ -3,7 +3,7 @@ import { GridColDef } from "@mui/x-data-grid";
 import { Edit, Delete } from "@mui/icons-material";
 /* components */
 import DataTable from "@/components/DataTable/DataTable";
-import useServiceTable from "./hooks/useServiceTable";
+import useServiceTable from "@/hooks/useServiceTable";
 import { Button, Stack } from "@mui/material";
 
 const CatalogService = () => {
@@ -36,8 +36,9 @@ const CatalogService = () => {
 						<Button
 							onClick={() => deleteService(params.row)}
 							variant="contained"
+							color="error"
 						>
-							Eliminar <Delete />{" "}
+							Eliminar <Delete />
 						</Button>
 					</Stack>
 				);
@@ -45,12 +46,24 @@ const CatalogService = () => {
 		},
 	];
 
+	const headerAction = (
+		<Button
+			variant="contained"
+			sx={{
+				p: 1,
+			}}
+			onClick={handleForm}
+		>
+			Crear servicio
+		</Button>
+	);
+
 	return (
 		<DataTable
 			title="Servicios"
 			rows={rows}
 			columns={columns}
-			onCreateRow={handleForm}
+			headerActions={headerAction}
 		/>
 	);
 };

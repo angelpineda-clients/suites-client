@@ -68,8 +68,16 @@ const useServiceTable = () => {
 							required
 							{...formFields.name}
 						/>
-						<Button variant="outlined" type="submit">
-							Crear
+						<Button
+							variant="contained"
+							type="submit"
+							sx={{
+								maxWidth: "50%",
+								margin: "0 auto",
+								alignSelf: "end",
+							}}
+						>
+							Guardar
 						</Button>
 					</Stack>
 				),

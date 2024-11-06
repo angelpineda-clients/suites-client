@@ -88,6 +88,7 @@ const Layout = ({ children }: LayoutProps) => {
 				slots={{
 					toolbarActions: Logout,
 				}}
+				defaultSidebarCollapsed
 			>
 				{children}
 			</DashboardLayout>

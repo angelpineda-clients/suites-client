@@ -35,7 +35,11 @@ const ModalContainer = ({ modals }: Props) => {
 							<Typography variant="h6" component="h3">
 								{title}
 							</Typography>
-							<Button onClick={() => removeModal(id)} variant="contained">
+							<Button
+								onClick={() => removeModal(id)}
+								variant="contained"
+								color="error"
+							>
 								<Close />
 							</Button>
 						</Stack>
