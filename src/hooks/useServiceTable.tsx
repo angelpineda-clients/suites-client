@@ -13,7 +13,7 @@ const useServiceTable = () => {
 			name: "",
 		},
 	});
-	const [rows, setRows] = useState<IService>([]);
+	const [rows, setRows] = useState<IService[]>([]);
 	const formFields = {
 		name: formHook.register("name", {
 			required: {
@@ -36,24 +36,23 @@ const useServiceTable = () => {
 	 * fetch services
 	 */
 	async function fetchData() {
-		const response = await services.getAll();
-		setRows(response);
-		return response;
+		const data = await services.getAll();
+		setRows(data);
 	}
 
-	async function handleForm({ data }: any) {
+	async function handleForm(data?: IService) {
 		let request: IRequest;
 
 		if (data?.id) {
 			request = {
-				endpoint: (newData: any) => services.update(data.id, newData),
+				endpoint: (newData: IService) => services.update(data.id, newData),
 			};
 		} else {
-			request = { endpoint: (newData: any) => services.create(newData) };
+			request = { endpoint: (newData: IService) => services.create(newData) };
 		}
 
 		try {
-			showFormModal<IService>({
+			showFormModal<IService[]>({
 				title: data?.id ? "Editar servicio." : "Crear servicio.",
 				children: (
 					<Stack gap={2}>
@@ -79,10 +78,8 @@ const useServiceTable = () => {
 				),
 				request: request,
 			}).then((response) => {
-				if (response.status == true) {
-					customAlert.success({});
-					setRows(response.data);
-				}
+				customAlert.success({});
+				setRows(response);
 			});
 		} catch (error) {
 			console.error(error);
@@ -95,7 +92,7 @@ const useServiceTable = () => {
 				if (response.isConfirmed) {
 					try {
 						const res = await services.remove(data.id);
-						setRows(res.data);
+						setRows(res);
 					} catch (error) {}
 				}
 			});

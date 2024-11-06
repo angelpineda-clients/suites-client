@@ -25,12 +25,10 @@ const CatalogService = () => {
 			cellClassName: "actions",
 			minWidth: 250,
 			renderCell: (params) => {
+				const data = params.row;
 				return (
 					<Stack direction="row" gap={1}>
-						<Button
-							onClick={() => handleForm({ data: params.row })}
-							variant="contained"
-						>
+						<Button onClick={() => handleForm(data)} variant="contained">
 							Editar <Edit />
 						</Button>
 						<Button
@@ -52,7 +50,7 @@ const CatalogService = () => {
 			sx={{
 				p: 1,
 			}}
-			onClick={handleForm}
+			onClick={() => handleForm()}
 		>
 			Crear servicio
 		</Button>

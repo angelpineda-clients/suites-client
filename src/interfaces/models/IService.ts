@@ -1,9 +1,4 @@
-export interface IServiceResponse {
-	status: boolean;
-	data: IServices[];
-}
-
-export interface IServices {
+export interface IService {
 	id: number;
 	name: string;
 }

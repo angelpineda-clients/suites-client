@@ -1,57 +1,74 @@
-import { IServices } from "@/interfaces/models/IService";
+import { IService } from "@/interfaces/models";
+import { ServiceResponse } from "@/interfaces/ServiceResponse";
 import axios from "axios";
+import { toast } from "react-toastify";
 
 const services = {
-	getAll: async () => {
-		const response = await axios.get("/service");
-		const data = response.data;
-
-		const rows = data.map((service: IServices) => {
-			return {
-				id: service.id,
-				name: service.name,
-			};
-		});
-
-		return rows;
-	},
-	update: async (id: number, values: IServices) => {
+	getAll: async (): Promise<IService[] | []> => {
 		try {
-			const response = await axios.put(`/service/${id}`, { ...values });
-			const data = response.data;
+			const { response }: ServiceResponse = await axios.get("/service");
 
-			if (data.status == true) {
-				return data;
+			if (!response?.status === true || !response) {
+				throw new Error("Error al obtener todos los servicios.");
 			}
 
-			throw new Error("Error al actualizar el servicio");
-		} catch (error) {
-			return error;
+			return response.data;
+		} catch (error: any) {
+			toast.error(error?.message);
 		}
+
+		return [];
 	},
-	create: async (service: IServices) => {
+	create: async (service: IService): Promise<IService[] | []> => {
 		try {
-			const response = await axios.post(`/service`, { ...service });
+			const { response }: ServiceResponse = await axios.post(`/service`, {
+				...service,
+			});
 
-			const data = response.data;
-
-			if (data.status == true) {
-				return data;
+			if (!response) {
+				throw new Error("Error al obtener los servicios creados.");
 			}
-		} catch (error) {
-			return error;
+
+			return response.data;
+		} catch (error: any) {
+			toast.error(error?.message);
 		}
+
+		return [];
 	},
-	remove: async (id: number) => {
+	update: async (id: number, values: IService): Promise<IService[] | []> => {
 		try {
-			const response = await axios.delete(`/service/${id}`);
+			const { response }: ServiceResponse = await axios.put(`/service/${id}`, {
+				...values,
+			});
 
-			const data = await response.data;
-
-			if (data.status == true) {
-				return data;
+			if (!response) {
+				toast.error("Error al obtener el servicio actualizado");
 			}
-		} catch (error) {}
+			return response.data;
+		} catch (error) {
+			console.error(error);
+		}
+
+		return [];
+	},
+
+	remove: async (id: number): Promise<IService[] | []> => {
+		try {
+			const { response }: ServiceResponse = await axios.delete(
+				`/service/${id}`
+			);
+
+			if (!response) {
+				toast.error("Error al obtener el servicio eliminado");
+			}
+
+			return response.data;
+		} catch (error) {
+			console.error(error);
+		}
+
+		return [];
 	},
 };
 
