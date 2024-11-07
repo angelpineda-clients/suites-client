@@ -4,11 +4,11 @@ import axios from "axios";
 import { toast } from "react-toastify";
 
 const services = {
-	getAll: async (): Promise<IService[] | []> => {
+	getAll: async (): Promise<IService[] | undefined> => {
 		try {
 			const { response }: ServiceResponse = await axios.get("/service");
 
-			if (!response?.status === true || !response) {
+			if (!response) {
 				throw new Error("Error al obtener todos los servicios.");
 			}
 
@@ -16,10 +16,8 @@ const services = {
 		} catch (error: any) {
 			toast.error(error?.message);
 		}
-
-		return [];
 	},
-	create: async (service: IService): Promise<IService[] | []> => {
+	create: async (service: IService): Promise<IService[] | undefined> => {
 		try {
 			const { response }: ServiceResponse = await axios.post(`/service`, {
 				...service,
@@ -29,14 +27,15 @@ const services = {
 				throw new Error("Error al obtener los servicios creados.");
 			}
 
-			return response.data;
+			return response?.data;
 		} catch (error: any) {
 			toast.error(error?.message);
 		}
-
-		return [];
 	},
-	update: async (id: number, values: IService): Promise<IService[] | []> => {
+	update: async (
+		id: number,
+		values: IService
+	): Promise<IService[] | undefined> => {
 		try {
 			const { response }: ServiceResponse = await axios.put(`/service/${id}`, {
 				...values,
@@ -49,11 +48,9 @@ const services = {
 		} catch (error) {
 			console.error(error);
 		}
-
-		return [];
 	},
 
-	remove: async (id: number): Promise<IService[] | []> => {
+	remove: async (id: number): Promise<IService[] | undefined> => {
 		try {
 			const { response }: ServiceResponse = await axios.delete(
 				`/service/${id}`
@@ -67,8 +64,6 @@ const services = {
 		} catch (error) {
 			console.error(error);
 		}
-
-		return [];
 	},
 };
 

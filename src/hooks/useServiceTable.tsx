@@ -37,7 +37,9 @@ const useServiceTable = () => {
 	 */
 	async function fetchData() {
 		const data = await services.getAll();
-		setRows(data);
+		if (data) {
+			setRows(data);
+		}
 	}
 
 	async function handleForm(data?: IService) {
@@ -78,21 +80,26 @@ const useServiceTable = () => {
 				),
 				request: request,
 			}).then((response) => {
-				customAlert.success({});
-				setRows(response);
+				if (response) {
+					customAlert.success({});
+					setRows(response);
+				}
 			});
 		} catch (error) {
 			console.error(error);
 		}
 	}
 
-	async function deleteService(data: any) {
+	async function deleteService(service: any) {
 		try {
-			customAlert.warning({ name: data.name }).then(async (response) => {
+			customAlert.warning({ name: service.name }).then(async (response) => {
 				if (response.isConfirmed) {
 					try {
-						const res = await services.remove(data.id);
-						setRows(res);
+						const data = await services.remove(service.id);
+						if (data) {
+							setRows(data);
+							customAlert.success({});
+						}
 					} catch (error) {}
 				}
 			});

@@ -43,16 +43,18 @@ const useSizeTable = () => {
 	 * fetch services
 	 */
 	async function fetchData() {
-		const response = await sizeService.getAll();
-		setRows(response);
+		const data = await sizeService.getAll();
+		if (data) {
+			setRows(data);
+		}
 	}
 
-	async function handleForm(data?: ISize) {
+	async function handleForm(size?: ISize) {
 		let request: IRequest;
 
-		if (data?.id) {
+		if (size?.id) {
 			request = {
-				endpoint: (newData: ISize) => sizeService.update(data.id, newData),
+				endpoint: (newData: ISize) => sizeService.update(size.id, newData),
 			};
 		} else {
 			request = {
@@ -62,20 +64,20 @@ const useSizeTable = () => {
 
 		try {
 			showFormModal<ISize[]>({
-				title: data?.id ? "Editar tamaño." : "Crear tamaño.",
+				title: size?.id ? "Editar tamaño." : "Crear tamaño.",
 				children: (
 					<Stack gap={2}>
 						<TextField
 							id="name"
 							label="Tamaño"
-							defaultValue={data?.name || ""}
+							defaultValue={size?.name || ""}
 							required
 							{...formFields.name}
 						/>
 						<TextField
 							id="alias"
 							label="Alias"
-							defaultValue={data?.alias || ""}
+							defaultValue={size?.alias || ""}
 							{...formFields.alias}
 						/>
 						<Button

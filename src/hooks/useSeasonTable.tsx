@@ -43,8 +43,10 @@ const useSeasonTable = () => {
 	 * fetch services
 	 */
 	async function fetchData() {
-		const response = await seasonService.getAll();
-		setRows(response);
+		const data = await seasonService.getAll();
+		if (data) {
+			setRows(data);
+		}
 	}
 
 	async function handleForm(data?: ISeason) {
