@@ -3,17 +3,18 @@ import { useState, useEffect } from "react";
 import { Button, Stack, TextField } from "@mui/material";
 /* components */
 import useFormModal, { IRequest } from "@/hooks/useFormModal";
-import { serviceService } from "@/services/services.service";
 import { customAlert } from "@/helpers/alertHelper";
-import { IService } from "@/interfaces/models";
+import { IFloor } from "@/interfaces/models";
+import { floorService } from "@/services/floor.service";
 
-const useServiceTable = () => {
+const useFloorTable = () => {
 	const { showFormModal, formHook } = useFormModal({
 		defaultValues: {
 			name: "",
+			alias: "",
 		},
 	});
-	const [rows, setRows] = useState<IService[]>([]);
+	const [rows, setRows] = useState<IFloor[]>([]);
 	const formFields = {
 		name: formHook.register("name", {
 			required: {
@@ -23,6 +24,12 @@ const useServiceTable = () => {
 			onChange: (e) => {
 				const value = e.target.value.toUpperCase();
 				formHook.setValue("name", value);
+			},
+		}),
+		alias: formHook.register("alias", {
+			onChange: (e) => {
+				const value = e.target.value.toUpperCase();
+				formHook.setValue("alias", value);
 			},
 		}),
 	};
@@ -36,37 +43,42 @@ const useServiceTable = () => {
 	 * fetch services
 	 */
 	async function fetchData() {
-		const data = await serviceService.getAll();
+		const data = await floorService.getAll();
 		if (data) {
 			setRows(data);
 		}
 	}
 
-	async function handleForm(data?: IService) {
+	async function handleForm(data?: IFloor) {
 		let request: IRequest;
 
 		if (data?.id) {
 			request = {
-				endpoint: (newData: IService) =>
-					serviceService.update(data.id, newData),
+				endpoint: (newData: IFloor) => floorService.update(data.id, newData),
 			};
 		} else {
 			request = {
-				endpoint: (newData: IService) => serviceService.create(newData),
+				endpoint: (newData: IFloor) => floorService.create(newData),
 			};
 		}
 
 		try {
-			showFormModal<IService[]>({
-				title: data?.id ? "Editar servicio." : "Crear servicio.",
+			showFormModal<IFloor[]>({
+				title: data?.id ? "Editar piso." : "Crear piso.",
 				children: (
 					<Stack gap={2}>
 						<TextField
 							id="name"
-							label="Servicio"
+							label="Piso"
 							defaultValue={data?.name || ""}
 							required
 							{...formFields.name}
+						/>
+						<TextField
+							id="alias"
+							label="Alias"
+							defaultValue={data?.alias || ""}
+							{...formFields.alias}
 						/>
 						<Button
 							variant="contained"
@@ -93,14 +105,16 @@ const useServiceTable = () => {
 		}
 	}
 
-	async function deleteService(service: any) {
+	async function deleteService(season: any) {
 		try {
-			customAlert.warning({ name: service.name }).then(async (response) => {
+			customAlert.warning({ name: season.name }).then(async (response) => {
 				if (response.isConfirmed) {
 					try {
-						const data = await serviceService.remove(service.id);
+						const data = await floorService.remove(season?.id);
+
 						if (data) {
 							setRows(data);
+
 							customAlert.success({});
 						}
 					} catch (error) {}
@@ -117,4 +131,4 @@ const useServiceTable = () => {
 	};
 };
 
-export default useServiceTable;
+export default useFloorTable;

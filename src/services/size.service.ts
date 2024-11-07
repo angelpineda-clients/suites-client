@@ -40,7 +40,7 @@ const sizeService = {
 			});
 
 			if (!response) {
-				console.error("Error al obtener el tamaño actualizado");
+				throw new Error("Error al obtener el tamaño actualizado");
 			}
 			return response.data;
 		} catch (error) {
@@ -52,7 +52,7 @@ const sizeService = {
 			const { response }: SizeResponse = await axios.delete(`/size/${id}`);
 
 			if (!response) {
-				console.error("Error al obtener el tamaño eleminado");
+				throw new Error("Error al obtener el tamaño eleminado");
 			}
 			return response.data;
 		} catch (error) {

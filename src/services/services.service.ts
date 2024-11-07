@@ -3,7 +3,7 @@ import { ServiceResponse } from "@/interfaces/ServiceResponse";
 import axios from "axios";
 import { toast } from "react-toastify";
 
-const services = {
+const serviceService = {
 	getAll: async (): Promise<IService[] | undefined> => {
 		try {
 			const { response }: ServiceResponse = await axios.get("/service");
@@ -42,7 +42,7 @@ const services = {
 			});
 
 			if (!response) {
-				toast.error("Error al obtener el servicio actualizado");
+				throw new Error("Error al obtener el servicio actualizado");
 			}
 			return response.data;
 		} catch (error) {
@@ -57,7 +57,7 @@ const services = {
 			);
 
 			if (!response) {
-				toast.error("Error al obtener el servicio eliminado");
+				throw new Error("Error al obtener el servicio eliminado");
 			}
 
 			return response.data;
@@ -67,4 +67,4 @@ const services = {
 	},
 };
 
-export { services };
+export { serviceService };

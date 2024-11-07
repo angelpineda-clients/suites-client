@@ -44,7 +44,7 @@ const seasonService = {
 			});
 
 			if (!response) {
-				toast.error("Error al obtener la temporada actualizada");
+				throw new Error("Error al obtener la temporada actualizada");
 			}
 			return response.data;
 		} catch (error) {
@@ -56,7 +56,7 @@ const seasonService = {
 			const { response }: SeasonResponse = await axios.delete(`/season/${id}`);
 
 			if (!response) {
-				toast.error("Error al obtener la temporada eleminada");
+				throw new Error("Error al obtener la temporada eleminada");
 			}
 			return response.data;
 		} catch (error) {
