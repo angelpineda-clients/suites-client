@@ -81,6 +81,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
 				}
 			}
 		} catch (error) {
+			logout();
 		} finally {
 			setIsLoading(false);
 		}
