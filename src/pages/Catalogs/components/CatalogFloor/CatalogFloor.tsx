@@ -33,7 +33,15 @@ const CatalogFloor = () => {
 				const data = params.row;
 				return (
 					<Stack direction="row" gap={1}>
-						<Button onClick={() => handleForm(data)} variant="contained">
+						<Button
+							onClick={(
+								event: React.MouseEvent<HTMLButtonElement, MouseEvent>
+							) => {
+								event.currentTarget.blur();
+								handleForm(data);
+							}}
+							variant="contained"
+						>
 							Editar <Edit />
 						</Button>
 						<Button
@@ -55,7 +63,10 @@ const CatalogFloor = () => {
 			sx={{
 				p: 1,
 			}}
-			onClick={() => handleForm()}
+			onClick={(event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+				event.currentTarget.blur();
+				handleForm();
+			}}
 		>
 			Crear piso
 		</Button>
