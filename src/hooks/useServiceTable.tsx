@@ -6,6 +6,8 @@ import useFormModal, { IRequest } from "@/hooks/useFormModal";
 import { serviceService } from "@/services/services.service";
 import { customAlert } from "@/helpers/alertHelper";
 import { IService } from "@/interfaces/models";
+import { PaginatedData } from "@/interfaces/IPagination";
+import usePagination from "./usePagination";
 
 const useServiceTable = () => {
 	const { showFormModal, formHook } = useFormModal({
@@ -14,6 +16,7 @@ const useServiceTable = () => {
 		},
 	});
 	const [rows, setRows] = useState<IService[]>([]);
+	const { pagination, setPagination, onPagination } = usePagination();
 	const formFields = {
 		name: formHook.register("name", {
 			required: {
@@ -29,42 +32,61 @@ const useServiceTable = () => {
 
 	useEffect(() => {
 		fetchData();
-	}, []);
+	}, [pagination.page, pagination.pageSize]);
 
 	/**
 	 * fetchData
 	 * fetch services
 	 */
 	async function fetchData() {
-		const data = await serviceService.getAll();
+		const data = await serviceService.getAll({
+			page: pagination.page,
+			pageSize: pagination.pageSize,
+		});
+
 		if (data) {
-			setRows(data);
+			setRows(data?.items);
+			setPagination(data?.pagination);
 		}
 	}
 
+	/**
+	 * handleForm
+	 * allow to handle form submit for methods post and put
+	 */
 	async function handleForm(data?: IService) {
 		let request: IRequest;
 
 		if (data?.id) {
 			request = {
-				endpoint: (newData: IService) =>
-					serviceService.update(data.id, newData),
+				endpoint: (service: IService) =>
+					serviceService.update({
+						id: data.id,
+						service,
+						page: pagination.page,
+						pageSize: pagination.pageSize,
+					}),
 			};
 		} else {
 			request = {
-				endpoint: (newData: IService) => serviceService.create(newData),
+				endpoint: (service: IService) =>
+					serviceService.create({
+						service,
+						page: pagination.page,
+						pageSize: pagination.pageSize,
+					}),
 			};
 		}
 
 		try {
-			showFormModal<IService[]>({
+			showFormModal<PaginatedData<IService>>({
 				title: data?.id ? "Editar servicio." : "Crear servicio.",
 				children: (
 					<Stack gap={2}>
 						<TextField
 							id="name"
 							label="Servicio"
-							defaultValue={data?.name || ""}
+							value={data?.name || ""}
 							required
 							{...formFields.name}
 						/>
@@ -83,9 +105,10 @@ const useServiceTable = () => {
 				),
 				request: request,
 			}).then((response) => {
-				if (!!response) {
-					customAlert.success({});
-					setRows(response);
+				if (response) {
+					customAlert.success();
+					setRows(response.items);
+					setPagination(response.pagination);
 				}
 			});
 		} catch (error) {
@@ -93,15 +116,21 @@ const useServiceTable = () => {
 		}
 	}
 
-	async function deleteService(service: any) {
+	async function deleteService(service: IService) {
 		try {
 			customAlert.warning({ name: service.name }).then(async (response) => {
 				if (response.isConfirmed) {
 					try {
-						const data = await serviceService.remove(service.id);
+						const data = await serviceService.remove({
+							id: service.id,
+							page: pagination.page,
+							pageSize: pagination.pageSize,
+						});
+
 						if (data) {
-							setRows(data);
-							customAlert.success({});
+							setRows(data.items);
+							setPagination(data.pagination);
+							customAlert.success();
 						}
 					} catch (error) {}
 				}
@@ -113,7 +142,9 @@ const useServiceTable = () => {
 		fetchData,
 		handleForm,
 		deleteService,
+		onPagination,
 		rows,
+		pagination,
 	};
 };
 

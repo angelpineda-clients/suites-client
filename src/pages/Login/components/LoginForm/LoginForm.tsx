@@ -1,11 +1,12 @@
 /* Libraries */
+import axios from "axios";
 import { useForm } from "react-hook-form";
 import { Button, TextField } from "@mui/material";
-import { useAuth } from "@/context/auth/AuthProvider";
-
-import { IAuhToken } from "@/interfaces";
+/* components */
+import { IAuth } from "@/interfaces";
 import { useUserStore } from "@/store/user";
-import axios from "axios";
+import { useAuth } from "@/context/auth/AuthProvider";
+import REGEX_VALIDATIONS from "@/constants/regex.ts";
 
 type FormValues = {
 	email: string;
@@ -29,7 +30,7 @@ const LoginForm = () => {
 				message: "Field required",
 			},
 			pattern: {
-				value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+				value: REGEX_VALIDATIONS.EMAIL,
 				message: "Not valid email",
 			},
 		}),
@@ -43,7 +44,7 @@ const LoginForm = () => {
 
 	const onSubmit = async (data: FormValues) => {
 		try {
-			const response: IAuhToken = await axios?.post("/login", {
+			const response: IAuth = await axios?.post("/login", {
 				email: data?.email,
 				password: data?.password,
 			});

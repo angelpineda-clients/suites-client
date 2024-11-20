@@ -1,17 +1,12 @@
 /* Libraries */
+import { IUser } from "@/interfaces/models/IUser";
 import { create } from "zustand";
 import { devtools } from "zustand/middleware";
 /* interfaces */
 
-interface user {
-	id: string;
-	name: string;
-	email: string;
-}
-
 interface IUserStore {
-	user: user;
-	setUser: (data: user) => void;
+	user: IUser;
+	setUser: (data: IUser) => void;
 }
 
 export const useUserStore = create<IUserStore>()(
@@ -21,7 +16,7 @@ export const useUserStore = create<IUserStore>()(
 			name: "",
 			email: "",
 		},
-		setUser: (data: user) => {
+		setUser: (data: IUser) => {
 			const { id, email, name } = data;
 
 			set({ user: { id, email, name } });

@@ -16,7 +16,7 @@ const CONSTANTS = {
 };
 
 export const customAlert = {
-	success: ({ title, text }: IAlert) => {
+	success: ({ title, text }: IAlert = {}) => {
 		return Swal.fire({
 			...GLOBALS,
 			...CONSTANTS,

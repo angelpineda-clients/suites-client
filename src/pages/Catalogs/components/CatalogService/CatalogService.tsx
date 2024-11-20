@@ -7,12 +7,9 @@ import useServiceTable from "@/hooks/useServiceTable";
 import { Button, Stack } from "@mui/material";
 
 const CatalogService = () => {
-	const { rows, handleForm, deleteService } = useServiceTable();
+	const { rows, pagination, handleForm, deleteService, onPagination } =
+		useServiceTable();
 	const columns: GridColDef[] = [
-		{
-			field: "id",
-			headerName: "#",
-		},
 		{
 			field: "name",
 			headerName: "Servicio",
@@ -73,6 +70,8 @@ const CatalogService = () => {
 			rows={rows}
 			columns={columns}
 			headerActions={headerAction}
+			pagination={pagination}
+			onPagination={onPagination}
 		/>
 	);
 };

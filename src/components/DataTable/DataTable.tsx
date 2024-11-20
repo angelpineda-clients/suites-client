@@ -1,14 +1,35 @@
+import { Pagination } from "@/interfaces/IPagination";
 import { Box, Stack, Typography } from "@mui/material";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
+import { useMemo, useRef } from "react";
 
 interface IDataTable {
 	title?: string;
 	rows: any[];
 	columns: GridColDef[];
+	pagination: Pagination;
 	headerActions: JSX.Element;
+	onPagination: (pagination: any) => void;
 }
 
-const DataTable = ({ title, columns, rows, headerActions }: IDataTable) => {
+const DataTable = ({
+	title,
+	columns,
+	rows,
+	pagination,
+	headerActions,
+	onPagination,
+}: IDataTable) => {
+	const rowCountRef = useRef(pagination?.total || 0);
+
+	const rowCount = useMemo(() => {
+		if (pagination?.total !== undefined) {
+			rowCountRef.current = pagination.total;
+		}
+
+		return rowCountRef.current;
+	}, [pagination?.total, pagination.pageSize]);
+
 	return (
 		<Box
 			sx={{
@@ -37,15 +58,12 @@ const DataTable = ({ title, columns, rows, headerActions }: IDataTable) => {
 			<DataGrid
 				rows={rows}
 				columns={columns}
+				rowCount={rowCount}
 				disableRowSelectionOnClick
-				initialState={{
-					pagination: {
-						paginationModel: {
-							pageSize: 5,
-						},
-					},
-				}}
-				pageSizeOptions={[5, 10, 15, 20, 50, 100]}
+				paginationMode="server"
+				paginationModel={pagination}
+				pageSizeOptions={[5, 10, 15, 25, 50, 100]}
+				onPaginationModelChange={onPagination}
 			/>
 		</Box>
 	);

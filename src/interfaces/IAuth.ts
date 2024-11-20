@@ -1,10 +1,12 @@
+import { IUser } from "./models/IUser";
+
 export interface IAuth {
 	data: Data;
 }
 
 export interface Data {
 	auth: Auth;
-	user: User;
+	user: IUser;
 }
 
 export interface Auth {
@@ -12,10 +14,4 @@ export interface Auth {
 	token_type: string;
 	expires_in: number;
 	refresh_token: string;
-}
-
-export interface User {
-	id: number;
-	name: string;
-	email: string;
 }

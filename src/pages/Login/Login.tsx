@@ -1,11 +1,11 @@
 /* Libraries */
+import { Navigate } from "react-router";
 import { Box, Container, Typography } from "@mui/material";
 /* Components */
 import LoginForm from "./components/LoginForm/LoginForm";
+import { useAuth } from "@/context/auth/AuthProvider";
 /* Styles */
 import "./styles/login.css";
-import { useAuth } from "../../context/auth/AuthProvider";
-import { Navigate } from "react-router";
 
 const Login = () => {
 	const auth = useAuth();

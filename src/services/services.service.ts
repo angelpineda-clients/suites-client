@@ -1,68 +1,139 @@
-import { IService } from "@/interfaces/models";
-import { ServiceResponse } from "@/interfaces/ServiceResponse";
+/* Libraries */
 import axios from "axios";
+/* interfaces */
+import { IPagination } from "@/interfaces";
+import { IService } from "@/interfaces/models";
+import { ResponsePaginated } from "@/interfaces/responses/ResponsePaginated";
+import { PaginatedData } from "@/interfaces/IPagination";
+import { adapterPagination } from "@/adapters/pagination.adapter";
 import { toast } from "react-toastify";
 
 const serviceService = {
-	getAll: async (): Promise<IService[] | undefined> => {
+	create: async ({
+		service,
+		pageSize = 10,
+		page = 0,
+	}: IPagination & {
+		service: IService;
+	}): Promise<PaginatedData<IService> | null> => {
 		try {
-			const { response }: ServiceResponse = await axios.get("/service");
+			const response: ResponsePaginated<IService> = await axios.post(
+				`/service?per_page=${pageSize}&page=${page + 1}`,
+				{
+					...service,
+				}
+			);
 
-			if (!response) {
-				throw new Error("Error al obtener todos los servicios.");
-			}
-
-			return response.data;
-		} catch (error: any) {
-			toast.error(error?.message);
-		}
-	},
-	create: async (service: IService): Promise<IService[] | undefined> => {
-		try {
-			const { response }: ServiceResponse = await axios.post(`/service`, {
-				...service,
-			});
-
-			if (!response) {
+			if (!response.success) {
 				throw new Error("Error al obtener los servicios creados.");
 			}
 
-			return response?.data;
+			const pagination = adapterPagination(response.data.pagination);
+			const items = response.data.items || [];
+
+			return { items, pagination };
 		} catch (error: any) {
-			toast.error(error?.message);
+			console.error(error);
+			if (error instanceof Error) {
+				toast.error(error.message);
+			}
+			return null;
 		}
 	},
-	update: async (
-		id: number,
-		values: IService
-	): Promise<IService[] | undefined> => {
+
+	getAll: async ({
+		pageSize = 10,
+		page = 0,
+	}: IPagination = {}): Promise<PaginatedData<IService> | null> => {
 		try {
-			const { response }: ServiceResponse = await axios.put(`/service/${id}`, {
-				...values,
-			});
+			const response: ResponsePaginated<IService> = await axios.get(
+				`/service?per_page=${pageSize}&page=${page + 1}`
+			);
+
+			if (!response.success) {
+				throw new Error("Error al obtener todos los servicios.");
+			}
+
+			const pagination = adapterPagination(response.data.pagination);
+			const items = response.data.items;
+
+			return { items, pagination };
+		} catch (error: any) {
+			console.error(error?.message);
+
+			if (error instanceof Error) {
+				toast.error(error.message);
+			}
+
+			return null;
+		}
+	},
+
+	update: async ({
+		id,
+		service,
+		pageSize = 10,
+		page = 0,
+	}: IPagination & {
+		id: number;
+		service: IService;
+	}): Promise<PaginatedData<IService> | null> => {
+		try {
+			const response: ResponsePaginated<IService> = await axios.put(
+				`/service/${id}?per_page=${pageSize}&page=${page + 1}`,
+				{
+					...service,
+				}
+			);
 
 			if (!response) {
 				throw new Error("Error al obtener el servicio actualizado");
 			}
-			return response.data;
-		} catch (error) {
+
+			const pagination = adapterPagination(response.data.pagination);
+			const items = response.data.items;
+
+			return { items, pagination };
+		} catch (error: any) {
 			console.error(error);
+
+			if (error instanceof Error) {
+				toast.error(error.message);
+			}
+			return null;
 		}
 	},
 
-	remove: async (id: number): Promise<IService[] | undefined> => {
+	remove: async ({
+		id,
+		pageSize = 10,
+		page = 0,
+	}: IPagination & { id: number }): Promise<PaginatedData<IService> | null> => {
 		try {
-			const { response }: ServiceResponse = await axios.delete(
-				`/service/${id}`
+			if (!id) {
+				throw new Error("ID no encontrado, contacte a soporte.");
+			}
+
+			const response: ResponsePaginated<IService> = await axios.delete(
+				`/service/${id}?per_page=${pageSize}&page=${page + 1}`
 			);
 
 			if (!response) {
 				throw new Error("Error al obtener el servicio eliminado");
 			}
 
-			return response.data;
-		} catch (error) {
+			const pagination = adapterPagination(response.data.pagination);
+			const items = response.data.items;
+
+			return { items, pagination };
+		} catch (error: unknown) {
 			console.error(error);
+
+			if (error instanceof Error) {
+				toast.error(error.message);
+			}
+
+			return null;
 		}
 	},
 };
