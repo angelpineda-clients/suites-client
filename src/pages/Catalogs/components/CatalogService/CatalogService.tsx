@@ -3,7 +3,7 @@ import { GridColDef } from "@mui/x-data-grid";
 import { Edit, Delete } from "@mui/icons-material";
 /* components */
 import DataTable from "@/components/DataTable/DataTable";
-import useServiceTable from "@/hooks/useServiceTable";
+import useServiceTable from "@/pages/Catalogs/components/CatalogService/hooks/useServiceTable";
 import { Button, Stack } from "@mui/material";
 
 const CatalogService = () => {

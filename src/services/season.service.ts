@@ -1,66 +1,137 @@
 /* Libraries */
 import axios from "axios";
+import { toast } from "react-toastify";
 /* Interfaces */
 import { ISeason } from "@/interfaces/models";
-import { SeasonResponse } from "@/interfaces/SeasonResponse";
-import { toast } from "react-toastify";
+import { IPagination, PaginatedData } from "@/interfaces/IPagination";
+import { ResponsePaginated } from "@/interfaces/responses/ResponsePaginated";
+import { adapterPagination } from "@/adapters/pagination.adapter";
 
 const seasonService = {
-	getAll: async (): Promise<ISeason[] | undefined> => {
+	create: async ({
+		season,
+		page = 0,
+		pageSize = 10,
+	}: IPagination & {
+		season: ISeason;
+	}): Promise<PaginatedData<ISeason> | null> => {
 		try {
-			const { response }: SeasonResponse = await axios.get("/season");
+			const response: ResponsePaginated<ISeason> = await axios.post(
+				`/season?page=${page + 1}&per_page=${pageSize}`,
+				{
+					...season,
+				}
+			);
 
-			if (!response?.status === true || !response) {
-				throw new Error("Error al obtener todas las temporadas.");
-			}
-
-			return response.data;
-		} catch (error: any) {
-			toast.error(error?.message);
-		}
-	},
-	create: async (season: ISeason): Promise<ISeason[] | undefined> => {
-		try {
-			const { response }: SeasonResponse = await axios.post(`/season`, {
-				...season,
-			});
-
-			if (!response?.status === true || !response) {
+			if (!response?.success) {
 				throw new Error("Error al obtener la temporada creada.");
 			}
 
-			return response.data;
+			const pagination = adapterPagination(response.data.pagination);
+			const items = response.data.items;
+
+			return { items, pagination };
 		} catch (error: any) {
-			toast.error(error?.message);
+			console.error(error);
+
+			if (error instanceof Error) {
+				toast.error(error.message);
+			}
+
+			return null;
 		}
 	},
-	update: async (
-		id: number,
-		season: ISeason
-	): Promise<ISeason[] | undefined> => {
+	getAll: async ({
+		page = 0,
+		pageSize = 10,
+	}: IPagination = {}): Promise<PaginatedData<ISeason> | null> => {
 		try {
-			const { response }: SeasonResponse = await axios.put(`/season/${id}`, {
-				...season,
-			});
+			const response: ResponsePaginated<ISeason> = await axios.get(
+				`/season?page=${page + 1}&per_page=${pageSize}`
+			);
+
+			if (!response?.success) {
+				throw new Error("Error al obtener todas las temporadas.");
+			}
+
+			const pagination = adapterPagination(response.data.pagination);
+			const items = response.data.items;
+
+			return { items, pagination };
+		} catch (error: any) {
+			console.error(error);
+
+			if (error instanceof Error) {
+				toast.error(error.message);
+			}
+
+			return null;
+		}
+	},
+
+	update: async ({
+		id,
+		season,
+		page = 0,
+		pageSize = 10,
+	}: IPagination & {
+		id: number;
+		season: ISeason;
+	}): Promise<PaginatedData<ISeason> | null> => {
+		try {
+			const response: ResponsePaginated<ISeason> = await axios.put(
+				`/season/${id}?page=${page + 1}&per_page=${pageSize}`,
+				{
+					...season,
+				}
+			);
 
 			if (!response) {
 				throw new Error("Error al obtener la temporada actualizada");
 			}
-			return response.data;
+
+			const pagination = adapterPagination(response.data.pagination);
+			const items = response.data.items;
+
+			return { items, pagination };
 		} catch (error) {
 			console.error(error);
+
+			if (error instanceof Error) {
+				toast.error(error.message);
+			}
+
+			return null;
 		}
 	},
-	remove: async (id: number): Promise<ISeason[] | undefined> => {
+	remove: async ({
+		id,
+		page = 0,
+		pageSize = 10,
+	}: IPagination & {
+		id: number;
+	}): Promise<PaginatedData<ISeason> | null> => {
 		try {
-			const { response }: SeasonResponse = await axios.delete(`/season/${id}`);
+			const response: ResponsePaginated<ISeason> = await axios.delete(
+				`/season/${id}?page=${page + 1}&per_page=${pageSize}`
+			);
 
 			if (!response) {
 				throw new Error("Error al obtener la temporada eleminada");
 			}
-			return response.data;
+
+			const pagination = adapterPagination(response.data.pagination);
+			const items = response.data.items;
+
+			return { items, pagination };
 		} catch (error) {
 			console.error(error);
+
+			if (error instanceof Error) {
+				toast.error(error.message);
+			}
+
+			return null;
 		}
 	},
 };

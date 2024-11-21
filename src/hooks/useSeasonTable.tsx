@@ -6,6 +6,8 @@ import useFormModal, { IRequest } from "@/hooks/useFormModal";
 import { customAlert } from "@/helpers/alertHelper";
 import { ISeason } from "@/interfaces/models";
 import { seasonService } from "@/services/season.service";
+import usePagination from "./usePagination";
+import { PaginatedData } from "@/interfaces/IPagination";
 
 const useSeasonTable = () => {
 	const { showFormModal, formHook } = useFormModal({
@@ -15,6 +17,7 @@ const useSeasonTable = () => {
 		},
 	});
 	const [rows, setRows] = useState<ISeason[]>([]);
+	const { pagination, setPagination, onPagination } = usePagination();
 	const formFields = {
 		name: formHook.register("name", {
 			required: {
@@ -43,9 +46,13 @@ const useSeasonTable = () => {
 	 * fetch services
 	 */
 	async function fetchData() {
-		const data = await seasonService.getAll();
+		const data = await seasonService.getAll({
+			page: pagination.page,
+			pageSize: pagination.pageSize,
+		});
 		if (data) {
-			setRows(data);
+			setRows(data.items);
+			setPagination(data.pagination);
 		}
 	}
 
@@ -54,16 +61,27 @@ const useSeasonTable = () => {
 
 		if (data?.id) {
 			request = {
-				endpoint: (newData: ISeason) => seasonService.update(data.id, newData),
+				endpoint: (season: ISeason) =>
+					seasonService.update({
+						id: data.id,
+						season,
+						page: pagination.page,
+						pageSize: pagination.pageSize,
+					}),
 			};
 		} else {
 			request = {
-				endpoint: (newData: ISeason) => seasonService.create(newData),
+				endpoint: (season: ISeason) =>
+					seasonService.create({
+						season,
+						page: pagination.page,
+						pageSize: pagination.pageSize,
+					}),
 			};
 		}
 
 		try {
-			showFormModal<ISeason[]>({
+			showFormModal<PaginatedData<ISeason>>({
 				title: data?.id ? "Editar temporada." : "Crear temporada.",
 				children: (
 					<Stack gap={2}>
@@ -94,10 +112,11 @@ const useSeasonTable = () => {
 					</Stack>
 				),
 				request: request,
-			}).then((response) => {
-				if (!!response) {
-					customAlert.success({});
-					setRows(response);
+			}).then((data) => {
+				if (data) {
+					setRows(data.items);
+					setPagination(data.pagination);
+					customAlert.success();
 				}
 			});
 		} catch (error) {
@@ -105,19 +124,21 @@ const useSeasonTable = () => {
 		}
 	}
 
-	async function deleteService(season: any) {
+	async function remove(season: any) {
 		try {
 			customAlert.warning({ name: season.name }).then(async (response) => {
 				if (response.isConfirmed) {
-					try {
-						const data = await seasonService.remove(season?.id);
+					const data = await seasonService.remove({
+						id: season.id,
+						page: pagination.page,
+						pageSize: pagination.pageSize,
+					});
 
-						if (data) {
-							setRows(data);
-
-							customAlert.success({});
-						}
-					} catch (error) {}
+					if (data) {
+						setRows(data.items);
+						setPagination(data.pagination);
+						customAlert.success();
+					}
 				}
 			});
 		} catch (error) {}
@@ -126,8 +147,10 @@ const useSeasonTable = () => {
 	return {
 		fetchData,
 		handleForm,
-		deleteService,
+		remove,
 		rows,
+		pagination,
+		onPagination,
 	};
 };
 

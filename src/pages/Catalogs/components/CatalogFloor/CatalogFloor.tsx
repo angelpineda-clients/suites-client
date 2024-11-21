@@ -4,15 +4,12 @@ import { Edit, Delete } from "@mui/icons-material";
 import { Button, Stack } from "@mui/material";
 /* components */
 import DataTable from "@/components/DataTable/DataTable";
-import useFloorTable from "@/hooks/useFloorTable";
+import useFloorTable from "@/pages/Catalogs/components/CatalogFloor/hooks/useFloorTable";
 
 const CatalogFloor = () => {
-	const { rows, handleForm, deleteService } = useFloorTable();
+	const { rows, handleForm, remove, pagination, onPagination } =
+		useFloorTable();
 	const columns: GridColDef[] = [
-		{
-			field: "id",
-			headerName: "#",
-		},
 		{
 			field: "name",
 			headerName: "Servicio",
@@ -45,7 +42,7 @@ const CatalogFloor = () => {
 							Editar <Edit />
 						</Button>
 						<Button
-							onClick={() => deleteService(params.row)}
+							onClick={() => remove(params.row)}
 							variant="contained"
 							color="error"
 						>
@@ -78,6 +75,8 @@ const CatalogFloor = () => {
 			rows={rows}
 			columns={columns}
 			headerActions={headerAction}
+			pagination={pagination}
+			onPagination={onPagination}
 		/>
 	);
 };

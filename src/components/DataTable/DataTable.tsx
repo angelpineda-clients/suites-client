@@ -1,7 +1,8 @@
-import { Pagination } from "@/interfaces/IPagination";
+import { useMemo, useRef } from "react";
 import { Box, Stack, Typography } from "@mui/material";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
-import { useMemo, useRef } from "react";
+import { esES } from "@mui/x-data-grid/locales";
+import { Pagination } from "@/interfaces/IPagination";
 
 interface IDataTable {
 	title?: string;
@@ -14,21 +15,31 @@ interface IDataTable {
 
 const DataTable = ({
 	title,
-	columns,
-	rows,
-	pagination,
+	columns = [],
+	rows = [],
+	pagination = {
+		page: 0,
+		pageSize: 5,
+		total: 0,
+		lastPage: 0,
+		from: 0,
+		to: 0,
+	},
 	headerActions,
 	onPagination,
 }: IDataTable) => {
 	const rowCountRef = useRef(pagination?.total || 0);
-
 	const rowCount = useMemo(() => {
 		if (pagination?.total !== undefined) {
 			rowCountRef.current = pagination.total;
 		}
-
 		return rowCountRef.current;
 	}, [pagination?.total, pagination.pageSize]);
+
+	const customLocaleText = {
+		...esES.components.MuiDataGrid.defaultProps.localeText,
+		rowsPerPage: "Filas por página:",
+	};
 
 	return (
 		<Box
@@ -64,6 +75,7 @@ const DataTable = ({
 				paginationModel={pagination}
 				pageSizeOptions={[5, 10, 15, 25, 50, 100]}
 				onPaginationModelChange={onPagination}
+				localeText={customLocaleText}
 			/>
 		</Box>
 	);

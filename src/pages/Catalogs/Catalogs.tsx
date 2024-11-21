@@ -8,9 +8,9 @@ const Catalogs = () => {
 	return (
 		<Container>
 			<CatalogService />
-			{/* <CatalogSeason />
+			<CatalogSeason />
 			<CatalogSize />
-			<CatalogFloor /> */}
+			<CatalogFloor />
 		</Container>
 	);
 };

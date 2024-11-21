@@ -2,62 +2,132 @@
 import axios from "axios";
 /* Interfaces */
 import { IFloor } from "@/interfaces/models";
-import { FloorResponse } from "@/interfaces/FloorResponse";
 import { toast } from "react-toastify";
+import { ResponsePaginated } from "@/interfaces/responses/ResponsePaginated";
+import { adapterPagination } from "@/adapters/pagination.adapter";
+import { IPagination, PaginatedData } from "@/interfaces/IPagination";
 
 const floorService = {
-	getAll: async (): Promise<IFloor[] | undefined> => {
+	create: async ({
+		floor,
+		pageSize = 10,
+		page = 0,
+	}: IPagination & {
+		floor: IFloor;
+	}): Promise<PaginatedData<IFloor> | null> => {
 		try {
-			const { response }: FloorResponse = await axios.get("/floor");
+			const response: ResponsePaginated<IFloor> = await axios.post(
+				`/floor?per_page=${pageSize}&page=${page + 1}`,
+				{
+					...floor,
+				}
+			);
 
-			if (!response?.status === true || !response) {
-				throw new Error("Error al obtener todos los pisos.");
-			}
-
-			return response.data;
-		} catch (error: any) {
-			toast.error(error?.message);
-		}
-	},
-	create: async (season: IFloor): Promise<IFloor[] | undefined> => {
-		try {
-			const { response }: FloorResponse = await axios.post(`/floor`, {
-				...season,
-			});
-
-			if (!response?.status === true || !response) {
+			if (!response?.success) {
 				throw new Error("Error al obtener el piso creado.");
 			}
 
-			return response.data;
+			const items = response.data.items;
+			const pagination = adapterPagination(response.data.pagination);
+
+			return { items, pagination };
 		} catch (error: any) {
-			toast.error(error?.message);
+			console.error(error);
+			if (error instanceof Error) {
+				toast.error(error?.message);
+			}
+
+			return null;
 		}
 	},
-	update: async (id: number, season: IFloor): Promise<IFloor[] | undefined> => {
+	getAll: async ({
+		page = 0,
+		pageSize = 10,
+	}: IPagination = {}): Promise<PaginatedData<IFloor> | null> => {
 		try {
-			const { response }: FloorResponse = await axios.put(`/floor/${id}`, {
-				...season,
-			});
+			const response: ResponsePaginated<IFloor> = await axios.get(
+				`/floor?per_page=${pageSize}&page=${page + 1}`
+			);
+
+			if (!response.success) {
+				throw new Error("Error al obtener todos los pisos.");
+			}
+
+			const items = response.data.items;
+			const pagination = adapterPagination(response.data.pagination);
+
+			return { items, pagination };
+		} catch (error: any) {
+			console.error(error);
+			if (error instanceof Error) {
+				toast.error(error?.message);
+			}
+
+			return null;
+		}
+	},
+
+	update: async ({
+		id,
+		floor,
+		page = 0,
+		pageSize = 10,
+	}: IPagination & {
+		id: number;
+		floor: IFloor;
+	}): Promise<PaginatedData<IFloor> | null> => {
+		try {
+			const response: ResponsePaginated<IFloor> = await axios.put(
+				`/floor/${id}?per_page=${pageSize}&page=${page + 1}`,
+				{
+					...floor,
+				}
+			);
 
 			if (!response) {
 				throw new Error("Error al obtener el piso actualizado");
 			}
-			return response.data;
+
+			const items = response.data.items;
+			const pagination = adapterPagination(response.data.pagination);
+
+			return { items, pagination };
 		} catch (error) {
 			console.error(error);
+
+			if (error instanceof Error) {
+				toast.error(error?.message);
+			}
+
+			return null;
 		}
 	},
-	remove: async (id: number): Promise<IFloor[] | undefined> => {
+	remove: async ({
+		id,
+		page = 0,
+		pageSize = 10,
+	}: IPagination & { id: number }): Promise<PaginatedData<IFloor> | null> => {
 		try {
-			const { response }: FloorResponse = await axios.delete(`/floor/${id}`);
+			const response: ResponsePaginated<IFloor> = await axios.delete(
+				`/floor/${id}?per_page=${pageSize}&page=${page + 1}`
+			);
 
 			if (!response) {
 				throw new Error("Error al obtener el piso eleminado");
 			}
-			return response.data;
+
+			const items = response.data.items;
+			const pagination = adapterPagination(response.data.pagination);
+
+			return { items, pagination };
 		} catch (error) {
 			console.error(error);
+
+			if (error instanceof Error) {
+				toast.error(error?.message);
+			}
+
+			return null;
 		}
 	},
 };

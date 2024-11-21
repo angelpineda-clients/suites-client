@@ -7,7 +7,7 @@ import { serviceService } from "@/services/services.service";
 import { customAlert } from "@/helpers/alertHelper";
 import { IService } from "@/interfaces/models";
 import { PaginatedData } from "@/interfaces/IPagination";
-import usePagination from "./usePagination";
+import usePagination from "@/hooks/usePagination";
 
 const useServiceTable = () => {
 	const { showFormModal, formHook } = useFormModal({
@@ -86,7 +86,7 @@ const useServiceTable = () => {
 						<TextField
 							id="name"
 							label="Servicio"
-							value={data?.name || ""}
+							defaultValue={data?.name || ""}
 							required
 							{...formFields.name}
 						/>

@@ -4,15 +4,11 @@ import { Edit, Delete } from "@mui/icons-material";
 import { Button, Stack } from "@mui/material";
 /* components */
 import DataTable from "@/components/DataTable/DataTable";
-import useSizeTable from "@/hooks/useSizeTable";
+import useSizeTable from "@/pages/Catalogs/components/CatalogSize/hooks/useSizeTable";
 
 const CatalogSize = () => {
-	const { rows, handleForm, deleteService } = useSizeTable();
+	const { rows, handleForm, remove, pagination, onPagination } = useSizeTable();
 	const columns: GridColDef[] = [
-		{
-			field: "id",
-			headerName: "#",
-		},
 		{
 			field: "name",
 			headerName: "Tamaño",
@@ -45,7 +41,7 @@ const CatalogSize = () => {
 							Editar <Edit />
 						</Button>
 						<Button
-							onClick={() => deleteService(params.row)}
+							onClick={() => remove(data)}
 							variant="contained"
 							color="error"
 						>
@@ -78,6 +74,8 @@ const CatalogSize = () => {
 			rows={rows}
 			columns={columns}
 			headerActions={headerAction}
+			pagination={pagination}
+			onPagination={onPagination}
 		/>
 	);
 };

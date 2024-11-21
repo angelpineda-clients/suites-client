@@ -7,12 +7,9 @@ import DataTable from "@/components/DataTable/DataTable";
 import useSeasonTable from "@/hooks/useSeasonTable";
 
 const CatalogSeason = () => {
-	const { rows, handleForm, deleteService } = useSeasonTable();
+	const { rows, handleForm, remove, pagination, onPagination } =
+		useSeasonTable();
 	const columns: GridColDef[] = [
-		{
-			field: "id",
-			headerName: "#",
-		},
 		{
 			field: "name",
 			headerName: "Servicio",
@@ -45,7 +42,7 @@ const CatalogSeason = () => {
 							Editar <Edit />
 						</Button>
 						<Button
-							onClick={() => deleteService(params.row)}
+							onClick={() => remove(data)}
 							variant="contained"
 							color="error"
 						>
@@ -78,6 +75,8 @@ const CatalogSeason = () => {
 			rows={rows}
 			columns={columns}
 			headerActions={headerAction}
+			pagination={pagination}
+			onPagination={onPagination}
 		/>
 	);
 };

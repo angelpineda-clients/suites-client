@@ -6,6 +6,8 @@ import useFormModal, { IRequest } from "@/hooks/useFormModal";
 import { customAlert } from "@/helpers/alertHelper";
 import { ISize } from "@/interfaces/models";
 import { sizeService } from "@/services/size.service";
+import usePagination from "@/hooks/usePagination";
+import { PaginatedData } from "@/interfaces/IPagination";
 
 const useSizeTable = () => {
 	const { showFormModal, formHook } = useFormModal({
@@ -14,6 +16,7 @@ const useSizeTable = () => {
 			alias: "",
 		},
 	});
+	const { pagination, setPagination, onPagination } = usePagination();
 	const [rows, setRows] = useState<ISize[]>([]);
 	const formFields = {
 		name: formHook.register("name", {
@@ -36,48 +39,69 @@ const useSizeTable = () => {
 
 	useEffect(() => {
 		fetchData();
-	}, []);
+	}, [pagination.page, pagination.pageSize]);
 
 	/**
 	 * fetchData
 	 * fetch services
 	 */
 	async function fetchData() {
-		const data = await sizeService.getAll();
+		const data = await sizeService.getAll({
+			page: pagination.page,
+			pageSize: pagination.pageSize,
+		});
 		if (data) {
-			setRows(data);
+			setRows(data.items);
+			setPagination(data.pagination);
 		}
 	}
 
-	async function handleForm(size?: ISize) {
+	/**
+	 * handleForm
+	 * make petitions for post and put method
+	 *
+	 * @param {ISize} [data]
+	 */
+	async function handleForm(data?: ISize) {
 		let request: IRequest;
 
-		if (size?.id) {
+		if (data?.id) {
 			request = {
-				endpoint: (newData: ISize) => sizeService.update(size.id, newData),
+				endpoint: (size: ISize) =>
+					sizeService.update({
+						id: data.id,
+						size,
+						page: pagination.page,
+						pageSize: pagination.pageSize,
+					}),
 			};
 		} else {
 			request = {
-				endpoint: (newData: ISize) => sizeService.create(newData),
+				endpoint: (size: ISize) =>
+					sizeService.create({
+						size,
+						page: pagination.page,
+						pageSize: pagination.pageSize,
+					}),
 			};
 		}
 
 		try {
-			showFormModal<ISize[]>({
-				title: size?.id ? "Editar tamaño." : "Crear tamaño.",
+			showFormModal<PaginatedData<ISize>>({
+				title: data?.id ? "Editar tamaño." : "Crear tamaño.",
 				children: (
 					<Stack gap={2}>
 						<TextField
 							id="name"
 							label="Tamaño"
-							defaultValue={size?.name || ""}
+							defaultValue={data?.name || ""}
 							required
 							{...formFields.name}
 						/>
 						<TextField
 							id="alias"
 							label="Alias"
-							defaultValue={size?.alias || ""}
+							defaultValue={data?.alias || ""}
 							{...formFields.alias}
 						/>
 						<Button
@@ -94,10 +118,11 @@ const useSizeTable = () => {
 					</Stack>
 				),
 				request: request,
-			}).then((response) => {
-				if (!!response) {
-					customAlert.success({});
-					setRows(response);
+			}).then((data) => {
+				if (data) {
+					setRows(data.items);
+					setPagination(data.pagination);
+					customAlert.success();
 				}
 			});
 		} catch (error) {
@@ -105,17 +130,21 @@ const useSizeTable = () => {
 		}
 	}
 
-	async function deleteService(season: any) {
+	async function remove(size: any) {
 		try {
-			customAlert.warning({ name: season.name }).then(async (response) => {
+			customAlert.warning({ name: size.name }).then(async (response) => {
 				if (response.isConfirmed) {
 					try {
-						const data = await sizeService.remove(season?.id);
+						const data = await sizeService.remove({
+							id: size.id,
+							page: pagination.page,
+							pageSize: pagination.pageSize,
+						});
 
 						if (data) {
-							setRows(data);
-
-							customAlert.success({});
+							setRows(data.items);
+							setPagination(data.pagination);
+							customAlert.success();
 						}
 					} catch (error) {}
 				}
@@ -126,8 +155,10 @@ const useSizeTable = () => {
 	return {
 		fetchData,
 		handleForm,
-		deleteService,
+		remove,
 		rows,
+		pagination,
+		onPagination,
 	};
 };
 
