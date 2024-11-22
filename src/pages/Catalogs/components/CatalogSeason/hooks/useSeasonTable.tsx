@@ -1,41 +1,29 @@
 import { useState, useEffect } from "react";
 /* libraries */
 import { Button, Stack, TextField } from "@mui/material";
-/* components */
+/* hooks */
+import usePagination from "../../../../../hooks/usePagination";
 import useFormModal, { IRequest } from "@/hooks/useFormModal";
-import { customAlert } from "@/helpers/alertHelper";
-import { ISeason } from "@/interfaces/models";
+/* servuces */
 import { seasonService } from "@/services/season.service";
-import usePagination from "./usePagination";
+/* interfaces */
 import { PaginatedData } from "@/interfaces/IPagination";
+import { ISeason } from "@/interfaces/models";
+/* helpers */
+import { customAlert } from "@/helpers/alertHelper";
+import SeasonForm from "../components/SeasonForm";
 
 const useSeasonTable = () => {
+	const [rows, setRows] = useState<ISeason[]>([]);
+	const { pagination, setPagination, onPagination } = usePagination();
 	const { showFormModal, formHook } = useFormModal({
 		defaultValues: {
 			name: "",
 			alias: "",
+			initialDate: "",
+			finalDate: "",
 		},
 	});
-	const [rows, setRows] = useState<ISeason[]>([]);
-	const { pagination, setPagination, onPagination } = usePagination();
-	const formFields = {
-		name: formHook.register("name", {
-			required: {
-				value: true,
-				message: "Campo requerido",
-			},
-			onChange: (e) => {
-				const value = e.target.value.toUpperCase();
-				formHook.setValue("name", value);
-			},
-		}),
-		alias: formHook.register("alias", {
-			onChange: (e) => {
-				const value = e.target.value.toUpperCase();
-				formHook.setValue("alias", value);
-			},
-		}),
-	};
 
 	useEffect(() => {
 		fetchData();
@@ -83,34 +71,7 @@ const useSeasonTable = () => {
 		try {
 			showFormModal<PaginatedData<ISeason>>({
 				title: data?.id ? "Editar temporada." : "Crear temporada.",
-				children: (
-					<Stack gap={2}>
-						<TextField
-							id="name"
-							label="Temporada"
-							defaultValue={data?.name || ""}
-							required
-							{...formFields.name}
-						/>
-						<TextField
-							id="alias"
-							label="Alias"
-							defaultValue={data?.alias || ""}
-							{...formFields.alias}
-						/>
-						<Button
-							variant="contained"
-							type="submit"
-							sx={{
-								maxWidth: "50%",
-								margin: "0 auto",
-								alignSelf: "end",
-							}}
-						>
-							Guardar
-						</Button>
-					</Stack>
-				),
+				children: <SeasonForm formHook={formHook} data={data} />,
 				request: request,
 			}).then((data) => {
 				if (data) {

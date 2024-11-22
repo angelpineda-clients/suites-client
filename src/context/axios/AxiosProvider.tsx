@@ -33,30 +33,26 @@ export default function AxiosProvider({ children }: AxiosProviderProps) {
 		},
 		function (error) {
 			const { response } = error;
+			const errorObj = response.data.errors;
 
-			if (response) {
-				switch (response.status) {
-					case 401:
-						toast.error("Unauthorized.");
-						break;
-
-					case 403:
-						toast.error("Prohibited access.");
-						break;
-
-					case 404:
-						toast.error("Resource not found.");
-						break;
-
-					case 500:
-						toast.error("Internal server error.");
-						break;
-
-					default:
-						toast.error(`Unkow error: ${response?.data?.message}`);
-						break;
-				}
+			let errors = "";
+			if (typeof errorObj == "string") {
+				errors = errorObj;
 			}
+
+			const errorArray =
+				typeof errorObj == "object" ? Object.entries(errorObj) : [];
+
+			console.log(errorArray);
+
+			errorArray.forEach((error) => {
+				const [field, errors] = error;
+
+				errors.map((message) => {
+					toast.error(`${field}: ${message}`);
+				});
+			});
+
 			return Promise.reject(error);
 		}
 	);

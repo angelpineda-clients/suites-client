@@ -4,7 +4,7 @@ import { Edit, Delete } from "@mui/icons-material";
 import { Button, Stack } from "@mui/material";
 /* components */
 import DataTable from "@/components/DataTable/DataTable";
-import useSeasonTable from "@/hooks/useSeasonTable";
+import useSeasonTable from "@/pages/Catalogs/components/CatalogSeason/hooks/useSeasonTable";
 
 const CatalogSeason = () => {
 	const { rows, handleForm, remove, pagination, onPagination } =
@@ -18,6 +18,16 @@ const CatalogSeason = () => {
 		{
 			field: "alias",
 			headerName: "Alias",
+			minWidth: 200,
+		},
+		{
+			field: "initialText",
+			headerName: "Fecha inicial",
+			minWidth: 200,
+		},
+		{
+			field: "finalText",
+			headerName: "Fecha final",
 			minWidth: 200,
 		},
 		{

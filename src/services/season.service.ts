@@ -6,6 +6,8 @@ import { ISeason } from "@/interfaces/models";
 import { IPagination, PaginatedData } from "@/interfaces/IPagination";
 import { ResponsePaginated } from "@/interfaces/responses/ResponsePaginated";
 import { adapterPagination } from "@/adapters/pagination.adapter";
+import { adapterSeason } from "@/adapters/season.adapters";
+import { ISeasonResponse } from "@/interfaces";
 
 const seasonService = {
 	create: async ({
@@ -16,7 +18,7 @@ const seasonService = {
 		season: ISeason;
 	}): Promise<PaginatedData<ISeason> | null> => {
 		try {
-			const response: ResponsePaginated<ISeason> = await axios.post(
+			const response: ResponsePaginated<ISeasonResponse> = await axios.post(
 				`/season?page=${page + 1}&per_page=${pageSize}`,
 				{
 					...season,
@@ -28,7 +30,7 @@ const seasonService = {
 			}
 
 			const pagination = adapterPagination(response.data.pagination);
-			const items = response.data.items;
+			const items = adapterSeason(response.data.items);
 
 			return { items, pagination };
 		} catch (error: any) {
@@ -46,7 +48,7 @@ const seasonService = {
 		pageSize = 10,
 	}: IPagination = {}): Promise<PaginatedData<ISeason> | null> => {
 		try {
-			const response: ResponsePaginated<ISeason> = await axios.get(
+			const response: ResponsePaginated<ISeasonResponse> = await axios.get(
 				`/season?page=${page + 1}&per_page=${pageSize}`
 			);
 
@@ -55,7 +57,7 @@ const seasonService = {
 			}
 
 			const pagination = adapterPagination(response.data.pagination);
-			const items = response.data.items;
+			const items = adapterSeason(response.data.items);
 
 			return { items, pagination };
 		} catch (error: any) {
@@ -79,7 +81,7 @@ const seasonService = {
 		season: ISeason;
 	}): Promise<PaginatedData<ISeason> | null> => {
 		try {
-			const response: ResponsePaginated<ISeason> = await axios.put(
+			const response: ResponsePaginated<ISeasonResponse> = await axios.put(
 				`/season/${id}?page=${page + 1}&per_page=${pageSize}`,
 				{
 					...season,
@@ -91,7 +93,7 @@ const seasonService = {
 			}
 
 			const pagination = adapterPagination(response.data.pagination);
-			const items = response.data.items;
+			const items = adapterSeason(response.data.items);
 
 			return { items, pagination };
 		} catch (error) {
@@ -112,7 +114,7 @@ const seasonService = {
 		id: number;
 	}): Promise<PaginatedData<ISeason> | null> => {
 		try {
-			const response: ResponsePaginated<ISeason> = await axios.delete(
+			const response: ResponsePaginated<ISeasonResponse> = await axios.delete(
 				`/season/${id}?page=${page + 1}&per_page=${pageSize}`
 			);
 
@@ -121,7 +123,7 @@ const seasonService = {
 			}
 
 			const pagination = adapterPagination(response.data.pagination);
-			const items = response.data.items;
+			const items = adapterSeason(response.data.items);
 
 			return { items, pagination };
 		} catch (error) {
