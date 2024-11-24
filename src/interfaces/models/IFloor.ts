@@ -1,5 +1,5 @@
 export interface IFloor {
 	id: number;
 	name: string;
-	alias: string;
+	alias?: string;
 }
