@@ -43,8 +43,6 @@ export default function AxiosProvider({ children }: AxiosProviderProps) {
 			const errorArray =
 				typeof errorObj == "object" ? Object.entries(errorObj) : [];
 
-			console.log(errorArray);
-
 			errorArray.forEach((error) => {
 				const [field, errors] = error;
 
