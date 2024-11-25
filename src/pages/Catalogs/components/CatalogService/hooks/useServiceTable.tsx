@@ -8,27 +8,12 @@ import { customAlert } from "@/helpers/alertHelper";
 import { IService } from "@/interfaces/models";
 import { PaginatedData } from "@/interfaces/IPagination";
 import usePagination from "@/hooks/usePagination";
+import { serviceForm } from "../components/ServiceForm";
 
 const useServiceTable = () => {
-	const { showFormModal, formHook } = useFormModal({
-		defaultValues: {
-			name: "",
-		},
-	});
+	const { showFormModal, formHook } = useFormModal({});
 	const [rows, setRows] = useState<IService[]>([]);
 	const { pagination, setPagination, onPagination } = usePagination();
-	const formFields = {
-		name: formHook.register("name", {
-			required: {
-				value: true,
-				message: "Campo requerido",
-			},
-			onChange: (e) => {
-				const value = e.target.value.toUpperCase();
-				formHook.setValue("name", value);
-			},
-		}),
-	};
 
 	useEffect(() => {
 		fetchData();
@@ -55,56 +40,15 @@ const useServiceTable = () => {
 	 * allow to handle form submit for methods post and put
 	 */
 	async function handleForm(data?: IService) {
-		let request: IRequest;
-
-		if (data?.id) {
-			request = {
-				endpoint: (service: IService) =>
-					serviceService.update({
-						id: data.id,
-						service,
-						page: pagination.page,
-						pageSize: pagination.pageSize,
-					}),
-			};
-		} else {
-			request = {
-				endpoint: (service: IService) =>
-					serviceService.create({
-						service,
-						page: pagination.page,
-						pageSize: pagination.pageSize,
-					}),
-			};
-		}
-
 		try {
-			showFormModal<PaginatedData<IService>>({
-				title: data?.id ? "Editar servicio." : "Crear servicio.",
-				children: (
-					<Stack gap={2}>
-						<TextField
-							id="name"
-							label="Servicio"
-							defaultValue={data?.name || ""}
-							required
-							{...formFields.name}
-						/>
-						<Button
-							variant="contained"
-							type="submit"
-							sx={{
-								maxWidth: "50%",
-								margin: "0 auto",
-								alignSelf: "end",
-							}}
-						>
-							Guardar
-						</Button>
-					</Stack>
-				),
-				request: request,
-			}).then((response) => {
+			showFormModal<PaginatedData<IService>>(
+				serviceForm({
+					data,
+					formHook,
+					page: pagination.page,
+					pageSize: pagination.pageSize,
+				})
+			).then((response) => {
 				if (response) {
 					customAlert.success();
 					setRows(response.items);
