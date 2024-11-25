@@ -7,7 +7,7 @@ type IAlert = {
 };
 
 const GLOBALS = {
-	target: "header",
+	target: "#ui-portal",
 };
 
 const CONSTANTS = {

@@ -25,6 +25,7 @@ export default function UiProvider({ children }: UiProviderProps) {
 			}}
 		>
 			{children}
+			<div id="ui-portal"></div>
 			<ToastContainer />
 			{isLoading && <Loader />}
 		</UiContext.Provider>
