@@ -1,11 +1,5 @@
-/* TODO:
- * get services
- * transfor services to checkboxes group
- * confirm services is array of numbers
- * add button createService
- */
+import { useEffect, useState } from "react";
 
-import { serviceService } from "@/services/services.service";
 import {
 	Checkbox,
 	FormControl,
@@ -14,7 +8,9 @@ import {
 	FormLabel,
 	Grid2,
 } from "@mui/material";
-import { useEffect, useState } from "react";
+import { FieldValues, UseFormReturn } from "react-hook-form";
+
+import { serviceService } from "@/services/services.service";
 
 interface Props {
 	formHook: UseFormReturn<FieldValues, any, undefined>;

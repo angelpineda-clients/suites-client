@@ -1,6 +1,7 @@
 import React from "react";
 import { useForm } from "react-hook-form";
 import { useModalContext } from "@/context/modals/ModalProvider";
+import { useUiContext } from "@/context/ui/UiProvider";
 
 interface IShowFormModal {
 	title?: string;
@@ -16,6 +17,7 @@ export type IRequest = {
 };
 
 function useFormModal({ defaultValues = {} }) {
+	const { setIsLoading } = useUiContext();
 	const formHook = useForm(defaultValues);
 	const { showModal } = useModalContext();
 
@@ -50,6 +52,7 @@ function useFormModal({ defaultValues = {} }) {
 				});
 
 				async function onSubmit({ data, closeModal }: any) {
+					setIsLoading(true);
 					try {
 						const response = await request.endpoint(data);
 
@@ -61,7 +64,10 @@ function useFormModal({ defaultValues = {} }) {
 						closeModal();
 						formHook.reset();
 						return resolve(response);
-					} catch (error) {}
+					} catch (error) {
+					} finally {
+						setIsLoading(false);
+					}
 				}
 			} catch (error) {
 				reject(error);

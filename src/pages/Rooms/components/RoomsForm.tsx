@@ -6,12 +6,13 @@ import SelectFloor from "./SelectFloor";
 import SelectSize from "./SelectSize";
 import CheckServices from "./CheckServices";
 
+import UploadImages from "./UploadImages";
+
 interface Props {
 	data?: IRoom;
 	formHook: UseFormReturn<FieldValues, any, undefined>;
 }
-/* TODO: Create select for catalogs and test CRUD
- */
+
 const RoomsForm = ({ data, formHook }: Props) => {
 	const formFields = {
 		name: formHook.register("name", {
@@ -32,44 +33,16 @@ const RoomsForm = ({ data, formHook }: Props) => {
 			valueAsNumber: true,
 		}),
 		capacity: formHook.register("capacity", {
-			required: {
-				value: true,
-				message: "Campo requerido",
-			},
 			valueAsNumber: true,
 		}),
 		beds: formHook.register("beds", {
-			required: {
-				value: true,
-				message: "Campo requerido",
-			},
 			valueAsNumber: true,
 		}),
-		floor: formHook.register("floor_id", {
-			required: {
-				value: true,
-				message: "Campo requerido",
-			},
-		}),
-		size: formHook.register("size_id", {
-			required: {
-				value: true,
-				message: "Campo requerido",
-			},
-		}),
-		services: formHook.register("services", {
-			required: {
-				value: false,
-				message: "Campo requerido",
-			},
-		}),
-		description: formHook.register("description", {
-			required: {
-				value: true,
-				message: "Campo requerido",
-			},
-			minLength: 10,
-		}),
+		floor: formHook.register("floor_id", {}),
+		size: formHook.register("size_id", {}),
+		services: formHook.register("services", {}),
+		images: formHook.register("images", {}),
+		description: formHook.register("description", {}),
 	};
 	return (
 		<Grid container spacing={2}>
@@ -138,6 +111,10 @@ const RoomsForm = ({ data, formHook }: Props) => {
 					fullWidth
 					{...formFields.description}
 				/>
+			</Grid>
+
+			<Grid size={12}>
+				<UploadImages formHook={formHook} />
 			</Grid>
 
 			<Grid display="flex" justifyContent="center" width="100%">

@@ -21,8 +21,9 @@ const roomService = {
 		try {
 			const response: ResponsePaginated<IRoomResponse> = await axios.post(
 				`/room?per_page=${pageSize}&page=${page + 1}`,
+				{ ...room },
 				{
-					...room,
+					headers: { "Content-Type": "multipart/form-data" },
 				}
 			);
 
