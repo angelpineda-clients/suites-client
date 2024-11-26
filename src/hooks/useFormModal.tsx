@@ -34,6 +34,11 @@ function useFormModal({ defaultValues = {} }) {
 						<form
 							style={{
 								marginTop: "1rem",
+								maxWidth: 850,
+								width: "auto",
+								display: "flex",
+								flexDirection: "column",
+								justifyContent: "center",
 							}}
 							onSubmit={formHook.handleSubmit(
 								async (data) => await onSubmit({ data, closeModal })

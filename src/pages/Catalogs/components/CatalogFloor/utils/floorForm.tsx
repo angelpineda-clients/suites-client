@@ -1,22 +1,22 @@
 import { IRequest } from "@/hooks/useFormModal";
-import { IService } from "@/interfaces/models";
-import { serviceService } from "@/services/services.service";
+import { IFloor } from "@/interfaces/models";
+import { floorService } from "@/services/floor.service";
 import { Button, Stack, TextField } from "@mui/material";
 import { FieldValues, UseFormReturn } from "react-hook-form";
 
-interface ServiceForm {
-	data?: IService;
+interface FloorForm {
+	data?: IFloor;
 	formHook: UseFormReturn<FieldValues, any, undefined>;
 	page?: number;
 	pageSize?: number;
 }
 
-export function serviceForm({
+export default function floorForm({
 	data,
 	formHook,
 	page = 0,
 	pageSize = 10,
-}: ServiceForm) {
+}: FloorForm) {
 	const formFields = {
 		name: formHook.register("name", {
 			required: {
@@ -28,47 +28,53 @@ export function serviceForm({
 				formHook.setValue("name", value);
 			},
 		}),
+		alias: formHook.register("alias", {
+			onChange: (e) => {
+				const value = e.target.value.toUpperCase();
+				formHook.setValue("alias", value);
+			},
+		}),
 	};
+
 	let request: IRequest;
 
 	if (data?.id) {
 		request = {
-			endpoint: (service: IService) =>
-				serviceService.update({
+			endpoint: (floor: IFloor) =>
+				floorService.update({
 					id: data.id,
-					service,
-					page: page,
-					pageSize: pageSize,
+					floor,
+					page,
+					pageSize,
 				}),
 		};
 	} else {
 		request = {
-			endpoint: (service: IService) =>
-				serviceService.create({
-					service,
-					page: page,
-					pageSize: pageSize,
+			endpoint: (floor: IFloor) =>
+				floorService.create({
+					floor,
+					page,
+					pageSize,
 				}),
 		};
 	}
 
 	return {
-		title: data?.id ? "Editar servicio." : "Crear servicio.",
+		title: data?.id ? "Editar piso." : "Crear piso.",
 		children: (
-			<Stack
-				gap={2}
-				width={350}
-				sx={{
-					margin: "0 auto",
-				}}
-			>
+			<Stack gap={2}>
 				<TextField
 					id="name"
-					label="Servicio"
+					label="Piso"
 					defaultValue={data?.name || ""}
-					fullWidth
 					required
 					{...formFields.name}
+				/>
+				<TextField
+					id="alias"
+					label="Alias"
+					defaultValue={data?.alias || ""}
+					{...formFields.alias}
 				/>
 				<Button
 					variant="contained"

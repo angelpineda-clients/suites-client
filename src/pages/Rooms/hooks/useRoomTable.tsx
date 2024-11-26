@@ -9,6 +9,7 @@ import { roomService } from "@/services/room.service";
 /* interfaces */
 import { IRoom } from "@/interfaces/models/IRoom";
 import { PaginatedData } from "@/interfaces/IPagination";
+import RoomsForm from "../components/RoomsForm";
 
 const useRoomTable = () => {
 	const { showFormModal, formHook } = useFormModal({
@@ -19,24 +20,6 @@ const useRoomTable = () => {
 	});
 	const { pagination, setPagination, onPagination } = usePagination();
 	const [rows, setRows] = useState<IRoom[]>([]);
-	const formFields = {
-		name: formHook.register("name", {
-			required: {
-				value: true,
-				message: "Campo requerido",
-			},
-			onChange: (e) => {
-				const value = e.target.value.toUpperCase();
-				formHook.setValue("name", value);
-			},
-		}),
-		alias: formHook.register("alias", {
-			onChange: (e) => {
-				const value = e.target.value.toUpperCase();
-				formHook.setValue("alias", value);
-			},
-		}),
-	};
 
 	useEffect(() => {
 		fetchData();
@@ -52,7 +35,6 @@ const useRoomTable = () => {
 			pageSize: pagination.pageSize,
 		});
 		if (data) {
-			console.log(data);
 			setRows(data.items);
 			setPagination(data.pagination);
 		}
@@ -91,7 +73,7 @@ const useRoomTable = () => {
 		try {
 			showFormModal<PaginatedData<IRoom>>({
 				title: data?.id ? "Editar cuarto." : "Crear cuarto.",
-				children: <></>,
+				children: <RoomsForm formHook={formHook} />,
 				request: request,
 			}).then((data) => {
 				if (data) {
