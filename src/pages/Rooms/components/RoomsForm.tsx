@@ -3,6 +3,8 @@ import { FieldValues, UseFormReturn } from "react-hook-form";
 import { Button, TextField } from "@mui/material";
 import Grid from "@mui/material/Grid2";
 import SelectFloor from "./SelectFloor";
+import SelectSize from "./SelectSize";
+import CheckServices from "./CheckServices";
 
 interface Props {
 	data?: IRoom;
@@ -48,7 +50,18 @@ const RoomsForm = ({ data, formHook }: Props) => {
 				value: true,
 				message: "Campo requerido",
 			},
-			minLength: 10,
+		}),
+		size: formHook.register("size_id", {
+			required: {
+				value: true,
+				message: "Campo requerido",
+			},
+		}),
+		services: formHook.register("services", {
+			required: {
+				value: false,
+				message: "Campo requerido",
+			},
 		}),
 		description: formHook.register("description", {
 			required: {
@@ -107,6 +120,24 @@ const RoomsForm = ({ data, formHook }: Props) => {
 
 			<Grid size={6}>
 				<SelectFloor formField={formFields.floor} />
+			</Grid>
+
+			<Grid size={6}>
+				<SelectSize formField={formFields.size} />
+			</Grid>
+
+			<Grid size={12}>
+				<CheckServices formHook={formHook} />
+			</Grid>
+
+			<Grid size={12}>
+				<TextField
+					id="description"
+					label="Descripcion"
+					type="textarea"
+					fullWidth
+					{...formFields.description}
+				/>
 			</Grid>
 
 			<Grid display="flex" justifyContent="center" width="100%">
