@@ -12,12 +12,7 @@ import { PaginatedData } from "@/interfaces/IPagination";
 import RoomsForm from "../components/RoomsForm";
 
 const useRoomTable = () => {
-	const { showFormModal, formHook } = useFormModal({
-		defaultValues: {
-			name: "",
-			alias: "",
-		},
-	});
+	const { showFormModal, formHook } = useFormModal({});
 	const { pagination, setPagination, onPagination } = usePagination();
 	const [rows, setRows] = useState<IRoom[]>([]);
 

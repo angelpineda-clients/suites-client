@@ -1,3 +1,5 @@
+import { useEffect } from "react";
+
 import { IRoom } from "@/interfaces/models/IRoom";
 import { FieldValues, UseFormReturn } from "react-hook-form";
 import { Button, TextField } from "@mui/material";
@@ -7,6 +9,8 @@ import SelectSize from "./SelectSize";
 import CheckServices from "./CheckServices";
 
 import UploadImages from "./UploadImages";
+import InputForm from "@/components/Inputs/InputForm/InputForm";
+import { formatToCurrency } from "@/utils/FormatToCurrency";
 
 interface Props {
 	data?: IRoom;
@@ -20,23 +24,20 @@ const RoomsForm = ({ data, formHook }: Props) => {
 				value: true,
 				message: "Campo requerido",
 			},
-			onChange: (e) => {
-				const value = e.target.value.toUpperCase();
-				formHook.setValue("name", value);
-			},
 		}),
 		price: formHook.register("price", {
 			required: {
 				value: true,
 				message: "Campo requerido",
 			},
-			valueAsNumber: true,
 		}),
 		capacity: formHook.register("capacity", {
 			valueAsNumber: true,
+			value: 0,
 		}),
 		beds: formHook.register("beds", {
 			valueAsNumber: true,
+			value: 0,
 		}),
 		floor: formHook.register("floor_id", {}),
 		size: formHook.register("size_id", {}),
@@ -44,52 +45,42 @@ const RoomsForm = ({ data, formHook }: Props) => {
 		images: formHook.register("images", {}),
 		description: formHook.register("description", {}),
 	};
+
 	return (
 		<Grid container spacing={2}>
-			<Grid size={6}>
-				<TextField
-					id="name"
-					label="Nombre"
-					defaultValue={data?.name || ""}
-					required
-					fullWidth
-					{...formFields.name}
-				/>
-			</Grid>
-			<Grid size={6}>
-				<TextField
-					id="price"
-					label="Precio"
-					type="number"
-					defaultValue={data?.price || ""}
-					required
-					fullWidth
-					{...formFields.price}
-				/>
-			</Grid>
-			<Grid size={6}>
-				<TextField
-					id="capacity"
-					label="Capacidad"
-					type="number"
-					defaultValue={data?.capacity || ""}
-					required
-					fullWidth
-					{...formFields.capacity}
-				/>
-			</Grid>
+			<InputForm
+				id="name"
+				label="Nombre"
+				required
+				defaultValue={data?.name || ""}
+				formField={formFields}
+				formHook={formHook}
+			/>
+			<InputForm
+				id="price"
+				label="Precio"
+				required
+				formHook={formHook}
+				formField={formFields}
+			/>
 
-			<Grid size={6}>
-				<TextField
-					id="beds"
-					label="Camas"
-					type="number"
-					defaultValue={data?.beds || ""}
-					required
-					fullWidth
-					{...formFields.beds}
-				/>
-			</Grid>
+			<InputForm
+				id="capacity"
+				label="Capacidad"
+				type="number"
+				defaultValue={data?.capacity || ""}
+				formField={formFields}
+				formHook={formHook}
+			/>
+
+			<InputForm
+				id="beds"
+				label="Camas"
+				type="number"
+				defaultValue={data?.beds || ""}
+				formField={formFields}
+				formHook={formHook}
+			/>
 
 			<Grid size={6}>
 				<SelectFloor formField={formFields.floor} />
@@ -103,15 +94,14 @@ const RoomsForm = ({ data, formHook }: Props) => {
 				<CheckServices formHook={formHook} />
 			</Grid>
 
-			<Grid size={12}>
-				<TextField
-					id="description"
-					label="Descripcion"
-					type="textarea"
-					fullWidth
-					{...formFields.description}
-				/>
-			</Grid>
+			<InputForm
+				id="description"
+				label="Descripcion"
+				type="textarea"
+				formField={formFields}
+				formHook={formHook}
+				size={12}
+			/>
 
 			<Grid size={12}>
 				<UploadImages formHook={formHook} />

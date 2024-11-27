@@ -5,16 +5,16 @@ export function adapterRoom(rooms: IRoomResponse[]): IRoom[] {
 	const data = rooms.map((room) => {
 		return {
 			id: room.id,
-			name: room.name,
-			slug: room.slug,
-			description: room.description,
-			capacity: room.capacity,
-			beds: room.beds,
-			price: room.price,
-			floor: room.floor,
-			size: room.size,
-			services: getServices(room.services),
-			images: getImages(room.images),
+			name: room.name || "",
+			slug: room.slug || "",
+			description: room.description || "",
+			capacity: room.capacity || 0,
+			beds: room.beds || 0,
+			price: room.price || 0,
+			floor: room.floor || 0,
+			size: room.size || 0,
+			services: getServices(room?.services || []),
+			images: getImages(room?.images || []),
 		};
 	});
 
