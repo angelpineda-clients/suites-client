@@ -1,4 +1,4 @@
-import { forwardRef } from "react";
+import { forwardRef, useEffect } from "react";
 import { Grid2, TextField } from "@mui/material";
 import { FieldValues, UseFormReturn } from "react-hook-form";
 import { NumericFormat, NumericFormatProps } from "react-number-format";
@@ -32,6 +32,12 @@ const InputCurrencyForm = ({
 	) : (
 		<span></span>
 	);
+
+	useEffect(() => {
+		if (defaultValue) {
+			formHook.setValue(id, defaultValue);
+		}
+	}, [defaultValue]);
 
 	const NumericFormatCustom = forwardRef<NumericFormatProps, CustomProps>(
 		function NumericFormatCustom(props, ref) {

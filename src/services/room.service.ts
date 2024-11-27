@@ -70,16 +70,13 @@ const roomService = {
 			return null;
 		}
 	},
-	show: async ({
-		id,
-		pageSize = 10,
-		page = 0,
-	}: IPagination & {
-		id: number;
-	}): Promise<IRoom | null> => {
+	show: async (id: string): Promise<IRoomResponse | null> => {
 		try {
-			const response: { success: boolean; data: IRoom; message: string } =
-				await axios.get(`/room/${id}?per_page=${pageSize}&page=${page + 1}`);
+			const response: {
+				success: boolean;
+				data: IRoomResponse;
+				message: string;
+			} = await axios.get(`/room/${id}`);
 
 			if (!response?.success) {
 				throw new Error("Error al obtener el cuarto creado.");
@@ -98,28 +95,24 @@ const roomService = {
 	update: async ({
 		id,
 		room,
-		pageSize = 10,
-		page = 0,
-	}: IPagination & {
+	}: {
 		id: number;
 		room: IRoom;
-	}): Promise<PaginatedData<IRoom> | null> => {
+	}): Promise<IRoomResponse | null> => {
 		try {
-			const response: ResponsePaginated<IRoomResponse> = await axios.put(
-				`/room/${id}?per_page=${pageSize}&page=${page + 1}`,
-				{
-					...room,
-				}
-			);
+			const response: {
+				success: boolean;
+				data: IRoomResponse;
+				message: string;
+			} = await axios.put(`/room/${id}`, {
+				...room,
+			});
 
 			if (!response?.success) {
 				throw new Error("Error al obtener el cuarto creado.");
 			}
 
-			const items = adapterRoom(response.data.items);
-			const pagination = adapterPagination(response.data.pagination);
-
-			return { items, pagination };
+			return response.data;
 		} catch (error: any) {
 			console.error(error);
 			if (error instanceof Error) {

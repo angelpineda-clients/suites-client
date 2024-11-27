@@ -11,18 +11,35 @@ import {
 import { FieldValues, UseFormReturn } from "react-hook-form";
 
 import { serviceService } from "@/services/services.service";
+import { IService } from "@/interfaces/models";
+import { Service } from "@/interfaces/IRoomResponse";
 
 interface Props {
 	formHook: UseFormReturn<FieldValues, any, undefined>;
+	defaultValue?: IService[] | Service[];
 }
 
-const CheckServices = ({ formHook }: Props) => {
-	const [values, setValues] = useState([]);
+const CheckServices = ({ formHook, defaultValue }: Props) => {
+	const [values, setValues] = useState<number[]>([]);
 	const [items, setItems] = useState<any[]>([]);
 
 	useEffect(() => {
 		getData();
 	}, []);
+
+	useEffect(() => {
+		getServicesID();
+	}, [defaultValue]);
+
+	function getServicesID() {
+		if (!defaultValue) {
+			return;
+		}
+
+		const valuesArray = defaultValue.map((service) => service.id);
+
+		setValues(valuesArray);
+	}
 
 	async function getData() {
 		try {

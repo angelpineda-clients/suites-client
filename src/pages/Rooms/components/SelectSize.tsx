@@ -12,10 +12,11 @@ import { customAlert } from "@/helpers/alertHelper";
 
 import { ISize } from "@/interfaces/models";
 import { PaginatedData } from "@/interfaces/IPagination";
+import { FieldValues, UseFormReturn } from "react-hook-form";
 
 interface Props {
-	formField: object;
-	data?: ISize;
+	form: UseFormReturn<FieldValues, any, undefined>;
+	defaultValue?: number;
 }
 
 const PAGE = 0;
@@ -29,7 +30,7 @@ const PAGE_SIZE = 50;
  * @param {data} ISize
  * @return {*}
  */
-const SelectSize = ({ formField, data }: Props) => {
+const SelectSize = ({ form, defaultValue }: Props) => {
 	const [items, setItems] = useState<any[]>([]);
 	const { showFormModal, formHook } = useFormModal({});
 
@@ -92,11 +93,11 @@ const SelectSize = ({ formField, data }: Props) => {
 
 	return (
 		<SelectWithButton
-			id="size"
+			id="size_id"
 			label="Tamanio"
 			items={items}
-			formField={formField}
-			defaultValue={data?.id}
+			form={form}
+			defaultValue={defaultValue}
 			handleButtonClick={crateSize}
 		/>
 	);

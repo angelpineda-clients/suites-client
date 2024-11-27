@@ -6,6 +6,7 @@ import ProtectedRoutes from "./components/ProtectedRoutes/ProtectedRoutes";
 import Dashboard from "./pages/Dashboard/Dashboard";
 import Catalogs from "./pages/Catalogs/Catalogs";
 import Rooms from "./pages/Rooms";
+import RoomDetails from "./pages/Rooms/page/RoomDetails/RoomDetails";
 
 function App() {
 	return (
@@ -17,6 +18,7 @@ function App() {
 					<Route path="/" element={<Dashboard />} />
 					<Route path="/catalogs" element={<Catalogs />} />
 					<Route path="/rooms" element={<Rooms />} />
+					<Route path="/rooms/:slug" element={<RoomDetails />} />
 				</Route>
 
 				<Route path="*" element={<h2>404 Not found.</h2>} />

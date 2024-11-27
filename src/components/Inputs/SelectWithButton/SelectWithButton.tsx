@@ -1,11 +1,22 @@
-import { Box, Button, MenuItem, TextField } from "@mui/material";
+import {
+	Box,
+	Button,
+	FormControl,
+	InputLabel,
+	MenuItem,
+	Select,
+	SelectChangeEvent,
+	TextField,
+} from "@mui/material";
 import { Add } from "@mui/icons-material";
+import { useEffect, useState } from "react";
+import { FieldValues, UseFormReturn } from "react-hook-form";
 
 interface Props {
 	id: string;
 	label: string;
 	items: { value: any; name: string }[];
-	formField: object;
+	form: UseFormReturn<FieldValues, any, undefined>;
 	handleButtonClick: (value: any) => any;
 	required?: boolean;
 	defaultValue?: number; // value of element
@@ -15,37 +26,55 @@ const SelectWithButton = ({
 	id,
 	label,
 	items,
-	formField,
-	defaultValue,
+	form,
+	defaultValue = 0,
 	required = false,
 	handleButtonClick,
 }: Props) => {
+	const [value, setValue] = useState<number | undefined>(defaultValue);
+
+	useEffect(() => {
+		if (defaultValue) {
+			setValue(defaultValue);
+		}
+	}, [defaultValue]);
+
+	function handleChange(event: SelectChangeEvent) {
+		const value = event.target.value;
+
+		setValue(Number(value));
+		form.setValue(id, value);
+	}
+
 	return (
 		<Box
 			sx={{
 				display: "flex",
 			}}
 		>
-			<TextField
-				select
-				id={id}
-				label={label}
-				defaultValue={defaultValue}
-				required={required}
-				fullWidth
-				{...formField}
-			>
-				{items.map((item) => {
-					return (
-						<MenuItem
-							key={`${id}-select-${item.name}-${item.value}`}
-							value={item.value}
-						>
-							{item.name}
-						</MenuItem>
-					);
-				})}
-			</TextField>
+			<FormControl fullWidth>
+				<InputLabel id={id}>{label}</InputLabel>
+				<Select
+					labelId={id}
+					id={id}
+					value={value?.toString()}
+					label={label}
+					required={required}
+					onChange={handleChange}
+				>
+					{items.map((item) => {
+						return (
+							<MenuItem
+								key={`${id}-select-${item.name}-${item.value}`}
+								value={item.value}
+							>
+								{item.name}
+							</MenuItem>
+						);
+					})}
+				</Select>
+			</FormControl>
+
 			<Button
 				onClick={handleButtonClick}
 				variant="outlined"

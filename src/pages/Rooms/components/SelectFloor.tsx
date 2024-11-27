@@ -12,10 +12,11 @@ import { customAlert } from "@/helpers/alertHelper";
 
 import { IFloor } from "@/interfaces/models";
 import { PaginatedData } from "@/interfaces/IPagination";
+import { FieldValues, UseFormReturn } from "react-hook-form";
 
 interface Props {
-	formField: object;
-	data?: IFloor;
+	form: UseFormReturn<FieldValues, any, undefined>;
+	defaultValue?: number;
 }
 
 const PAGE = 0;
@@ -29,7 +30,7 @@ const PAGE_SIZE = 50;
  * @param {data} IFloor
  * @return {*}
  */
-const SelectFloor = ({ formField, data }: Props) => {
+const SelectFloor = ({ form, defaultValue }: Props) => {
 	const [items, setItems] = useState<any[]>([]);
 	const { showFormModal, formHook } = useFormModal({});
 
@@ -92,11 +93,11 @@ const SelectFloor = ({ formField, data }: Props) => {
 
 	return (
 		<SelectWithButton
-			id="floor"
+			id="floor_id"
 			label="Piso"
 			items={items}
-			formField={formField}
-			defaultValue={data?.id}
+			form={form}
+			defaultValue={defaultValue}
 			handleButtonClick={crateFloor}
 		/>
 	);

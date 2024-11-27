@@ -51,8 +51,7 @@ const RoomsForm = ({ data, formHook }: Props) => {
 				id="name"
 				label="Nombre"
 				required
-				defaultValue={data?.name || ""}
-				formField={formFields}
+				defaultValue={data?.name}
 				formHook={formHook}
 			/>
 			<InputCurrencyForm
@@ -67,7 +66,6 @@ const RoomsForm = ({ data, formHook }: Props) => {
 				label="Capacidad"
 				type="number"
 				defaultValue={data?.capacity || ""}
-				formField={formFields}
 				formHook={formHook}
 			/>
 
@@ -76,16 +74,15 @@ const RoomsForm = ({ data, formHook }: Props) => {
 				label="Camas"
 				type="number"
 				defaultValue={data?.beds || ""}
-				formField={formFields}
 				formHook={formHook}
 			/>
 
 			<Grid size={6}>
-				<SelectFloor formField={formFields.floor} />
+				<SelectFloor form={formHook} />
 			</Grid>
 
 			<Grid size={6}>
-				<SelectSize formField={formFields.size} />
+				<SelectSize form={formHook} />
 			</Grid>
 
 			<Grid size={12}>
@@ -95,8 +92,6 @@ const RoomsForm = ({ data, formHook }: Props) => {
 			<InputForm
 				id="description"
 				label="Descripcion"
-				type="textarea"
-				formField={formFields}
 				formHook={formHook}
 				size={12}
 			/>
@@ -107,7 +102,7 @@ const RoomsForm = ({ data, formHook }: Props) => {
 
 			<Grid display="flex" justifyContent="center" width="100%">
 				<Button type="submit" variant="outlined" data-testid="login-submit">
-					Enviar
+					Guardar
 				</Button>
 			</Grid>
 		</Grid>

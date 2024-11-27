@@ -1,16 +1,19 @@
 import React from "react";
 
+import { Navigate, useNavigate } from "react-router";
 import { GridColDef } from "@mui/x-data-grid";
 import { Button, Container, Stack } from "@mui/material";
-import { Delete, Edit } from "@mui/icons-material";
+import { Edit } from "@mui/icons-material";
 
 import DataTable from "@/components/DataTable/DataTable";
 
 import useRoomTable from "./hooks/useRoomTable";
 import { formatToCurrency } from "@/utils/FormatToCurrency";
+import { IRoom } from "@/interfaces/models/IRoom";
 
 const Rooms = () => {
-	const { rows, handleForm, remove, pagination, onPagination } = useRoomTable();
+	const { rows, handleForm, pagination, onPagination } = useRoomTable();
+	const navigate = useNavigate();
 
 	const columns: GridColDef[] = [
 		{
@@ -54,26 +57,15 @@ const Rooms = () => {
 			cellClassName: "actions",
 			minWidth: 250,
 			renderCell: (params) => {
-				const data = params.row;
+				const data: IRoom = params.row;
 				return (
 					<Stack direction="row" gap={1}>
 						<Button
-							onClick={(
-								event: React.MouseEvent<HTMLButtonElement, MouseEvent>
-							) => {
-								event.currentTarget.blur();
-								handleForm(data);
-							}}
+							onClick={() => navigate(`/rooms/${data.slug}?id=${data.id}`)}
 							variant="contained"
 						>
-							Editar <Edit />
-						</Button>
-						<Button
-							onClick={() => remove(data)}
-							variant="contained"
-							color="error"
-						>
-							Eliminar <Delete />
+							Editar
+							<Edit />
 						</Button>
 					</Stack>
 				);
