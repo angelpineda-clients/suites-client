@@ -1,16 +1,15 @@
-import { useEffect } from "react";
-
-import { IRoom } from "@/interfaces/models/IRoom";
-import { FieldValues, UseFormReturn } from "react-hook-form";
-import { Button, TextField } from "@mui/material";
 import Grid from "@mui/material/Grid2";
+import { Button } from "@mui/material";
+import { FieldValues, UseFormReturn } from "react-hook-form";
+
 import SelectFloor from "./SelectFloor";
 import SelectSize from "./SelectSize";
 import CheckServices from "./CheckServices";
-
 import UploadImages from "./UploadImages";
 import InputForm from "@/components/Inputs/InputForm/InputForm";
-import { formatToCurrency } from "@/utils/FormatToCurrency";
+import InputCurrencyForm from "@/components/Inputs/InputCurrency/InputCurrencyForm";
+
+import { IRoom } from "@/interfaces/models/IRoom";
 
 interface Props {
 	data?: IRoom;
@@ -56,12 +55,11 @@ const RoomsForm = ({ data, formHook }: Props) => {
 				formField={formFields}
 				formHook={formHook}
 			/>
-			<InputForm
+			<InputCurrencyForm
 				id="price"
 				label="Precio"
 				required
 				formHook={formHook}
-				formField={formFields}
 			/>
 
 			<InputForm

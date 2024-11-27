@@ -7,6 +7,7 @@ import { Delete, Edit } from "@mui/icons-material";
 import DataTable from "@/components/DataTable/DataTable";
 
 import useRoomTable from "./hooks/useRoomTable";
+import { formatToCurrency } from "@/utils/FormatToCurrency";
 
 const Rooms = () => {
 	const { rows, handleForm, remove, pagination, onPagination } = useRoomTable();
@@ -26,6 +27,15 @@ const Rooms = () => {
 			field: "price",
 			headerName: "Precio",
 			minWidth: 250,
+			valueFormatter: (value?: string) => {
+				if (value == null) {
+					return "";
+				}
+
+				const newValue = formatToCurrency(value);
+
+				return newValue;
+			},
 		},
 		{
 			field: "capacity",
