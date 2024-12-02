@@ -70,7 +70,7 @@ const roomService = {
 			return null;
 		}
 	},
-	show: async (id: string): Promise<IRoomResponse | null> => {
+	show: async (id: string): Promise<IRoomResponse> => {
 		try {
 			const response: {
 				success: boolean;
@@ -89,7 +89,7 @@ const roomService = {
 				toast.error(error?.message);
 			}
 
-			return null;
+			return {} as IRoomResponse;
 		}
 	},
 	update: async ({
@@ -98,7 +98,7 @@ const roomService = {
 	}: {
 		id: number;
 		room: IRoom;
-	}): Promise<IRoomResponse | null> => {
+	}): Promise<IRoomResponse> => {
 		try {
 			const response: {
 				success: boolean;
@@ -119,7 +119,7 @@ const roomService = {
 				toast.error(error?.message);
 			}
 
-			return null;
+			return {} as IRoomResponse;
 		}
 	},
 	remove: async ({

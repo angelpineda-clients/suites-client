@@ -1,6 +1,6 @@
 import { IRoomResponse } from "@/interfaces/IRoomResponse";
 import { roomService } from "@/services/room.service";
-import { Button, Container } from "@mui/material";
+import { Box, Button, Container, Typography } from "@mui/material";
 import Grid from "@mui/material/Grid2";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
@@ -11,10 +11,11 @@ import InputForm from "@/components/Inputs/InputForm/InputForm";
 import InputCurrencyForm from "@/components/Inputs/InputCurrency/InputCurrencyForm";
 import SelectFloor from "../../components/SelectFloor";
 import { useUiContext } from "@/context/ui/UiProvider";
+import RoomDetailsImages from "./components/RoomDetailsImages/RoomDetailsImages";
 
 const RoomDetails = () => {
 	const formHook = useForm();
-	const [data, setData] = useState<IRoomResponse>();
+	const [data, setData] = useState<IRoomResponse>({} as IRoomResponse);
 	const [searchParams] = useSearchParams();
 	const { setIsLoading } = useUiContext();
 	const formFields = {
@@ -76,7 +77,10 @@ const RoomDetails = () => {
 		<Container>
 			<form
 				style={{
-					marginTop: 24,
+					marginTop: "40px",
+					border: "thin solid gray",
+					borderRadius: "8px",
+					padding: "24px 12px",
 				}}
 				onSubmit={formHook.handleSubmit(onSubmit)}
 			>
@@ -144,6 +148,8 @@ const RoomDetails = () => {
 					</Grid>
 				</Grid>
 			</form>
+
+			<RoomDetailsImages roomID={data.id} />
 		</Container>
 	);
 };

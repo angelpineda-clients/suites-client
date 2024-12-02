@@ -29,7 +29,7 @@ const Rooms = () => {
 		{
 			field: "price",
 			headerName: "Precio",
-			minWidth: 250,
+			minWidth: 150,
 			valueFormatter: (value?: string) => {
 				if (value == null) {
 					return "";
@@ -43,12 +43,12 @@ const Rooms = () => {
 		{
 			field: "capacity",
 			headerName: "Capacidad",
-			minWidth: 250,
+			minWidth: 150,
 		},
 		{
 			field: "beds",
 			headerName: "Camas",
-			minWidth: 250,
+			minWidth: 150,
 		},
 		{
 			field: "actions",
