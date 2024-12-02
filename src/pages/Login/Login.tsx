@@ -11,7 +11,7 @@ const Login = () => {
 	const auth = useAuth();
 
 	if (auth.isAuthenticated) {
-		return <Navigate to="/" />;
+		return <Navigate to="/dashboard" />;
 	}
 	return (
 		<Container

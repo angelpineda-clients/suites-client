@@ -21,8 +21,8 @@ const NAVIGATION: Navigation = [
 		title: "Dashboard",
 	},
 	{
-		segment: "",
-		title: "Ventas",
+		segment: "dashboard",
+		title: "Dashboard",
 		icon: <ShoppingCartOutlinedIcon />,
 	},
 	{
@@ -63,7 +63,7 @@ const demoTheme = extendTheme({
 });
 
 const BRANDING = {
-	title: "Suites Ordonez",
+	title: "",
 	logo: "",
 };
 
@@ -72,7 +72,14 @@ function Logout() {
 	const auth = useAuth();
 
 	return (
-		<Box sx={{ display: "flex", alignItems: "center" }}>
+		<Box
+			sx={{
+				display: "flex",
+				alignItems: "center",
+				alignContent: "space-between",
+				width: "100%",
+			}}
+		>
 			<Typography sx={{ mr: 2 }}>{user.name}</Typography>
 			<Button onClick={auth.logout} variant="outlined">
 				Logout
