@@ -1,6 +1,6 @@
 import React from "react";
 
-import { Navigate, useNavigate } from "react-router";
+import { useNavigate } from "react-router";
 import { GridColDef } from "@mui/x-data-grid";
 import { Button, Container, Stack } from "@mui/material";
 import { Edit } from "@mui/icons-material";

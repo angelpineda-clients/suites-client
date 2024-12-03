@@ -1,11 +1,19 @@
-import React, { useEffect, useState } from "react";
-import { Box, Button, IconButton, Typography } from "@mui/material";
+import { useEffect, useState } from "react";
+
 import { Delete } from "@mui/icons-material";
-import { imageService } from "@/services/image.service";
+import { Box, Button, IconButton, Typography } from "@mui/material";
+
 import { customAlert } from "@/helpers/alertHelper";
+
 import useFormModal from "@/hooks/useFormModal";
+
 import UploadImages from "@/pages/Rooms/components/UploadImages";
+
+import { imageService } from "@/services/image.service";
+
 import { useUiContext } from "@/context/ui/UiProvider";
+
+import { Image } from "@/interfaces/models";
 
 interface Props {
 	roomID: number;
@@ -14,7 +22,7 @@ interface Props {
 const ENTITY_MODEL_NAME = "room";
 
 const RoomDetailsImages = ({ roomID }: Props) => {
-	const [images, setImages] = useState<any[]>([] as any[]);
+	const [images, setImages] = useState<Image[]>([] as Image[]);
 	const { showFormModal, formHook } = useFormModal({});
 	const { setIsLoading } = useUiContext();
 
@@ -26,7 +34,6 @@ const RoomDetailsImages = ({ roomID }: Props) => {
 
 	useEffect(() => {
 		getImagesByRoom();
-		console.log(roomID);
 	}, [roomID]);
 
 	/**
@@ -70,7 +77,7 @@ const RoomDetailsImages = ({ roomID }: Props) => {
 	}
 
 	function onAdd() {
-		showFormModal({
+		showFormModal<Image[]>({
 			title: "Agregar imagen",
 			children: (
 				<>

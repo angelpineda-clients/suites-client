@@ -29,7 +29,6 @@ const imageService = {
 				}
 			);
 
-			console.log(response);
 			return response.data;
 		} catch (error) {
 			return [];
@@ -65,7 +64,6 @@ const imageService = {
 				`/image/${id}?model_type=${entityModelName}&model_id=${entityID}`
 			);
 
-			console.log(response);
 			return response.data;
 		} catch (error) {
 			return [];

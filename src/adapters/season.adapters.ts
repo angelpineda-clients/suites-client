@@ -1,7 +1,6 @@
-import { monthsES } from "@/constants/dates";
 import { ISeasonResponse } from "@/interfaces";
 import { ISeason } from "@/interfaces/models";
-import { parse, format } from "date-fns";
+import generateDateFromText from "@/utils/generateTextFromDate";
 
 export function adapterSeason(seasons: ISeasonResponse[]): ISeason[] {
 	const data = seasons.map((season) => {
@@ -11,16 +10,10 @@ export function adapterSeason(seasons: ISeasonResponse[]): ISeason[] {
 			alias: season.alias,
 			initialDate: season.initial_date, // mm/dd
 			finalDate: season.final_date, // mm/dd
-			initialText: generateDateText(season.initial_date),
-			finalText: generateDateText(season.final_date),
+			initialText: generateDateFromText(season.initial_date),
+			finalText: generateDateFromText(season.final_date),
 		};
 	});
 
 	return data;
-}
-
-function generateDateText(value: Date | string) {
-	const date = parse(value, "yyyy-MM-dd", new Date());
-
-	return `${date.getDate()} de ${monthsES[Number(date.getMonth())]}`;
 }

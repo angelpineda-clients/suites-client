@@ -12,6 +12,7 @@ import InputCurrencyForm from "@/components/Inputs/InputCurrency/InputCurrencyFo
 import SelectFloor from "../../components/SelectFloor";
 import { useUiContext } from "@/context/ui/UiProvider";
 import RoomDetailsImages from "./components/RoomDetailsImages/RoomDetailsImages";
+import RoomPriceTable from "./components/RoomPriceTable/RoomPriceTable";
 
 const RoomDetails = () => {
 	const formHook = useForm();
@@ -150,6 +151,8 @@ const RoomDetails = () => {
 			</form>
 
 			<RoomDetailsImages roomID={data.id} />
+
+			<RoomPriceTable roomID={data.id} />
 		</Container>
 	);
 };
