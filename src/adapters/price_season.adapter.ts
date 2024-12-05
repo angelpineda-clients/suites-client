@@ -1,8 +1,10 @@
+import { IPrice } from "@/interfaces/models";
 import { IPriceResponse } from "@/interfaces/IPriceResponse";
+
 import { formatToCurrency } from "@/utils/FormatToCurrency";
 import generateDateFromText from "@/utils/generateTextFromDate";
 
-function priceSeasonAdapter(prices: IPriceResponse[]) {
+function priceSeasonAdapter(prices: IPriceResponse[]): IPrice[] {
 	return prices.map((item) => {
 		return {
 			seasonName: item.season.name,

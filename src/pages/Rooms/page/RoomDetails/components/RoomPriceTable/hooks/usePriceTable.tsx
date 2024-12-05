@@ -2,7 +2,7 @@ import { customAlert } from "@/helpers/alertHelper";
 import useFormModal from "@/hooks/useFormModal";
 import usePagination from "@/hooks/usePagination";
 import { PaginatedData } from "@/interfaces/IPagination";
-import { priceService } from "@/services/price.service";
+import { IPriceData, priceService } from "@/services/price.service";
 import { useEffect, useState } from "react";
 import PriceForm from "../components/PriceForm";
 
@@ -44,10 +44,10 @@ const usePriceTable = ({ roomID }: Props) => {
 	 *
 	 * @param {IFloor} [data]
 	 */
-	async function handleForm(data?: any) {
+	async function handleForm(data?: IPriceData) {
 		let request = data?.id
 			? {
-					endpoint: (newData) =>
+					endpoint: (newData: IPriceData) =>
 						priceService.update({
 							id: data?.id,
 							data: newData,
@@ -56,7 +56,7 @@ const usePriceTable = ({ roomID }: Props) => {
 						}),
 				}
 			: {
-					endpoint: (newData) =>
+					endpoint: (newData: IPriceData) =>
 						priceService.create({
 							data: newData,
 							page: pagination.page,

@@ -52,7 +52,6 @@ const RoomPriceTable = ({ roomID }: Props) => {
 				);
 			},
 		},
-		,
 	];
 
 	return (
@@ -60,9 +59,11 @@ const RoomPriceTable = ({ roomID }: Props) => {
 			rows={rows}
 			columns={columns}
 			headerActions={
-				<Button variant="contained" onClick={handleForm}>
-					Agregar
-				</Button>
+				<>
+					<Button variant="contained" onClick={() => handleForm()}>
+						Agregar
+					</Button>
+				</>
 			}
 			title="Precio por temporada"
 			pagination={pagination}

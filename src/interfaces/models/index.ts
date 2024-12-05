@@ -3,3 +3,4 @@ export type { ISeason } from "./ISeason";
 export type { ISize } from "./ISize";
 export type { IFloor } from "./IFloor";
 export type { Image } from "./Image";
+export type { IPrice } from "./IPrice";

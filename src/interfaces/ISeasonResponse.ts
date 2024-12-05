@@ -2,6 +2,6 @@ export interface ISeasonResponse {
 	id: number;
 	name: string;
 	alias: string;
-	initial_date: Date;
-	final_date: Date;
+	initial_date: string;
+	final_date: string;
 }

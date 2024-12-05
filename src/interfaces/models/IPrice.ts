@@ -1,6 +1,9 @@
-export interface Price {
+export interface IPrice {
 	id: number;
-	amount: number;
-	room_id: number;
-	season_id: number;
+	roomID: number;
+	seasonID: number;
+	amount: number | string;
+	seasonName: string;
+	seasonFinalDate: string;
+	seasonInitialDate: string;
 }
