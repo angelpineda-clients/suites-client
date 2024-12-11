@@ -1,0 +1,78 @@
+#header{
+  background: rgb(38,184,188);
+  background: linear-gradient(180deg, 
+   rgba(38,184,188,1) 0%,
+   rgba(140,214,211,0.7) 45%, 
+   rgba(255,247,237,0.4) 100%);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px;
+}
+
+#header .header-title{
+  color: white;
+  font-family: 'Island';
+  text-shadow: rgba(0,0,0,0.6) 1px 1px 4px;
+}
+
+#header a:hover{
+  text-decoration: none;
+}
+
+.header-info{
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  width: 100%;
+}
+
+.header-info .contact {
+  display: flex;
+  align-items: center;
+  width: 20%;
+}
+
+.header-info .contact div {
+  display: flex;
+  flex-direction: column;
+}
+
+.header-info .contact .fb-icon {
+  margin-left: 12px;
+}
+
+
+.header-info .contact div a{
+  padding: 2px 0;
+  text-decoration: underline;
+}
+
+.header-info .navbar ul {
+  display: flex;
+  justify-content: space-between;
+  list-style: none;
+  width: 50vw;
+  max-width: 300px;
+}
+
+.header-info .navbar a {
+  color: black;
+  font-size: 16px;
+}
+
+#header .header-info .navbar a:hover{
+  text-decoration: underline;
+}
+
+.header-info .actions{
+  display: flex;
+  justify-content: space-around;
+  width: 20%;
+}
+
+.header-info .actions button{
+  font-size: 12px;
+  padding: 6px;
+}

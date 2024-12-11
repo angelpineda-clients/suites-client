@@ -17,9 +17,9 @@ export const useUserStore = create<IUserStore>()(
 			email: "",
 		},
 		setUser: (data: IUser) => {
-			const { id, email, name } = data;
+			const { id, email, name, roles } = data;
 
-			set({ user: { id, email, name } });
+			set({ user: { id, email, name, roles } });
 		},
 	}))
 );

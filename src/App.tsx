@@ -7,13 +7,17 @@ import Dashboard from "./pages/Dashboard/Dashboard";
 import Catalogs from "./pages/Catalogs/Catalogs";
 import Rooms from "./pages/Rooms";
 import RoomDetails from "./pages/Rooms/page/RoomDetails/RoomDetails";
+import Home from "./pages/Home/Home";
+import Layout from "./components/Layout/Layout";
 
 function App() {
 	return (
 		<BrowserRouter>
 			<Routes>
-				<Route path="/login" element={<Login />} />
-				<Route path="/" element={<Navigate to="/dashboard" />} />
+				<Route element={<Layout />}>
+					<Route path="/login" element={<Login />} />
+					<Route path="/" element={<Home />} />
+				</Route>
 
 				<Route element={<ProtectedRoutes />}>
 					<Route path="/dashboard" element={<Dashboard />} />

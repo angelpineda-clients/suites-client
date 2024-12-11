@@ -77,7 +77,18 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
 					setAuthTokens(access_token, refresh_token);
 
-					setUser(response.data?.user);
+					const roles: string[] = [];
+
+					if (response.data.user.roles) {
+						response.data.user?.roles.forEach((element) => {
+							roles.push(element.name);
+						});
+					}
+
+					setUser({
+						...response.data?.user,
+						roles: roles,
+					});
 				}
 			}
 		} catch (error) {

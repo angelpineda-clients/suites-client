@@ -6,6 +6,11 @@
 	box-sizing: border-box;
 }
 
+@font-face{
+  font-family: 'Island';
+  src: url('./assets/fonts/IslandMoments-Regular.ttf') format('truetype') ;
+}
+
 #ui-portal {
 	position: absolute;
 	z-index: 99999;
