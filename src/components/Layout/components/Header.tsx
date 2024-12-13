@@ -4,9 +4,12 @@ import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import FBicon from "@/assets/Facebook_Logo_Primary.png";
 
 import "./styles/header.css";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
+import { useAuth } from "@/context/auth/AuthProvider";
 
 export const Header = () => {
+	const navigate = useNavigate();
+	const auth = useAuth();
 	return (
 		<Container component="header" id="header">
 			<NavLink to="/">
@@ -57,7 +60,16 @@ export const Header = () => {
 				</nav>
 
 				<div className="actions">
-					<Button variant="outlined">Ingresar</Button>
+					{auth.isAuthenticated ? (
+						<Button variant="outlined" onClick={() => auth.logout()}>
+							logout
+						</Button>
+					) : (
+						<Button variant="outlined" onClick={() => navigate("/login")}>
+							Login
+						</Button>
+					)}
+
 					<Button variant="contained">
 						<ShoppingCartIcon />
 					</Button>

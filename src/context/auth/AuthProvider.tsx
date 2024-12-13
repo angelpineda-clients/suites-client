@@ -1,7 +1,10 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import { useAxios } from "../axios/AxiosProvider";
-import { useUserStore } from "@/store/user";
+
 import axios from "axios";
+
+import { useAxios } from "../axios/AxiosProvider";
+
+import { useUserStore } from "@/store/user";
 
 interface IAuthContext {
 	logout: () => void;
@@ -79,7 +82,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
 					const roles: string[] = [];
 
-					if (response.data.user.roles) {
+					if (response.data.user.roles.length >= 1) {
 						response.data.user?.roles.forEach((element) => {
 							roles.push(element.name);
 						});

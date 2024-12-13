@@ -1,3 +1,14 @@
+:root {
+	--sand-white: #fff7ed;
+	--sand: #bfa888;
+	--sand-dark: #4f4537;
+
+	--emerald-white: #00a6ce;
+	--emerald-white-30: #00a5ce42;
+	--emerald: #26b8bc;
+	--emerald-dark: #2e8fd2;
+}
+
 *,
 *::after,
 *::before {
@@ -6,9 +17,9 @@
 	box-sizing: border-box;
 }
 
-@font-face{
-  font-family: 'Island';
-  src: url('./assets/fonts/IslandMoments-Regular.ttf') format('truetype') ;
+@font-face {
+	font-family: "Island";
+	src: url("./assets/fonts/IslandMoments-Regular.ttf") format("truetype");
 }
 
 #ui-portal {

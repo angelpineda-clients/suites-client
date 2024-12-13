@@ -50,8 +50,18 @@ const LoginForm = () => {
 			});
 
 			const { access_token, refresh_token } = response.data.auth;
+
 			auth.setAuthTokens(access_token, refresh_token);
-			setUser(response.data.user);
+
+			const roles: string[] = [];
+
+			if (response.data.user?.roles?.length >= 1) {
+				response.data.user?.roles.forEach((element) => {
+					roles.push(element.name);
+				});
+			}
+
+			setUser({ ...response.data.user, roles });
 		} catch (error) {}
 	};
 	return (

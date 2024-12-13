@@ -13,10 +13,10 @@ const Login = () => {
 	const user = useUserStore((state) => state.user);
 
 	if (auth.isAuthenticated) {
-		const isAdmin = user.roles?.includes("admin");
+		const isAdmin = user.roles?.find((rol) => rol == "admin");
 
 		if (isAdmin) {
-			return <Navigate to="/Dashboard" />;
+			return <Navigate to="/dashboard" />;
 		} else {
 			return <Navigate to="/" />;
 		}
@@ -24,7 +24,7 @@ const Login = () => {
 	return (
 		<Container
 			sx={{
-				minHeight: "100vh",
+				minHeight: "80vh",
 				display: "flex",
 				flexDirection: "column",
 				justifyContent: "center",
