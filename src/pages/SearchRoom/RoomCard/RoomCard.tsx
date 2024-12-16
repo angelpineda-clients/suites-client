@@ -4,8 +4,11 @@ import { Box, Button, Grid2 as Grid, Stack, Typography } from "@mui/material";
 import PeopleIcon from "@mui/icons-material/People";
 import KingBedIcon from "@mui/icons-material/KingBed";
 
-import "./styles/room-card.css";
 import CardServices from "./CardServices";
+import CardImages from "./CardImages";
+
+import "./styles/room-card.css";
+import { Container } from "rsuite";
 
 const GRID_RESPONSIVE = { xs: 6, md: 4 };
 
@@ -22,82 +25,76 @@ const RoomCard = (data: IRoom = {} as IRoom) => {
 		images,
 	} = data;
 	return (
-		<Box className="card">
-			<Stack className="text" gap={2}>
-				<Typography variant="h4" component="h4">
-					{name}
-				</Typography>
+		<Container className="card-container">
+			<Box className="card">
+				<Stack className="text" gap={2}>
+					<Typography variant="h4" component="h4">
+						{name}
+					</Typography>
 
-				<p>{description}</p>
+					<p>{description}</p>
 
-				<Grid container>
-					<Grid size={GRID_RESPONSIVE} className="card-grid-item">
-						<span>Desde</span>
+					<Grid container>
+						<Grid size={GRID_RESPONSIVE} className="card-grid-item">
+							<span>Desde</span>
 
-						<div className="info">
-							<p>${price}</p>
-						</div>
+							<div className="info">
+								<p>${price}</p>
+							</div>
+						</Grid>
+
+						<Grid size={GRID_RESPONSIVE} className="card-grid-item">
+							<span>Capacidad</span>
+
+							<div className="info">
+								<PeopleIcon /> <p>{capacity}</p>
+							</div>
+						</Grid>
+
+						<Grid size={GRID_RESPONSIVE} className="card-grid-item">
+							<span>Camas</span>
+							<div className="info">
+								<KingBedIcon /> <p> {beds}</p>
+							</div>
+						</Grid>
+
+						<Grid size={GRID_RESPONSIVE} className="card-grid-item">
+							<span>Tamaño</span>
+							<div className="info">
+								<p>{size?.alias || size?.name}</p>
+							</div>
+						</Grid>
+
+						<Grid size={GRID_RESPONSIVE} className="card-grid-item">
+							<span>Piso</span>
+							<div className="info">
+								<p>{floor?.name}</p>
+							</div>
+						</Grid>
+
+						<Grid size={12} className="card-grid-item">
+							<span>Servicios</span>
+							<div className="info">
+								<CardServices services={services} />
+							</div>
+						</Grid>
 					</Grid>
-
-					<Grid size={GRID_RESPONSIVE} className="card-grid-item">
-						<span>Capacidad</span>
-
-						<div className="info">
-							<PeopleIcon /> <p>{capacity}</p>
-						</div>
-					</Grid>
-
-					<Grid size={GRID_RESPONSIVE} className="card-grid-item">
-						<span>Camas</span>
-						<div className="info">
-							<KingBedIcon /> <p> {beds}</p>
-						</div>
-					</Grid>
-
-					<Grid size={GRID_RESPONSIVE} className="card-grid-item">
-						<span>Tamaño</span>
-						<div className="info">
-							<p>{size?.alias || size?.name}</p>
-						</div>
-					</Grid>
-
-					<Grid size={GRID_RESPONSIVE} className="card-grid-item">
-						<span>Piso</span>
-						<div className="info">
-							<p>{floor?.name}</p>
-						</div>
-					</Grid>
-
-					<Grid size={12} className="card-grid-item">
-						<span>Servicios</span>
-						<div className="info">
-							<CardServices services={services} />
-						</div>
-					</Grid>
-				</Grid>
-			</Stack>
-			<Stack
-				sx={{
-					width: "50%",
-					justifyContent: "space-between",
-					alignItems: "center",
-				}}
-			>
-				<img
-					src={images[0]?.url}
-					alt={`${name}-${images[0]?.id}`}
-					style={{
-						borderRadius: "8px",
-						border: "thin solid gray",
-						aspectRatio: "16/9",
-						width: "100%",
-						minHeight: "200px",
-						maxWidth: "400px",
+				</Stack>
+				<Stack
+					sx={{
+						width: "50%",
+						justifyContent: "space-between",
+						alignItems: "center",
 					}}
-				/>
-				<Button variant="outlined"> Reservar </Button>
-			</Stack>
-		</Box>
+				>
+					<CardImages images={images} />
+				</Stack>
+			</Box>
+			<Button variant="outlined" className="btn-booking">
+				{" "}
+				Reservar{" "}
+			</Button>
+		</Container>
 	);
 };
 

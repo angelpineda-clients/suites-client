@@ -1,0 +1,13 @@
+@import "rsuite/dist/rsuite.css";
+
+#root {
+	padding: 10px;
+}
+
+.custom-slider {
+	border-radius: 8px;
+}
+
+.custom-slider img {
+	object-fit: 16/9;
+}

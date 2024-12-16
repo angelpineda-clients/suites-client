@@ -1,5 +1,6 @@
 import { ISize } from "./ISize";
 import { IFloor } from "./IFloor";
+import { Image } from "./Image";
 
 export interface IRoom {
 	id: number;
@@ -27,17 +28,4 @@ export interface IService {
 export interface ServicePivot {
 	roomID: number;
 	serviceID: number;
-}
-
-export interface Image {
-	id: number;
-	url: string;
-	publicID: string;
-	pivot: ImagePivot;
-}
-
-export interface ImagePivot {
-	imageableType: string;
-	imageableID: number;
-	imageID: number;
 }
