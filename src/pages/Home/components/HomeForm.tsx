@@ -8,6 +8,9 @@ import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 
 import "../styles/home-form.css";
+import FormError from "@/components/FormError/FormError";
+import { roomService } from "@/services/room.service";
+import { useNavigate, useNavigation } from "react-router";
 
 type DateRange = [Date, Date] | null;
 
@@ -19,7 +22,13 @@ function generateDateRange(): DateRange {
 }
 
 const HomeForm = () => {
-	const { handleSubmit, register, setValue } = useForm();
+	const {
+		handleSubmit,
+		register,
+		setValue,
+		formState: { errors },
+	} = useForm();
+	const navigate = useNavigate();
 	const [dateRange, setDateRange] = useState(generateDateRange());
 	const [adults, setAdults] = useState(2);
 	const [children, setChildren] = useState(0);
@@ -37,7 +46,10 @@ const HomeForm = () => {
 			required: true,
 		}),
 		checkOut: register("check_out", {
-			required: true,
+			required: {
+				value: true,
+				message: "Campo requerido",
+			},
 		}),
 		adults: register("adults", {
 			required: true,
@@ -102,8 +114,10 @@ const HomeForm = () => {
 		}
 	}
 
-	function onSubmit(values) {
-		console.log(values);
+	async function onSubmit(data: any) {
+		navigate(
+			`/search-room?check_in=${data?.check_in}&check_out=${data.check_out}&adults=${data.adults}&children=${data.children}`
+		);
 	}
 
 	return (
@@ -145,6 +159,9 @@ const HomeForm = () => {
 						}}
 						value={dateRange}
 					/>
+					{errors["check_out"] && (
+						<FormError text={errors["check_out"].message} />
+					)}
 				</div>
 
 				<div className="control-input">

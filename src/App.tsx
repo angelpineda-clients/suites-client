@@ -9,6 +9,7 @@ import Rooms from "./pages/Rooms";
 import RoomDetails from "./pages/Rooms/page/RoomDetails/RoomDetails";
 import Home from "./pages/Home/Home";
 import Layout from "./components/Layout/Layout";
+import SearchRoom from "./pages/SearchRoom/SearchRoom";
 
 function App() {
 	return (
@@ -16,6 +17,7 @@ function App() {
 			<Routes>
 				<Route element={<Layout />}>
 					<Route path="/login" element={<Login />} />
+					<Route path="/search-room" element={<SearchRoom />} />
 					<Route path="/" element={<Home />} />
 				</Route>
 

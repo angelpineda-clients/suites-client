@@ -151,6 +151,30 @@ const roomService = {
 			return null;
 		}
 	},
+	searchRoom: async ({
+		data,
+		page = 0,
+		pageSize = 10,
+	}: IPagination & { data: any }): Promise<PaginatedData<IRoom>> => {
+		try {
+			const response: ResponsePaginated<any> = await axios.get(
+				`/search-room?page=${page + 1}&per_page=${pageSize}&check_in=${data?.checkIn}&check_out=${data.checkOut}&adults=${data.adults}&children=${data.children}`
+			);
+
+			if (!response.success) {
+				throw new Error("Error al obtener la busqueda de cuartos.");
+			}
+
+			const items = response.data.items;
+			const pagination = adapterPagination(response.data.pagination);
+
+			return { items, pagination };
+		} catch (error) {
+			console.error(error);
+
+			return {} as PaginatedData<IRoom>;
+		}
+	},
 };
 
 export { roomService };
