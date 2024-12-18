@@ -1,20 +1,18 @@
 import { useEffect, useState } from "react";
+
 import { Stack } from "@mui/material";
-import { roomService } from "@/services/room.service";
+
 import RoomCard from "./RoomCard";
-import { IRoom } from "@/interfaces/models/IRoom";
-
-interface SearchProps {
-	checkIn: string;
-	checkOut: string;
-	adults: string;
-	children: string;
-}
-import PaginationBar from "@/components/PaginationBar/PaginationBar";
 import usePagination from "@/hooks/usePagination";
+import PaginationBar from "@/components/PaginationBar/PaginationBar";
 
-const CardContainer = (search: SearchProps) => {
+import { IRoom } from "@/interfaces/models/IRoom";
+import { roomService } from "@/services/room.service";
+import { useBookingStore } from "@/store/booking";
+
+const CardContainer = () => {
 	const [rooms, setRooms] = useState<IRoom[]>([]);
+	const booking = useBookingStore((state) => state.booking);
 	const { pagination, onPagination, setPagination } = usePagination({
 		page: 0,
 		pageSize: 5,
@@ -22,19 +20,21 @@ const CardContainer = (search: SearchProps) => {
 
 	useEffect(() => {
 		getRooms();
-	}, [search, pagination.page, pagination.pageSize]);
+	}, [booking, pagination.page, pagination.pageSize]);
 
 	async function getRooms() {
-		if (!search.checkOut) return;
+		if (!booking.checkOut) return;
 
 		const response = await roomService.searchRoom({
-			data: search,
+			data: booking,
 			page: pagination.page,
 			pageSize: pagination.pageSize,
 		});
 
-		setRooms(response?.items);
-		setPagination(response?.pagination);
+		if (response.items) {
+			setRooms(response?.items);
+			setPagination(response?.pagination);
+		}
 	}
 
 	return (
@@ -43,6 +43,7 @@ const CardContainer = (search: SearchProps) => {
 			{rooms?.map((room) => {
 				return <RoomCard key={room.id} {...room} />;
 			})}
+			{/* Drawer */}
 			<PaginationBar pagination={pagination} onPagination={onPagination} />
 		</Stack>
 	);

@@ -3,7 +3,6 @@ import { Pagination } from "rsuite";
 interface Props {
 	pagination: any;
 	onPagination: any;
-	setPagination: any;
 }
 
 const PaginationBar = ({ pagination, onPagination }: Props) => {

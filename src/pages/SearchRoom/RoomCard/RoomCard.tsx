@@ -1,5 +1,12 @@
 import { IRoom } from "@/interfaces/models/IRoom";
-import { Box, Button, Grid2 as Grid, Stack, Typography } from "@mui/material";
+import {
+	Box,
+	Button,
+	Container,
+	Grid2 as Grid,
+	Stack,
+	Typography,
+} from "@mui/material";
 // icons
 import PeopleIcon from "@mui/icons-material/People";
 import KingBedIcon from "@mui/icons-material/KingBed";
@@ -7,8 +14,9 @@ import KingBedIcon from "@mui/icons-material/KingBed";
 import CardServices from "./CardServices";
 import CardImages from "./CardImages";
 
+import { useUiContext } from "@/context/ui/UiProvider";
 import "./styles/room-card.css";
-import { Container } from "rsuite";
+import BookingRoom from "../BookingRoom/BookingRoom";
 
 const GRID_RESPONSIVE = { xs: 6, md: 4 };
 
@@ -24,6 +32,14 @@ const RoomCard = (data: IRoom = {} as IRoom) => {
 		services,
 		images,
 	} = data;
+
+	const { showDrawer } = useUiContext();
+
+	function openDrawer() {
+		// room id,
+		showDrawer({ children: <BookingRoom room={data} /> });
+	}
+
 	return (
 		<Container className="card-container">
 			<Box className="card">
@@ -90,9 +106,8 @@ const RoomCard = (data: IRoom = {} as IRoom) => {
 					<CardImages images={images} />
 				</Stack>
 			</Box>
-			<Button variant="outlined" className="btn-booking">
-				{" "}
-				Reservar{" "}
+			<Button variant="outlined" className="btn-booking" onClick={openDrawer}>
+				Reservar
 			</Button>
 		</Container>
 	);

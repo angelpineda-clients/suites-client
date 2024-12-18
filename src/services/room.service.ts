@@ -158,7 +158,7 @@ const roomService = {
 	}: IPagination & { data: any }): Promise<PaginatedData<IRoom>> => {
 		try {
 			const response: ResponsePaginated<any> = await axios.get(
-				`/search-room?page=${page + 1}&per_page=${pageSize}&check_in=${data?.checkIn}&check_out=${data.checkOut}&adults=${data.adults}&children=${data.children}`
+				`/search?page=${page + 1}&per_page=${pageSize}&check_in=${data?.checkIn}&check_out=${data.checkOut}&adults=${data.adults}&children=${data.children}`
 			);
 
 			if (!response.success) {

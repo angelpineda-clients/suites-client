@@ -1,29 +1,29 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 import { Container } from "rsuite";
 import { useSearchParams } from "react-router-dom";
 
-import HomeForm from "../Home/components/HomeForm";
-
 import CardContainer from "./RoomCard/CardContainer";
+import { useBookingStore } from "@/store/booking";
+import SearchRoomForm from "@/components/Form/SearchRoomForm/SearchRoomForm";
 
 const SearchRoom = () => {
 	const [params] = useSearchParams();
-	const [search, setSearch] = useState({});
+	const setBooking = useBookingStore((state) => state.setBooking);
 
 	useEffect(() => {
 		getSearchParams();
 	}, [params]);
 
 	function getSearchParams() {
-		const checkIn = params.get("check_in");
-		const checkOut = params.get("check_out");
-		const adults = params.get("adults");
-		const children = params.get("children");
+		const checkIn = params.get("check_in") || null;
+		const checkOut = params.get("check_out") || null;
+		const adults = params.get("adults") || "2";
+		const children = params.get("children") || "0";
 
-		setSearch({
-			checkIn,
-			checkOut,
+		setBooking({
+			check_in: checkIn,
+			check_out: checkOut,
 			adults,
 			children,
 		});
@@ -31,10 +31,10 @@ const SearchRoom = () => {
 
 	return (
 		<Container>
-			<HomeForm />
+			<SearchRoomForm onSubmit={(data) => console.log(data)} />
 			{/* controls for pagination */}
 
-			<CardContainer {...search} />
+			<CardContainer />
 
 			{/* pagination */}
 			{/* rooms */}
