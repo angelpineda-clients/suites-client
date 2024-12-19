@@ -15,7 +15,6 @@ const imageService = {
 	}: {
 		images: any;
 	} & ImageRequestProps): Promise<Image[]> => {
-		console.log(images, entityID, entityModelName);
 		try {
 			const response: ImageResponse = await axios.post(
 				`/image`,

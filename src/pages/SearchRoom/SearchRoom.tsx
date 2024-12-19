@@ -4,8 +4,9 @@ import { Container } from "rsuite";
 import { useSearchParams } from "react-router-dom";
 
 import CardContainer from "./RoomCard/CardContainer";
-import { useBookingStore } from "@/store/booking";
+import { IStoreNewBooking, useBookingStore } from "@/store/booking";
 import SearchRoomForm from "@/components/Form/SearchRoomForm/SearchRoomForm";
+import { Stack } from "@mui/material";
 
 const SearchRoom = () => {
 	const [params] = useSearchParams();
@@ -29,17 +30,17 @@ const SearchRoom = () => {
 		});
 	}
 
+	async function onSubmit(data: IStoreNewBooking) {
+		console.log(data);
+		setBooking(data);
+	}
+
 	return (
-		<Container>
-			<SearchRoomForm onSubmit={(data) => console.log(data)} />
-			{/* controls for pagination */}
+		<Stack gap={4}>
+			<SearchRoomForm onSubmit={onSubmit} />
 
 			<CardContainer />
-
-			{/* pagination */}
-			{/* rooms */}
-			{/* pagination */}
-		</Container>
+		</Stack>
 	);
 };
 

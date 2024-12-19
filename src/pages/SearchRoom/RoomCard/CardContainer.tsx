@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-import { Stack } from "@mui/material";
+import { Stack, Typography } from "@mui/material";
 
 import RoomCard from "./RoomCard";
 import usePagination from "@/hooks/usePagination";
@@ -38,11 +38,17 @@ const CardContainer = () => {
 	}
 
 	return (
-		<Stack gap={2}>
+		<Stack gap={4} alignItems="center">
 			<PaginationBar pagination={pagination} onPagination={onPagination} />
-			{rooms?.map((room) => {
-				return <RoomCard key={room.id} {...room} />;
-			})}
+			{rooms.length > 0 ? (
+				rooms?.map((room) => {
+					return <RoomCard key={room.id} {...room} />;
+				})
+			) : (
+				<Typography variant="h5" component="p">
+					Actualiza tu busqueda para obtener resultados
+				</Typography>
+			)}
 			{/* Drawer */}
 			<PaginationBar pagination={pagination} onPagination={onPagination} />
 		</Stack>

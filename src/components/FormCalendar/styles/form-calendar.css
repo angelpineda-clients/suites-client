@@ -1,0 +1,76 @@
+.form-calendar.vertical{
+  font-family:'-apple-system',
+      'BlinkMacSystemFont',
+      '"Segoe UI"',
+      'Roboto',
+      '"Helvetica Neue"',
+      'Arial',
+      'sans-serif',
+      '"Apple Color Emoji"',
+      "Segoe UI Emoji",
+      "Segoe UI Symbol" ;
+  .react-datepicker{
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    top: 0;
+    left: -200px;
+  }
+}
+
+.react-datepicker-wrapper{
+  border-radius: 8px;
+}
+
+/* .react-datepicker__input-container{
+} */
+
+.react-datepicker__input-container input{
+  padding: 10px 8px;
+  border: 1px solid rgba(128, 128, 128, 0.5);
+  border-radius: 6px;
+}
+
+.react-datepicker{
+  display: flex;
+  flex-direction: row;
+  position: absolute;
+  top: 0;
+  left: -10vw;
+}
+
+/* @media (max-width: 800px){
+  .react-datepicker{
+  flex-direction: column;
+  }
+} */
+
+.react-datepicker-popper .react-datepicker__triangle{
+  display: none;
+}
+
+.react-datepicker-popper{
+  border: thin solid red;
+  display: flex;
+  flex-direction: column;
+}
+
+.react-datepicker__day-name{
+  width: 1vw;
+  min-width: 50px;
+  max-width: 60px;
+}
+
+
+/* .react-datepicker__month-container{} */
+
+/* .react-datepicker__month{} */
+
+/* .react-datepicker__week{} */
+
+.react-datepicker__day{
+  width: 1vw;
+  min-width: 50px;
+  max-width: 60px;
+  height: 40px;
+}

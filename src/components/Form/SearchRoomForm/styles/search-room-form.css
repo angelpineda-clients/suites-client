@@ -1,0 +1,40 @@
+#home-form {
+	display: flex;
+	justify-content: space-around;
+	align-items: end;
+	height: 80px;
+	width: 100%;
+}
+
+.control-input {
+	display: flex;
+	align-items: center;
+}
+
+.button-circle {
+	width: 30px;
+	height: 30px;
+	border-radius: 50%;
+	border: thin solid var(--emerald-dark);
+	background-color: transparent;
+	color: var(--emerald-dark);
+	margin: 0 4px;
+}
+
+.button-circle.disabled {
+	color: gray;
+	border: thin solid gray;
+	background-color: rgba(128, 128, 128, 0.3);
+}
+
+.button-circle:not(.disabled):hover {
+	background-color: var(--emerald-white-30);
+}
+
+.button-circle svg {
+	transform: translateX(-1px);
+}
+
+.MuiOutlinedInput-root {
+	height: 40px;
+}
