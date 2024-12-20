@@ -17,6 +17,7 @@ import CardImages from "./CardImages";
 import { useUiContext } from "@/context/ui/UiProvider";
 import "./styles/room-card.css";
 import BookingRoom from "../BookingRoom/BookingRoom";
+import formatNumberToPesosMX from "@/helpers/currencyFormat";
 
 const GRID_RESPONSIVE = { xs: 6, md: 4 };
 
@@ -55,7 +56,7 @@ const RoomCard = (data: IRoom = {} as IRoom) => {
 							<span>Desde</span>
 
 							<div className="info">
-								<p>${price}</p>
+								<p>{formatNumberToPesosMX.format(price)}</p>
 							</div>
 						</Grid>
 

@@ -9,6 +9,9 @@ import { PaginatedData } from "@/interfaces/IPagination";
 import { IRoomResponse } from "@/interfaces/IRoomResponse";
 import { IRoom } from "@/interfaces/models/IRoom";
 import { ResponsePaginated } from "@/interfaces/responses/ResponsePaginated";
+import { ApiResponse } from "@/interfaces/responses/ApiResponse";
+import { IRoomPriceResponse } from "@/interfaces/IRoomPriceResponse";
+import { IRoomPrice } from "@/interfaces/IRoomPrice";
 
 const roomService = {
 	create: async ({
@@ -175,6 +178,45 @@ const roomService = {
 			return {} as PaginatedData<IRoom>;
 		}
 	},
+	prices: async (roomID: number): Promise<IRoomPrice> => {
+		try {
+			const response: ApiResponse<IRoomPriceResponse> = await axios.get(
+				`/room-prices/${roomID}`
+			);
+
+			if (!response.success) {
+				throw new Error("Error al obtener la busqueda de cuartos.");
+			}
+
+			const data = adapterRoomPrice(response.data);
+
+			return data;
+		} catch (error) {
+			console.error(error);
+
+			return {} as IRoomPrice;
+		}
+	},
 };
+
+function adapterRoomPrice(data: IRoomPriceResponse) {
+	const price = data.price || 0;
+
+	const prices = data.prices.map((price) => {
+		const { season } = price;
+
+		return {
+			priceID: price?.id,
+			seasonID: season?.id,
+			amount: price?.amount || 0,
+			seasonName: season.name || price.season.alias || "No season name",
+			seasonAlias: season?.alias || "",
+			start: season.initial_date || "no date",
+			end: season.final_date || "no date",
+		};
+	});
+
+	return { price, prices };
+}
 
 export { roomService };

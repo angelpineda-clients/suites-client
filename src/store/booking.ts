@@ -2,8 +2,8 @@ import { create } from "zustand";
 import { devtools } from "zustand/middleware";
 
 export interface IStoreNewBooking {
-	check_in: string | null;
-	check_out: string | null;
+	check_in: string | undefined;
+	check_out: string | undefined;
 	adults: string;
 	children: string;
 }
