@@ -16,7 +16,7 @@ function generateDaysFromInterval(startDate: TypeDate, endDate: TypeDate) {
 
 function parseDateToMonthDay(date: Date) {
 	const dayNumber = getDate(date);
-	const month = getMonth(date);
+	const month = getMonth(date) + 1;
 
 	const dateParsed = `${month}-${dayNumber}`;
 

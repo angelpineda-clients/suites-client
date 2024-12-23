@@ -23,7 +23,7 @@ interface Props {
 
 interface ISeasonPrices {
 	day: string;
-	price: string;
+	price: number;
 }
 
 const BookingRoom = ({ room }: Props) => {
@@ -45,7 +45,7 @@ const BookingRoom = ({ room }: Props) => {
 
 	useEffect(() => {
 		getTotal();
-	}, [booking]);
+	}, [booking, seasonPrices]);
 
 	/**
 	 * getTakenDates
@@ -56,6 +56,11 @@ const BookingRoom = ({ room }: Props) => {
 		setDisabledDates(data);
 	}
 
+	/**
+	 * handleDatesChange
+	 * set booking dates
+	 * @param {IDateRange} data
+	 */
 	function handleDatesChange(data: IDateRange) {
 		const { start, end } = data;
 
@@ -68,17 +73,29 @@ const BookingRoom = ({ room }: Props) => {
 		}
 	}
 
+	/**
+	 * getTotal
+	 * generate total price by booking getting price with season
+	 * @return {*}
+	 */
 	function getTotal() {
 		let total = 0;
 		const { checkIn, checkOut } = booking;
 
+		if (!checkIn || !checkOut || seasonPrices.length < 1) return;
+
+		// get days array
 		const days = generateDaysFromInterval(checkIn, checkOut);
 
+		// remove check out day from array
+		days.pop();
+
+		// get price by each night
 		days.forEach((date) => {
 			const parsedDate = parseDateToMonthDay(date);
 			const isSeason = seasonPrices.find((date) => date.day == parsedDate);
 
-			if (isSeason?.price) {
+			if (isSeason) {
 				total += Number(isSeason.price);
 			} else {
 				total += basePrice;
@@ -88,6 +105,10 @@ const BookingRoom = ({ room }: Props) => {
 		setTotal(formatToCurrency(total));
 	}
 
+	/**
+	 * getPricesBySeason
+	 * fetch prices by season
+	 */
 	async function getPricesBySeason() {
 		const response = await roomService.prices(room?.id);
 		const dayWithPrices: ISeasonPrices[] = [];
@@ -100,15 +121,23 @@ const BookingRoom = ({ room }: Props) => {
 			const days = generateDaysFromInterval(start, end);
 
 			days.forEach((date) => {
-				const currency = formatNumberToPesosMX.format(price.amount);
-
-				dayWithPrices.push({ day: parseDateToMonthDay(date), price: currency });
+				dayWithPrices.push({
+					day: parseDateToMonthDay(date),
+					price: price.amount,
+				});
 			});
 		});
 
 		setSeasonPrices(dayWithPrices);
 	}
 
+	/**
+	 * createDayContentForCalendar
+	 * render each tile in calender with price
+	 * @param {number} day
+	 * @param {Date} date
+	 * @return {*}
+	 */
 	function createDayContentForCalendar(day: number, date: Date) {
 		const dateParsed = parseDateToMonthDay(date);
 
@@ -118,7 +147,9 @@ const BookingRoom = ({ room }: Props) => {
 			return (
 				<div style={{ display: "flex", flexDirection: "column" }}>
 					<span style={{ height: "15px" }}>{day}</span>
-					<small style={{ fontSize: "10px" }}>{isSeasonDate.price}</small>
+					<small style={{ fontSize: "10px" }}>
+						{formatToCurrency(isSeasonDate.price)}
+					</small>
 				</div>
 			);
 		} else {
