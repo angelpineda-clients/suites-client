@@ -1,5 +1,13 @@
+import { FieldError, FieldErrorsImpl, Merge } from "react-hook-form";
+
+export type formHookError =
+	| string
+	| FieldError
+	| Merge<FieldError, FieldErrorsImpl<any>>
+	| undefined;
+
 interface Props {
-	text: string;
+	text: formHookError;
 }
 
 const FormError = ({ text }: Props) => {
@@ -9,7 +17,7 @@ const FormError = ({ text }: Props) => {
 				color: "red",
 			}}
 		>
-			{text}
+			{text == "string" ? text : ""}
 		</span>
 	);
 };

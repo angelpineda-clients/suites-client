@@ -1,36 +1,33 @@
 import { useEffect, useState } from "react";
 
-import { parse } from "date-fns";
+import { format, parse } from "date-fns";
 import DatePicker from "react-datepicker";
 
-import FormError from "../FormError/FormError";
+import FormError, { formHookError } from "../FormError/FormError";
 
 import "react-datepicker/dist/react-datepicker.css";
 import "./styles/form-calendar.css";
+import { IDateRange } from "./interfaces/IFormCalendar";
 
-type DateRange = [Date | undefined, Date | undefined];
-
-export interface IDateRange {
-	initial: string | null;
-	final: string | null;
-}
-
-function generateDateRange({ initial, final }: IDateRange): DateRange {
-	const initialDate = initial
-		? parse(initial, "yyyy-MM-dd", new Date())
-		: undefined;
-	const finalDate = final ? parse(final, "yyyy-MM-dd", new Date()) : undefined;
-
-	return [initialDate, finalDate];
-}
+type DateRange = Date | null;
 
 interface FormCalendar {
 	handleChange: (e: IDateRange) => void;
 	dates?: IDateRange;
-	error?: string;
+	error?: formHookError;
 	excludeDates?: Date[];
 	renderDayContents?: (day: number, date: Date) => JSX.Element;
 }
+
+// todo: move to another file
+function generateDateRange({ start, end }: IDateRange): DateRange[] {
+	const initialDate = start ? parse(start, "yyyy-MM-dd", new Date()) : null;
+	const finalDate = end ? parse(end, "yyyy-MM-dd", new Date()) : null;
+
+	return [initialDate, finalDate];
+}
+
+const DATE_FORMAT = "yyyy-MM-dd";
 
 const FormCalendar = ({
 	handleChange,
@@ -39,12 +36,14 @@ const FormCalendar = ({
 	excludeDates = [],
 	renderDayContents,
 }: FormCalendar) => {
-	const [dateRange, setDateRange] = useState(generateDateRange(dates));
+	const [dateRange, setDateRange] = useState<DateRange[]>(
+		generateDateRange(dates)
+	);
 
 	useEffect(() => {
 		const formatedDates = generateDateRange({
-			initial: dates.initial,
-			final: dates.final,
+			start: dates.start,
+			end: dates.end,
 		});
 
 		setDateRange(formatedDates);
@@ -58,11 +57,26 @@ const FormCalendar = ({
 		};
 	}, []);
 
+	function onHandleCalendarChange(values: DateRange[]) {
+		const start: string | null = values[0]
+			? format(values[0], DATE_FORMAT)
+			: null;
+		const end: string | null = values[1]
+			? format(values[1], DATE_FORMAT)
+			: null;
+
+		setDateRange(values);
+		handleChange({ start, end });
+	}
+
 	function handleContainerSize() {
 		const $formCalendar = document.querySelectorAll(".form-calendar");
 
 		$formCalendar.forEach((calendar) => {
-			if (calendar.parentElement?.clientWidth < 1000) {
+			if (
+				calendar.parentElement &&
+				calendar.parentElement?.clientWidth < 1000
+			) {
 				calendar.classList.add("vertical");
 			} else {
 				calendar.classList.remove("vertical");
@@ -71,7 +85,10 @@ const FormCalendar = ({
 
 		window.addEventListener("resize", () => {
 			$formCalendar.forEach((calendar) => {
-				if (calendar?.parentElement?.clientWidth < 1000) {
+				if (
+					calendar.parentElement &&
+					calendar?.parentElement?.clientWidth < 1000
+				) {
 					calendar.classList.add("vertical");
 				} else {
 					calendar.classList.remove("vertical");
@@ -101,13 +118,9 @@ const FormCalendar = ({
 
 			<DatePicker
 				minDate={new Date()}
-				startDate={dateRange[0]}
-				endDate={dateRange[1]}
-				onChange={(values) => {
-					setDateRange(values);
-
-					handleChange({ initial: values[0], final: values[1] });
-				}}
+				startDate={dateRange[0] || undefined}
+				endDate={dateRange[1] || undefined}
+				onChange={onHandleCalendarChange}
 				renderDayContents={renderDayContents}
 				excludeDates={excludeDates}
 				monthsShown={2}

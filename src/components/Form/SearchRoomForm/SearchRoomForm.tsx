@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 
-import { format } from "date-fns";
 import { useForm } from "react-hook-form";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
@@ -8,9 +7,8 @@ import { Box, Button, TextField } from "@mui/material";
 
 import { IStoreNewBooking, useBookingStore } from "@/store/booking";
 
-import FormCalendar, {
-	IDateRange,
-} from "@/components/FormCalendar/FormCalendar";
+import { IDateRange } from "@/components/FormCalendar/interfaces/IFormCalendar";
+import FormCalendar from "@/components/FormCalendar/FormCalendar";
 
 import "./styles/search-room-form.css";
 
@@ -42,7 +40,7 @@ const SearchRoomForm = ({ onSubmit }: ISearchRoomForm) => {
 	useEffect(() => {
 		setAdults(Number(booking.adults));
 		setChildren(Number(booking.children));
-		handleDatesChange({ initial: booking.checkIn, final: booking.checkOut });
+		handleDatesChange({ start: booking.checkIn, end: booking.checkOut });
 	}, [booking]);
 
 	const formFields = {
@@ -128,9 +126,9 @@ const SearchRoomForm = ({ onSubmit }: ISearchRoomForm) => {
 		}
 	}
 
-	function handleDatesChange({ initial, final }: IDateRange) {
-		formHook.setValue("check_in", format(initial, "yyyy-MM-dd"));
-		formHook.setValue("check_out", format(final, "yyyy-MM-dd"));
+	function handleDatesChange({ start, end }: IDateRange) {
+		formHook.setValue("check_in", start);
+		formHook.setValue("check_out", end);
 	}
 
 	return (
@@ -142,7 +140,7 @@ const SearchRoomForm = ({ onSubmit }: ISearchRoomForm) => {
 			<form id="home-form" onSubmit={handleSubmit(onSubmit)}>
 				<FormCalendar
 					handleChange={handleDatesChange}
-					dates={{ initial: booking.checkIn, final: booking.checkOut }}
+					dates={{ start: booking.checkIn, end: booking.checkOut }}
 					error={errors["check_out"]?.message}
 				/>
 

@@ -1,16 +1,17 @@
+import { TypeDate } from "@/components/FormCalendar/interfaces/IFormCalendar";
 import { create } from "zustand";
 import { devtools } from "zustand/middleware";
 
 export interface IStoreNewBooking {
-	check_in: string | undefined;
-	check_out: string | undefined;
+	check_in: TypeDate;
+	check_out: TypeDate;
 	adults: string;
 	children: string;
 }
 
 export interface IStoreBooking {
-	checkIn: string | null;
-	checkOut: string | null;
+	checkIn: TypeDate;
+	checkOut: TypeDate;
 	adults: string;
 	children: string;
 }

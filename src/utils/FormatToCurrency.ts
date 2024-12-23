@@ -1,10 +1,10 @@
 // Función para formatear números a moneda
 export function formatToCurrency(
-	value: string,
+	value: string | number,
 	locale = "es-MX",
 	currency = "MXN"
 ) {
-	const amount = parseFloat(value);
+	const amount = parseFloat(value.toString());
 
 	if (isNaN(amount)) {
 		return "";
@@ -17,6 +17,4 @@ export function formatToCurrency(
 	});
 
 	return formatter.format(amount);
-
-	return 100;
 }
