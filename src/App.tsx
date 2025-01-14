@@ -1,5 +1,5 @@
 /* Libraries */
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 /* Pages */
 import Login from "./pages/Login/Login";
 import ProtectedRoutes from "./components/ProtectedRoutes/ProtectedRoutes";
@@ -10,14 +10,16 @@ import RoomDetails from "./pages/Rooms/page/RoomDetails/RoomDetails";
 import Home from "./pages/Home/Home";
 import Layout from "./components/Layout/Layout";
 import SearchRoom from "./pages/SearchRoom/SearchRoom";
+import ConfirmBooking from "./pages/ConfirmBooking/ConfirmBooking";
 
 function App() {
 	return (
-		<BrowserRouter>
+		<>
 			<Routes>
 				<Route element={<Layout />}>
 					<Route path="/login" element={<Login />} />
 					<Route path="/search-room" element={<SearchRoom />} />
+					<Route path="/confirm-booking" element={<ConfirmBooking />} />
 					<Route path="/" element={<Home />} />
 				</Route>
 
@@ -30,7 +32,7 @@ function App() {
 
 				<Route path="*" element={<h2>404 Not found.</h2>} />
 			</Routes>
-		</BrowserRouter>
+		</>
 	);
 }
 

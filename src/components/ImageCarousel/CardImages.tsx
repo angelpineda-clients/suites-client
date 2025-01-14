@@ -5,9 +5,10 @@ import "./styles/card-images.css";
 
 interface Props {
 	images: Image[];
+	roomName?: string;
 }
 
-const CardImages = ({ images = [] }: Props) => {
+const ImageCarousel = ({ images = [], roomName }: Props) => {
 	return (
 		<div>
 			{images.length == 0 ? (
@@ -15,7 +16,7 @@ const CardImages = ({ images = [] }: Props) => {
 			) : (
 				<Carousel className="custom-slider">
 					{images.map((image) => (
-						<img key={image.id} src={image.url} />
+						<img key={image.id} src={image.url} alt={roomName} />
 					))}
 				</Carousel>
 			)}
@@ -23,4 +24,4 @@ const CardImages = ({ images = [] }: Props) => {
 	);
 };
 
-export default CardImages;
+export default ImageCarousel;

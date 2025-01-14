@@ -1,24 +1,29 @@
 import { useEffect, useState } from "react";
 
+import { Navigate, useNavigate } from "react-router";
 import { Button, Stack, Typography } from "@mui/material";
 
 import { useBookingStore } from "@/store/booking";
 
 import FormCalendar from "@/components/FormCalendar/FormCalendar";
+import { IDateRange } from "@/components/FormCalendar/interfaces/IFormCalendar";
 
 import generateDateFromText from "@/utils/generateTextFromDate";
 
+import { roomService } from "@/services/room.service";
 import { bookingService } from "@/services/booking.service";
 
 import { IRoom } from "@/interfaces/models/IRoom";
-import { roomService } from "@/services/room.service";
+
+import { formatToCurrency } from "@/utils/FormatToCurrency";
+
 import formatNumberToPesosMX from "@/helpers/currencyFormat";
 import { generateDaysFromInterval, parseDateToMonthDay } from "@/helpers/dates";
-import { IDateRange } from "@/components/FormCalendar/interfaces/IFormCalendar";
-import { formatToCurrency } from "@/utils/FormatToCurrency";
+import CardImages from "@/components/ImageCarousel/CardImages";
 
 interface Props {
 	room: IRoom;
+	closeDrawer: () => void;
 }
 
 interface ISeasonPrices {
@@ -26,15 +31,14 @@ interface ISeasonPrices {
 	price: number;
 }
 
-const BookingRoom = ({ room }: Props) => {
+const BookingRoom = ({ room, closeDrawer }: Props) => {
+	const navigate = useNavigate();
 	const booking = useBookingStore((state) => state.booking);
 	const setBooking = useBookingStore((state) => state.setBooking);
 	const [disabledDates, setDisabledDates] = useState<Date[]>([]);
 	const [basePrice, setBasePrice] = useState<number>(room.price || 0);
 	const [seasonPrices, setSeasonPrices] = useState<ISeasonPrices[]>([]);
 	const [total, setTotal] = useState("");
-
-	// todo: post to book a room
 
 	useEffect(() => {
 		if (room?.id) {
@@ -164,6 +168,11 @@ const BookingRoom = ({ room }: Props) => {
 		}
 	}
 
+	function handleConfirmNavigation() {
+		navigate(`/confirm-booking?room_id=${room.id}`);
+		return closeDrawer();
+	}
+
 	return (
 		<Stack
 			sx={{
@@ -173,6 +182,7 @@ const BookingRoom = ({ room }: Props) => {
 			}}
 			gap={4}
 		>
+			<button onClick={closeDrawer}>Close</button>
 			<FormCalendar
 				handleChange={handleDatesChange}
 				dates={{ start: booking.checkIn, end: booking.checkOut }}
@@ -193,7 +203,8 @@ const BookingRoom = ({ room }: Props) => {
 				<Typography variant="h6" component="h6">
 					{room.name}
 				</Typography>
-				<img src={room.images[0]?.url} alt={room.name} />
+
+				<CardImages images={room.images} roomName={room.name} />
 			</Stack>
 
 			<Stack textAlign="center">
@@ -207,7 +218,9 @@ const BookingRoom = ({ room }: Props) => {
 					Total: {total}
 				</Typography>
 
-				<Button variant="contained">Pagar</Button>
+				<Button variant="contained" onClick={handleConfirmNavigation}>
+					Confirmar
+				</Button>
 			</Stack>
 		</Stack>
 	);

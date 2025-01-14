@@ -29,6 +29,15 @@ const theme = createTheme({
 			primary: "#222326",
 		},
 	},
+	components: {
+		MuiInputBase: {
+			styleOverrides: {
+				root: {
+					height: 55,
+				},
+			},
+		},
+	},
 });
 
 export default function CustomThemeProvider({

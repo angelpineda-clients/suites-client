@@ -11,13 +11,16 @@ import {
 import PeopleIcon from "@mui/icons-material/People";
 import KingBedIcon from "@mui/icons-material/KingBed";
 
-import CardServices from "./CardServices";
-import CardImages from "./CardImages";
-
 import { useUiContext } from "@/context/ui/UiProvider";
-import "./styles/room-card.css";
-import BookingRoom from "../BookingRoom/BookingRoom";
+
 import formatNumberToPesosMX from "@/helpers/currencyFormat";
+
+import CardImages from "@/components/ImageCarousel/CardImages";
+
+import CardServices from "./CardServices";
+import BookingRoom from "../BookingRoom/BookingRoom";
+
+import "./styles/room-card.css";
 
 const GRID_RESPONSIVE = { xs: 6, md: 4 };
 
@@ -37,7 +40,7 @@ const RoomCard = (data: IRoom = {} as IRoom) => {
 	const { showDrawer } = useUiContext();
 
 	function openDrawer() {
-		// room id,
+		console.log(showDrawer);
 		showDrawer({ children: <BookingRoom room={data} /> });
 	}
 

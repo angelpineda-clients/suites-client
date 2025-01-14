@@ -14,17 +14,17 @@ const ProtectedRoutes = () => {
 	const user = useUserStore((state) => state.user);
 	const navigate = useNavigate();
 
-	if (auth.isLoading) {
-		return <Loader />;
-	}
-
 	useEffect(() => {
-		if (!auth.isAuthenticated) {
+		if (!auth.isAuthenticated && !auth.isLoading) {
 			navigate("/");
 		}
 	}, [auth.isAuthenticated]);
 
 	const isAdmin = user.roles?.includes("admin");
+
+	if (auth.isLoading) {
+		return <Loader />;
+	}
 
 	return isAdmin ? (
 		<DashboardLayout>
