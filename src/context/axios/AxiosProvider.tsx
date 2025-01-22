@@ -38,6 +38,7 @@ export default function AxiosProvider({ children }: AxiosProviderProps) {
 			let errors = "";
 			if (typeof errorObj == "string") {
 				errors = errorObj;
+				toast.error(errors);
 			}
 
 			const errorArray =

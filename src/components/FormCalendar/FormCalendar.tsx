@@ -3,11 +3,12 @@ import { useEffect, useState } from "react";
 import { format, parse } from "date-fns";
 import DatePicker from "react-datepicker";
 
+import { IDateRange } from "./interfaces/IFormCalendar";
+
 import FormError, { formHookError } from "../FormError/FormError";
 
 import "react-datepicker/dist/react-datepicker.css";
 import "./styles/form-calendar.css";
-import { IDateRange } from "./interfaces/IFormCalendar";
 
 type DateRange = Date | null;
 

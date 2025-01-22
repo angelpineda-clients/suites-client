@@ -57,8 +57,10 @@ function useFormModal({ defaultValues = {} }) {
 						const response = await request.endpoint(data);
 
 						if (!response) {
-							const message = "Error al realizar la peticion del formulario";
-							reject(message);
+							const error = {
+								message: "Error al realizar la peticion del formulario",
+							};
+							return reject(error);
 						}
 
 						closeModal();

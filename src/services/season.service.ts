@@ -136,6 +136,16 @@ const seasonService = {
 			return null;
 		}
 	},
+	takenDates: async () => {
+		try {
+			const response = await axios.get(`/season-exists`);
+
+			console.log(response);
+		} catch (error) {
+			console.log(error);
+			return null;
+		}
+	},
 };
 
 export { seasonService };

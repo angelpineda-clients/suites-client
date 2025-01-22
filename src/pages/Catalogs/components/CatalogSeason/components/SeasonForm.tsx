@@ -1,35 +1,28 @@
+import { useState } from "react";
+
 import { format } from "date-fns";
-import { DateRangePicker } from "rsuite";
-import { Button, FormLabel, Stack, TextField } from "@mui/material";
+import DatePicker from "react-datepicker";
 import { FieldValues, UseFormReturn } from "react-hook-form";
+import { Button, FormLabel, Stack, TextField } from "@mui/material";
 
 import { ISeason } from "@/interfaces/models";
 
-import "rsuite/dist/rsuite.min.css";
-import { useState } from "react";
-import { formatDate } from "@/utils/Date";
+import "react-datepicker/dist/react-datepicker.css";
+import {
+	DateRange,
+	generateDateRange,
+} from "@/components/FormCalendar/helper/calendar_dates";
 
 interface Props {
 	formHook: UseFormReturn<FieldValues, any, undefined>;
 	data?: ISeason;
 }
 
-type DateRange = [Date, Date] | null;
-
-function generateDateRange(data?: ISeason): DateRange {
-	if (!data?.initialDate || !data?.finalDate) {
-		return null;
-	}
-
-	const initialDate = formatDate(data.initialDate);
-	const finalDate = formatDate(data.finalDate);
-
-	return [initialDate, finalDate];
-}
+const DATE_FORMAT = "yyyy-MM-dd";
 
 const SeasonForm = ({ formHook, data }: Props) => {
-	const [dateRange, setDateRange] = useState<DateRange>(
-		generateDateRange(data)
+	const [dateRange, setDateRange] = useState<DateRange[]>(
+		generateDateRange({ start: data?.initialDate, end: data?.finalDate })
 	);
 	const formFields = {
 		name: formHook.register("name", {
@@ -63,9 +56,23 @@ const SeasonForm = ({ formHook, data }: Props) => {
 		}),
 	};
 
+	function onHandleCalendarChange(values: DateRange[]) {
+		const start: string | null = values[0]
+			? format(values[0], DATE_FORMAT)
+			: null;
+		const end: string | null = values[1]
+			? format(values[1], DATE_FORMAT)
+			: null;
+
+		setDateRange(values);
+
+		formHook.setValue("initial_date", format(start, "yyyy-MM-dd"));
+		formHook.setValue("final_date", format(end, "yyyy-MM-dd"));
+	}
+
 	return (
 		<Stack gap={2}>
-			<div style={{ display: "flex", flexDirection: "column" }}>
+			{/* <div style={{ display: "flex", flexDirection: "column" }}>
 				<FormLabel
 					sx={{
 						typography: "subtitle1",
@@ -86,6 +93,23 @@ const SeasonForm = ({ formHook, data }: Props) => {
 						setDateRange([initial, final]);
 					}}
 					value={dateRange}
+				/>
+			</div> */}
+
+			<div
+				style={{
+					zIndex: 9999,
+				}}
+			>
+				<DatePicker
+					startDate={dateRange[0] || undefined}
+					endDate={dateRange[1] || undefined}
+					onChange={onHandleCalendarChange}
+					dateFormat="yyyy/MM/dd"
+					excludeDates={[]}
+					monthsShown={2}
+					selectsRange
+					isClearable
 				/>
 			</div>
 
