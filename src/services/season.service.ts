@@ -8,6 +8,8 @@ import { ResponsePaginated } from "@/interfaces/responses/ResponsePaginated";
 import { adapterPagination } from "@/adapters/pagination.adapter";
 import { adapterSeason } from "@/adapters/season.adapters";
 import { ISeasonResponse } from "@/interfaces";
+import { parse } from "date-fns";
+import set from "date-fns/set";
 
 const seasonService = {
 	create: async ({
@@ -136,11 +138,21 @@ const seasonService = {
 			return null;
 		}
 	},
-	takenDates: async () => {
+	takenDates: async (seasonID?: number) => {
 		try {
-			const response = await axios.get(`/season-exists`);
+			const response: any[] = await axios.get(
+				`/season-exists${seasonID ? `?season_id=${seasonID}` : ""}`
+			);
 
-			console.log(response);
+			const dates = response.map((dateString: string) => {
+				const currentYear = new Date().getFullYear();
+				const date = parse(dateString, "yyyy-MM-dd", new Date());
+				const dateWithCurrentYear = set(date, { year: currentYear });
+
+				return dateWithCurrentYear;
+			});
+
+			return dates;
 		} catch (error) {
 			console.log(error);
 			return null;

@@ -27,7 +27,7 @@ const useSeasonTable = () => {
 
 	useEffect(() => {
 		fetchData();
-	}, []);
+	}, [pagination.page, pagination.pageSize]);
 
 	/**
 	 * fetchData

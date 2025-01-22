@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { format } from "date-fns";
 import DatePicker from "react-datepicker";
@@ -8,10 +8,8 @@ import { Button, FormLabel, Stack, TextField } from "@mui/material";
 import { ISeason } from "@/interfaces/models";
 
 import "react-datepicker/dist/react-datepicker.css";
-import {
-	DateRange,
-	generateDateRange,
-} from "@/components/FormCalendar/helper/calendar_dates";
+import { DateRange } from "@/components/FormCalendar/helper/calendar_dates";
+import { seasonService } from "@/services/season.service";
 
 interface Props {
 	formHook: UseFormReturn<FieldValues, any, undefined>;
@@ -19,11 +17,26 @@ interface Props {
 }
 
 const DATE_FORMAT = "yyyy-MM-dd";
+const CURRENT_YEAR = new Date().getFullYear();
+
+const MIN_DATE = new Date(CURRENT_YEAR, 0, 1);
 
 const SeasonForm = ({ formHook, data }: Props) => {
-	const [dateRange, setDateRange] = useState<DateRange[]>(
-		generateDateRange({ start: data?.initialDate, end: data?.finalDate })
-	);
+	const [dateRange, setDateRange] = useState<DateRange[]>([
+		undefined,
+		undefined,
+	]);
+	const [disabledDates, setDisabledDates] = useState([]);
+
+	useEffect(() => {
+		getTakenDates();
+	}, []);
+
+	async function getTakenDates() {
+		const dates = await seasonService.takenDates(data?.id);
+		setDisabledDates(dates);
+	}
+
 	const formFields = {
 		name: formHook.register("name", {
 			required: {
@@ -105,9 +118,10 @@ const SeasonForm = ({ formHook, data }: Props) => {
 					startDate={dateRange[0] || undefined}
 					endDate={dateRange[1] || undefined}
 					onChange={onHandleCalendarChange}
-					dateFormat="yyyy/MM/dd"
-					excludeDates={[]}
+					dateFormat={DATE_FORMAT}
+					excludeDates={disabledDates}
 					monthsShown={2}
+					minDate={MIN_DATE}
 					selectsRange
 					isClearable
 				/>
