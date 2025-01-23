@@ -18,18 +18,18 @@ interface Props {
 	formHook: UseFormReturn<FieldValues, any, undefined>;
 }
 
-const PriceForm = ({ data, roomID, rows, formHook }: Props) => {
+const PriceForm = ({ data = {}, roomID, rows, formHook }: Props) => {
 	const [items, setItems] = useState<any[]>([]);
 	const formFields = {
 		roomID: formHook.register("room_id", {
 			required: {
-				value: data.id ? false : true,
+				value: data?.id ? false : true,
 				message: "Room id required",
 			},
 		}),
 		seasonID: formHook.register("season_id", {
 			required: {
-				value: data.id ? false : true,
+				value: data?.id ? false : true,
 				message: "Season id required",
 			},
 		}),
@@ -43,13 +43,18 @@ const PriceForm = ({ data, roomID, rows, formHook }: Props) => {
 
 	useEffect(() => {
 		getSeasons();
-	}, [rows, data]);
+	}, []);
 
 	useEffect(() => {
 		formHook.setValue("room_id", roomID);
 	}, [roomID]);
 
+	/**
+	 * getSeasons
+	 * filter available seasons to create select options
+	 */
 	async function getSeasons() {
+		// avoids render if method is update.
 		if (data?.id) return;
 
 		const response = await seasonService.getAll({ page: 0, pageSize: 50 });
