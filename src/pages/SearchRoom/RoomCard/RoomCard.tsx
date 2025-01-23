@@ -40,7 +40,6 @@ const RoomCard = (data: IRoom = {} as IRoom) => {
 	const { showDrawer } = useUiContext();
 
 	function openDrawer() {
-		console.log(showDrawer);
 		showDrawer({ children: <BookingRoom room={data} /> });
 	}
 

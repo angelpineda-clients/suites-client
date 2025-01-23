@@ -11,6 +11,8 @@ import "react-datepicker/dist/react-datepicker.css";
 import { DateRange } from "@/components/FormCalendar/helper/calendar_dates";
 import { seasonService } from "@/services/season.service";
 
+import "../styles/season-calendar.css";
+
 interface Props {
 	formHook: UseFormReturn<FieldValues, any, undefined>;
 	data?: ISeason;
@@ -79,8 +81,8 @@ const SeasonForm = ({ formHook, data }: Props) => {
 
 		setDateRange(values);
 
-		formHook.setValue("initial_date", format(start, "yyyy-MM-dd"));
-		formHook.setValue("final_date", format(end, "yyyy-MM-dd"));
+		formHook.setValue("initial_date", start);
+		formHook.setValue("final_date", end);
 	}
 
 	return (
@@ -110,6 +112,7 @@ const SeasonForm = ({ formHook, data }: Props) => {
 			</div> */}
 
 			<div
+				className="admin-calendar"
 				style={{
 					zIndex: 9999,
 				}}
