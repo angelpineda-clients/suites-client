@@ -99,7 +99,7 @@ const roomService = {
 		id,
 		room,
 	}: {
-		id: number;
+		id: string;
 		room: IRoom;
 	}): Promise<IRoomResponse> => {
 		try {

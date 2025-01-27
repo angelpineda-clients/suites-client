@@ -16,7 +16,7 @@ import { useUiContext } from "@/context/ui/UiProvider";
 import { Image } from "@/interfaces/models";
 
 interface Props {
-	roomID: number;
+	roomID: string;
 }
 
 const ENTITY_MODEL_NAME = "room";
@@ -124,7 +124,7 @@ const RoomDetailsImages = ({ roomID }: Props) => {
 					Imagenes
 				</Typography>
 
-				<Button variant="outlined" onClick={onAdd}>
+				<Button variant="contained" onClick={onAdd}>
 					Agregar
 				</Button>
 			</Box>

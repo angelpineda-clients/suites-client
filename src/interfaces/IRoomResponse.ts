@@ -1,7 +1,7 @@
 import { IFloor, ISize } from "./models";
 
 export interface IRoomResponse {
-	id: number;
+	id: string;
 	name: string;
 	slug: string;
 	description: string;

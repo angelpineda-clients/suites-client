@@ -31,13 +31,15 @@ const useServiceTable = () => {
 			setRows(data?.items);
 			setPagination(data?.pagination);
 		}
+
+		return data;
 	}
 
 	/**
 	 * handleForm
 	 * allow to handle form submit for methods post and put
 	 */
-	async function handleForm(data?: IService) {
+	function handleForm(data?: IService) {
 		try {
 			showFormModal<PaginatedData<IService>>(
 				serviceForm({
