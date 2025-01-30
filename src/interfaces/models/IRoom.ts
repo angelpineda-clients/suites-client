@@ -3,7 +3,7 @@ import { IFloor } from "./IFloor";
 import { Image } from "./Image";
 
 export interface IRoom {
-	id: number;
+	id: string;
 	name: string;
 	slug: string;
 	description: string;

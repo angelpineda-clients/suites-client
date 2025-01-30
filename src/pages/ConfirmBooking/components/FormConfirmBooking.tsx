@@ -2,24 +2,27 @@ import { useEffect } from "react";
 
 import { useForm } from "react-hook-form";
 import { Button, Stack } from "@mui/material";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
+
+import { useBookingStore } from "@/store/booking";
 
 import REGEX_VALIDATIONS from "@/constants/regex";
 
 import InputForm from "@/components/Inputs/InputForm/InputForm";
-import { useBookingStore } from "@/store/booking";
+import { bookingService } from "@/services/booking.service";
 
 const FormConfirmBooking = () => {
 	const formHook = useForm();
 	const [params] = useSearchParams();
 	const booking = useBookingStore((state) => state.booking);
+	const navigate = useNavigate();
 
 	useEffect(() => {
 		getParams();
 	}, [params]);
 
 	useEffect(() => {
-		if (booking) {
+		if (booking.checkIn || booking.checkOut) {
 			formHook.setValue("check_in", booking.checkIn);
 			formHook.setValue("check_out", booking.checkOut);
 		}
@@ -78,7 +81,7 @@ const FormConfirmBooking = () => {
 				message: "Field required",
 			},
 		}),
-		roomID: formHook.register("name", {
+		roomID: formHook.register("room_id", {
 			required: {
 				value: true,
 				message: "Field required",
@@ -98,8 +101,14 @@ const FormConfirmBooking = () => {
 		}
 	}
 
-	function submit(data) {
-		console.log(data);
+	async function submit(data: any) {
+		const response = await bookingService.store(data);
+
+		if (response) {
+			localStorage.setItem("clientSecret", response);
+
+			return navigate(`/payment`);
+		}
 	}
 
 	return (

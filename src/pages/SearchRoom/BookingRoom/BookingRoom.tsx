@@ -23,7 +23,7 @@ import CardImages from "@/components/ImageCarousel/CardImages";
 
 interface Props {
 	room: IRoom;
-	closeDrawer: () => void;
+	closeDrawer?: () => void;
 }
 
 interface ISeasonPrices {

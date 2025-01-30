@@ -21,11 +21,14 @@ import CardServices from "./CardServices";
 import BookingRoom from "../BookingRoom/BookingRoom";
 
 import "./styles/room-card.css";
+import { useBookingStore } from "@/store/booking";
 
 const GRID_RESPONSIVE = { xs: 6, md: 4 };
 
 const RoomCard = (data: IRoom = {} as IRoom) => {
+	const setRomID = useBookingStore((store) => store.setRoomID);
 	const {
+		id,
 		name,
 		description,
 		capacity,
@@ -40,6 +43,8 @@ const RoomCard = (data: IRoom = {} as IRoom) => {
 	const { showDrawer } = useUiContext();
 
 	function openDrawer() {
+		setRomID(id);
+
 		showDrawer({ children: <BookingRoom room={data} /> });
 	}
 

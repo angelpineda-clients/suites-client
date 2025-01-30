@@ -11,6 +11,8 @@ import Home from "./pages/Home/Home";
 import Layout from "./components/Layout/Layout";
 import SearchRoom from "./pages/SearchRoom/SearchRoom";
 import ConfirmBooking from "./pages/ConfirmBooking/ConfirmBooking";
+import Payment from "./pages/Payment/Payment";
+import SuccessOrder from "./pages/SuccessOrder/SuccessOrder";
 
 function App() {
 	return (
@@ -20,6 +22,8 @@ function App() {
 					<Route path="/login" element={<Login />} />
 					<Route path="/search-room" element={<SearchRoom />} />
 					<Route path="/confirm-booking" element={<ConfirmBooking />} />
+					<Route path="/payment" element={<Payment />} />
+					<Route path="/sucess-order" element={<SuccessOrder />} />
 					<Route path="/" element={<Home />} />
 				</Route>
 
