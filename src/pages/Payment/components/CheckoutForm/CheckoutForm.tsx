@@ -7,6 +7,7 @@ import {
 } from "@stripe/react-stripe-js";
 
 import { handleLocalStorage } from "@/helpers/handleLocalStorage";
+import { useBookingStore } from "@/store/booking";
 
 const options = {
 	layout: "accordion",
@@ -16,6 +17,7 @@ const CheckoutForm = () => {
 	const stripe = useStripe();
 	const elements = useElements();
 	const [error, setError] = useState<string | undefined>("");
+	const customer = useBookingStore((state) => state.customer);
 
 	const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
 		// We don't want to let default form submission happen here,
@@ -33,6 +35,13 @@ const CheckoutForm = () => {
 			elements,
 			confirmParams: {
 				return_url: "http://localhost:3000/sucess-order",
+				payment_method_data: {
+					billing_details: {
+						name: `${customer.name} ${customer.lastName}`,
+						email: customer.email,
+						phone: customer.phoneNumber,
+					},
+				},
 			},
 			redirect: "if_required",
 		});

@@ -17,9 +17,11 @@ interface Layout {
 const Layout = () => {
 	const booking = useBookingStore((state) => state.booking);
 	const setBooking = useBookingStore((state) => state.setBooking);
+	const setCustomer = useBookingStore((state) => state.setCustomer);
 
 	useEffect(() => {
 		checkBookingExists();
+		checkCustomerData();
 	}, []);
 
 	function checkBookingExists() {
@@ -29,6 +31,13 @@ const Layout = () => {
 			if (bookingStorage) {
 				setBooking(bookingStorage);
 			}
+		}
+	}
+
+	function checkCustomerData() {
+		const customer = handleLocalStorage.getItem("customer");
+		if (customer) {
+			setCustomer(customer);
 		}
 	}
 

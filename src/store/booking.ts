@@ -21,7 +21,7 @@ export interface IBookingCustomer {
 
 interface IBookingStore {
 	booking: IStoreBooking;
-	cusomter: IBookingCustomer;
+	customer: IBookingCustomer;
 	setBooking: (data: IStoreBooking) => void;
 	setRoomID: (id: string) => void;
 	setCustomer: (data: IBookingCustomer) => void;

@@ -14,13 +14,16 @@ const stripePromise = await loadStripe(import.meta.env.VITE_STRIPE_PK);
 const Payment = () => {
 	const [options, setOptions] = useState({
 		clientSecret: "",
+		fields: {
+			billingDetails: "auto",
+		},
 	});
 
 	useEffect(() => {
 		const isClientSecret = handleLocalStorage.getItem("clientSecret");
 
 		if (isClientSecret) {
-			setOptions({ clientSecret: isClientSecret });
+			setOptions({ ...options, clientSecret: isClientSecret });
 		}
 	}, []);
 	return (
