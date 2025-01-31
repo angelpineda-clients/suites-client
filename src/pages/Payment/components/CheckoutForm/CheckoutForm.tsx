@@ -1,9 +1,12 @@
+import { useState } from "react";
+
 import {
 	PaymentElement,
 	useElements,
 	useStripe,
 } from "@stripe/react-stripe-js";
-import { useState } from "react";
+
+import { handleLocalStorage } from "@/helpers/handleLocalStorage";
 
 const options = {
 	layout: "accordion",
@@ -14,7 +17,7 @@ const CheckoutForm = () => {
 	const elements = useElements();
 	const [error, setError] = useState<string | undefined>("");
 
-	const handleSubmit = async (event) => {
+	const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
 		// We don't want to let default form submission happen here,
 		// which would refresh the page.
 		event.preventDefault();
@@ -31,16 +34,17 @@ const CheckoutForm = () => {
 			confirmParams: {
 				return_url: "http://localhost:3000/sucess-order",
 			},
+			redirect: "if_required",
 		});
 
 		if (result.error) {
 			// Show error to your customer (for example, payment details incomplete)
 			//console.log(result.error.message);
 			setError(result.error.message);
-		} else {
-			// Your customer will be redirected to your `return_url`. For some payment
-			// methods like iDEAL, your customer will be redirected to an intermediate
-			// site first to authorize the payment, then redirected to the `return_url`.
+		} else if (result.paymentIntent?.status == "succeeded") {
+			handleLocalStorage.clear();
+
+			return document.location.replace(`http://localhost:3000/sucess-order`);
 		}
 	};
 

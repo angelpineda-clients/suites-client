@@ -16,4 +16,7 @@ export const handleLocalStorage = {
 	removeItem: (name: string) => {
 		storage.removeItem(name);
 	},
+	clear: () => {
+		storage.clear();
+	},
 };

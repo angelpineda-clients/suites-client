@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-import { loadStripe } from "@stripe/stripe-js";
+import { loadStripe } from "@stripe/stripe-js/pure";
 import { Elements } from "@stripe/react-stripe-js";
 import { Container, Typography } from "@mui/material";
 
@@ -8,7 +8,8 @@ import { handleLocalStorage } from "@/helpers/handleLocalStorage";
 
 import CheckoutForm from "./components/CheckoutForm/CheckoutForm";
 
-const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PK);
+loadStripe.setLoadParameters({ advancedFraudSignals: false });
+const stripePromise = await loadStripe(import.meta.env.VITE_STRIPE_PK);
 
 const Payment = () => {
 	const [options, setOptions] = useState({
@@ -19,9 +20,7 @@ const Payment = () => {
 		const isClientSecret = handleLocalStorage.getItem("clientSecret");
 
 		if (isClientSecret) {
-			setOptions({
-				clientSecret: JSON.parse(isClientSecret),
-			});
+			setOptions({ clientSecret: isClientSecret });
 		}
 	}, []);
 	return (

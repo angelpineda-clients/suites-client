@@ -109,10 +109,12 @@ const FormConfirmBooking = () => {
 
 		if (response) {
 			setCustomer({
-				...data,
+				name: data.name,
 				lastName: data.last_name,
+				phoneNumber: data.phone_number,
+				email: data.email,
 			});
-			handleLocalStorage.setItem("clientSecret", JSON.stringify(response));
+			handleLocalStorage.setItem("clientSecret", response);
 
 			return navigate(`/payment`);
 		}
@@ -143,7 +145,6 @@ const FormConfirmBooking = () => {
 				/>
 				<Button type="submit"> Pagar </Button>
 			</Stack>
-			{JSON.stringify(formHook.formState.errors)}
 		</form>
 	);
 };
