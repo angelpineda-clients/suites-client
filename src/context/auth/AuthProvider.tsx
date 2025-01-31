@@ -5,6 +5,7 @@ import axios from "axios";
 import { useAxios } from "../axios/AxiosProvider";
 
 import { useUserStore } from "@/store/user";
+import { handleLocalStorage } from "@/helpers/handleLocalStorage";
 
 interface IAuthContext {
 	logout: () => void;
@@ -45,7 +46,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
 			setAxiosToken(accessToken);
 		}
 
-		localStorage.setItem("token", JSON.stringify(refreshToken));
+		handleLocalStorage.setItem("token", refreshToken);
 	}
 
 	function getAccessToken() {
@@ -53,7 +54,8 @@ export function AuthProvider({ children }: AuthProviderProps) {
 	}
 
 	function logout() {
-		localStorage.removeItem("token");
+		handleLocalStorage.removeItem("token");
+
 		setAccessToken("");
 		setRefreshToken("");
 		setIsAuthenticated(false);
@@ -67,7 +69,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
 				setAccessToken(accessToken);
 				setIsAuthenticated(true);
 			} else {
-				const token = localStorage.getItem("token");
+				const token = handleLocalStorage.getItem("token");
 
 				if (token) {
 					const refreshToken = JSON.parse(token);

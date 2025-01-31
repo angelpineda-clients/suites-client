@@ -71,8 +71,8 @@ const BookingRoom = ({ room, closeDrawer }: Props) => {
 		if (start && end) {
 			setBooking({
 				...booking,
-				check_in: start,
-				check_out: end,
+				checkIn: start,
+				checkOut: end,
 			});
 		}
 	}

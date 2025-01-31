@@ -1,13 +1,8 @@
 import { TypeDate } from "@/components/FormCalendar/interfaces/IFormCalendar";
+import { handleLocalStorage } from "@/helpers/handleLocalStorage";
+
 import { create } from "zustand";
 import { devtools } from "zustand/middleware";
-
-export interface IStoreNewBooking {
-	check_in: TypeDate;
-	check_out: TypeDate;
-	adults: string;
-	children: string;
-}
 
 export interface IStoreBooking {
 	checkIn: TypeDate;
@@ -17,10 +12,18 @@ export interface IStoreBooking {
 	roomID?: string;
 }
 
+export interface IBookingCustomer {
+	name: string;
+	lastName: string;
+	phoneNumber: string;
+	email: string;
+}
+
 interface IBookingStore {
 	booking: IStoreBooking;
-	setBooking: (data: IStoreNewBooking) => void;
+	setBooking: (data: IStoreBooking) => void;
 	setRoomID: (id: string) => void;
+	setCustomer: (data: IBookingCustomer) => void;
 }
 
 export const useBookingStore = create<IBookingStore>()(
@@ -37,42 +40,37 @@ export const useBookingStore = create<IBookingStore>()(
 			phoneNumber: "",
 			email: "",
 		},
-		setBooking: (data: IStoreNewBooking) => {
-			const { check_in: checkIn, check_out: checkOut, adults, children } = data;
+		setBooking: (data: IStoreBooking) => {
+			const { checkIn, checkOut, adults, children } = data;
+
+			const newBooking = {
+				checkIn,
+				checkOut,
+				adults,
+				children,
+			};
 
 			set((state) => {
-				localStorage.setItem(
-					"booking",
-					JSON.stringify({
-						...state.booking,
-						checkIn,
-						checkOut,
-						adults,
-						children,
-					})
-				);
+				handleLocalStorage.setItem("booking", {
+					...state.booking,
+					...newBooking,
+				});
 
 				return {
 					...state,
 					booking: {
 						...state.booking,
-						checkIn,
-						checkOut,
-						adults,
-						children,
+						...newBooking,
 					},
 				};
 			});
 		},
 		setRoomID: (id: string) => {
 			set((state) => {
-				localStorage.setItem(
-					"booking",
-					JSON.stringify({
-						...state.booking,
-						roomID: id,
-					})
-				);
+				handleLocalStorage.setItem("booking", {
+					...state.booking,
+					roomID: id,
+				});
 
 				return {
 					...state,
@@ -83,10 +81,13 @@ export const useBookingStore = create<IBookingStore>()(
 				};
 			});
 		},
-		setCustomer: (data: any) => {
+		setCustomer: (data: IBookingCustomer) => {
+			handleLocalStorage.setItem("customer", data);
+
 			set((state) => {
 				return {
 					...state,
+					customer: data,
 				};
 			});
 		},

@@ -25,6 +25,7 @@ const SearchRoomForm = ({ onSubmit }: ISearchRoomForm) => {
 		formState: { errors },
 	} = formHook;
 	const booking = useBookingStore((state) => state.booking);
+	const setBooking = useBookingStore((state) => state.setBooking);
 
 	const [adults, setAdults] = useState<number>(2);
 	const [children, setChildren] = useState<number>(0);
@@ -40,7 +41,6 @@ const SearchRoomForm = ({ onSubmit }: ISearchRoomForm) => {
 	useEffect(() => {
 		setAdults(Number(booking.adults));
 		setChildren(Number(booking.children));
-		handleDatesChange({ start: booking.checkIn, end: booking.checkOut });
 	}, [booking]);
 
 	const formFields = {

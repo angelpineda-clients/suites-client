@@ -30,12 +30,6 @@ const CheckoutForm = () => {
 			elements,
 			confirmParams: {
 				return_url: "http://localhost:3000/sucess-order",
-				payment_method_data: {
-					billing_details: {
-						name: "Client name",
-						email: "email@domain.com",
-					},
-				},
 			},
 		});
 
@@ -44,7 +38,6 @@ const CheckoutForm = () => {
 			//console.log(result.error.message);
 			setError(result.error.message);
 		} else {
-			console.log(result);
 			// Your customer will be redirected to your `return_url`. For some payment
 			// methods like iDEAL, your customer will be redirected to an intermediate
 			// site first to authorize the payment, then redirected to the `return_url`.

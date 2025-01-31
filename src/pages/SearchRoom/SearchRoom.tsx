@@ -3,11 +3,18 @@ import { useEffect } from "react";
 import { Stack } from "@mui/material";
 import { useSearchParams } from "react-router-dom";
 
-import { IStoreNewBooking, useBookingStore } from "@/store/booking";
+import { useBookingStore } from "@/store/booking";
 
 import CardContainer from "./RoomCard/CardContainer";
 
 import SearchRoomForm from "@/components/Form/SearchRoomForm/SearchRoomForm";
+
+export interface ISearchRoom {
+	check_in: string;
+	check_out: string;
+	adults: string;
+	children: string;
+}
 
 const SearchRoom = () => {
 	const [params] = useSearchParams();
@@ -29,16 +36,21 @@ const SearchRoom = () => {
 
 		if (checkIn && checkOut && adults) {
 			setBooking({
-				check_in: checkIn,
-				check_out: checkOut,
+				checkIn,
+				checkOut,
 				adults,
 				children,
 			});
 		}
 	}
 
-	async function onSubmit(data: IStoreNewBooking) {
-		setBooking(data);
+	async function onSubmit(data: ISearchRoom) {
+		const newBooking = {
+			...data,
+			checkIn: data.check_in,
+			checkOut: data.check_out,
+		};
+		setBooking(newBooking);
 	}
 
 	return (

@@ -23,7 +23,7 @@ const CardContainer = () => {
 	}, [booking, pagination.page, pagination.pageSize]);
 
 	async function getRooms() {
-		if (!booking.checkOut) return;
+		if (!booking.checkOut || !booking.checkIn) return;
 
 		const response = await roomService.searchRoom({
 			data: booking,

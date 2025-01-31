@@ -1,17 +1,10 @@
+import { handleLocalStorage } from "@/helpers/handleLocalStorage";
 import { useEffect } from "react";
 
-import { useBookingStore } from "@/store/booking";
-
 const SuccessOrder = () => {
-	const setBooking = useBookingStore((state) => state.setBooking);
-
 	useEffect(() => {
-		setBooking({
-			check_in: null,
-			check_out: null,
-			adults: "2",
-			children: "0",
-		});
+		handleLocalStorage.removeItem("booking");
+		handleLocalStorage.removeItem("clientSecret");
 	}, []);
 
 	return (

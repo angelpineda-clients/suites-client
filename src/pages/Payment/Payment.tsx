@@ -1,8 +1,12 @@
-import { Container, Typography } from "@mui/material";
-import CheckoutForm from "./components/CheckoutForm/CheckoutForm";
-import { loadStripe } from "@stripe/stripe-js";
 import { useEffect, useState } from "react";
+
+import { loadStripe } from "@stripe/stripe-js";
 import { Elements } from "@stripe/react-stripe-js";
+import { Container, Typography } from "@mui/material";
+
+import { handleLocalStorage } from "@/helpers/handleLocalStorage";
+
+import CheckoutForm from "./components/CheckoutForm/CheckoutForm";
 
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PK);
 
@@ -12,11 +16,11 @@ const Payment = () => {
 	});
 
 	useEffect(() => {
-		const isClientSecret = localStorage.getItem("clientSecret");
+		const isClientSecret = handleLocalStorage.getItem("clientSecret");
 
 		if (isClientSecret) {
 			setOptions({
-				clientSecret: isClientSecret,
+				clientSecret: JSON.parse(isClientSecret),
 			});
 		}
 	}, []);

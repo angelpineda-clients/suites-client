@@ -6,6 +6,8 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 
 import { useBookingStore } from "@/store/booking";
 
+import { handleLocalStorage } from "@/helpers/handleLocalStorage";
+
 import REGEX_VALIDATIONS from "@/constants/regex";
 
 import InputForm from "@/components/Inputs/InputForm/InputForm";
@@ -15,6 +17,7 @@ const FormConfirmBooking = () => {
 	const formHook = useForm();
 	const [params] = useSearchParams();
 	const booking = useBookingStore((state) => state.booking);
+	const setCustomer = useBookingStore((state) => state.setCustomer);
 	const navigate = useNavigate();
 
 	useEffect(() => {
@@ -105,7 +108,11 @@ const FormConfirmBooking = () => {
 		const response = await bookingService.store(data);
 
 		if (response) {
-			localStorage.setItem("clientSecret", response);
+			setCustomer({
+				...data,
+				lastName: data.last_name,
+			});
+			handleLocalStorage.setItem("clientSecret", JSON.stringify(response));
 
 			return navigate(`/payment`);
 		}
@@ -136,6 +143,7 @@ const FormConfirmBooking = () => {
 				/>
 				<Button type="submit"> Pagar </Button>
 			</Stack>
+			{JSON.stringify(formHook.formState.errors)}
 		</form>
 	);
 };
