@@ -1,7 +1,7 @@
 import { Box, Button, Container, Typography } from "@mui/material";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 
-import FBicon from "@/assets/Facebook_Logo_Primary.png";
+import FBicon from "@/assets/images/Facebook_Logo_Primary.png";
 
 import "./styles/header.css";
 import { NavLink, useNavigate } from "react-router-dom";

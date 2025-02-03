@@ -1,4 +1,4 @@
-import FBicon from "@/assets/Facebook_Logo_Primary.png";
+import FBicon from "@/assets/images/Facebook_Logo_Primary.png";
 import { NavLink } from "react-router-dom";
 
 import "./styles/footer.css";
