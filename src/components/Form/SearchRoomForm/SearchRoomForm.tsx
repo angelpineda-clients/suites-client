@@ -5,7 +5,7 @@ import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 import { Box, Button, TextField } from "@mui/material";
 
-import { IStoreNewBooking, useBookingStore } from "@/store/booking";
+import { IStoreBooking, useBookingStore } from "@/store/booking";
 
 import { IDateRange } from "@/components/FormCalendar/interfaces/IFormCalendar";
 import FormCalendar from "@/components/FormCalendar/FormCalendar";
@@ -13,7 +13,7 @@ import FormCalendar from "@/components/FormCalendar/FormCalendar";
 import "./styles/search-room-form.css";
 
 interface ISearchRoomForm {
-	onSubmit: (data: IStoreNewBooking) => void;
+	onSubmit: (data: IStoreBooking) => void;
 }
 
 const SearchRoomForm = ({ onSubmit }: ISearchRoomForm) => {
@@ -41,6 +41,8 @@ const SearchRoomForm = ({ onSubmit }: ISearchRoomForm) => {
 	useEffect(() => {
 		setAdults(Number(booking.adults));
 		setChildren(Number(booking.children));
+		setValue("check_in", booking.checkIn);
+		setValue("check_out", booking.checkOut);
 	}, [booking]);
 
 	const formFields = {
@@ -129,6 +131,12 @@ const SearchRoomForm = ({ onSubmit }: ISearchRoomForm) => {
 	function handleDatesChange({ start, end }: IDateRange) {
 		formHook.setValue("check_in", start);
 		formHook.setValue("check_out", end);
+
+		setBooking({
+			...booking,
+			checkIn: start,
+			checkOut: end,
+		});
 	}
 
 	return (
@@ -192,7 +200,7 @@ const SearchRoomForm = ({ onSubmit }: ISearchRoomForm) => {
 						<AddIcon />
 					</button>
 				</div>
-				<Button variant="contained" type="submit">
+				<Button variant="outlined" type="submit">
 					Buscar
 				</Button>
 			</form>

@@ -105,6 +105,7 @@ const FormCalendar = ({
 				display: "flex",
 				flexDirection: "column",
 				alignItems: "center",
+				position: "relative",
 			}}
 		>
 			<label

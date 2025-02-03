@@ -15,9 +15,11 @@ const FormError = ({ text }: Props) => {
 		<span
 			style={{
 				color: "red",
+				position: "absolute",
+				bottom: "-25px",
 			}}
 		>
-			{text == "string" ? text : ""}
+			{typeof text == "string" ? text : ""}
 		</span>
 	);
 };

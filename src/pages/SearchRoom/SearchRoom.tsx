@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 
 import { Stack } from "@mui/material";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
 import { useBookingStore } from "@/store/booking";
 
@@ -18,6 +18,7 @@ export interface ISearchRoom {
 
 const SearchRoom = () => {
 	const [params] = useSearchParams();
+	const navigate = useNavigate();
 	const setBooking = useBookingStore((state) => state.setBooking);
 
 	useEffect(() => {
@@ -45,12 +46,9 @@ const SearchRoom = () => {
 	}
 
 	async function onSubmit(data: ISearchRoom) {
-		const newBooking = {
-			...data,
-			checkIn: data.check_in,
-			checkOut: data.check_out,
-		};
-		setBooking(newBooking);
+		navigate(
+			`/search-room?check_in=${data?.check_in}&check_out=${data.check_out}&adults=${data.adults}&children=${data.children}`
+		);
 	}
 
 	return (
