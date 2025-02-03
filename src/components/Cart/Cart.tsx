@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 
-import { Navigate, useNavigate } from "react-router";
+import { useNavigate } from "react-router";
 import { Button, Stack, Typography } from "@mui/material";
+import CloseIcon from "@mui/icons-material/Close";
 
 import { useBookingStore } from "@/store/booking";
 
@@ -31,7 +32,7 @@ interface ISeasonPrices {
 	price: number;
 }
 
-const BookingRoom = ({ room, closeDrawer }: Props) => {
+const Cart = ({ room, closeDrawer }: Props) => {
 	const navigate = useNavigate();
 	const booking = useBookingStore((state) => state.booking);
 	const setBooking = useBookingStore((state) => state.setBooking);
@@ -182,7 +183,14 @@ const BookingRoom = ({ room, closeDrawer }: Props) => {
 			}}
 			gap={4}
 		>
-			<button onClick={closeDrawer}>Close</button>
+			<Button
+				onClick={closeDrawer}
+				variant="outlined"
+				color="error"
+				sx={{ alignSelf: "flex-end" }}
+			>
+				<CloseIcon />
+			</Button>
 			<FormCalendar
 				handleChange={handleDatesChange}
 				dates={{ start: booking.checkIn, end: booking.checkOut }}
@@ -218,7 +226,7 @@ const BookingRoom = ({ room, closeDrawer }: Props) => {
 					Total: {total}
 				</Typography>
 
-				<Button variant="contained" onClick={handleConfirmNavigation}>
+				<Button variant="outlined" onClick={handleConfirmNavigation}>
 					Confirmar
 				</Button>
 			</Stack>
@@ -226,4 +234,4 @@ const BookingRoom = ({ room, closeDrawer }: Props) => {
 	);
 };
 
-export default BookingRoom;
+export default Cart;

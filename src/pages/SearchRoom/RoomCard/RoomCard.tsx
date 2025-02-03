@@ -13,15 +13,16 @@ import KingBedIcon from "@mui/icons-material/KingBed";
 
 import { useUiContext } from "@/context/ui/UiProvider";
 
+import { useBookingStore } from "@/store/booking";
+
 import formatNumberToPesosMX from "@/helpers/currencyFormat";
 
 import CardImages from "@/components/ImageCarousel/CardImages";
 
 import CardServices from "./CardServices";
-import BookingRoom from "../BookingRoom/BookingRoom";
 
 import "./styles/room-card.css";
-import { useBookingStore } from "@/store/booking";
+import Cart from "@/components/Cart/Cart";
 
 const GRID_RESPONSIVE = { xs: 6, md: 4 };
 
@@ -45,13 +46,13 @@ const RoomCard = (data: IRoom = {} as IRoom) => {
 	function openDrawer() {
 		setRomID(id);
 
-		showDrawer({ children: <BookingRoom room={data} /> });
+		showDrawer({ children: <Cart room={data} /> });
 	}
 
 	return (
-		<Container className="card-container">
+		<Container className="card-container animate__animated animate__fadeIn">
 			<Box className="card">
-				<Stack className="text" gap={2}>
+				<Stack className="card-info" gap={2}>
 					<Typography variant="h4" component="h4">
 						{name}
 					</Typography>
@@ -106,7 +107,7 @@ const RoomCard = (data: IRoom = {} as IRoom) => {
 				</Stack>
 				<Stack
 					sx={{
-						width: "50%",
+						width: "45%",
 						justifyContent: "space-between",
 						alignItems: "center",
 					}}
@@ -114,7 +115,7 @@ const RoomCard = (data: IRoom = {} as IRoom) => {
 					<CardImages images={images} />
 				</Stack>
 			</Box>
-			<Button variant="outlined" className="btn-booking" onClick={openDrawer}>
+			<Button variant="contained" className="btn-booking" onClick={openDrawer}>
 				Reservar
 			</Button>
 		</Container>

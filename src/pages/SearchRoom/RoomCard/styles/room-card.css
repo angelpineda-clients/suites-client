@@ -1,23 +1,27 @@
 .card-container {
+	display: flex;
 	border-bottom: thin solid gray;
+	flex-direction: column;
 	padding: 12px 0;
+	width: 100%;
+	min-height: 500px;
 }
 
 .card {
 	display: flex;
-	width: 80%;
+	width: 100%;
 	max-width: 1100px;
 	margin: 12px auto;
 	background-color: white;
-	padding: 12px;
+	justify-content: space-between;
 }
 
 .card p {
 	font-size: 16px;
 }
 
-.card .text {
-	width: 50%;
+.card .card-info {
+	width: 45%;
 }
 
 .card-grid-item {
@@ -43,7 +47,7 @@
 	align-items: center;
 }
 
-.btn-booking {
-	width: 100px;
+.card-container .btn-booking {
 	align-self: center;
+	font-weight: bold;
 }

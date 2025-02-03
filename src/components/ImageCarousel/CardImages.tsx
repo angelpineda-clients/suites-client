@@ -1,5 +1,8 @@
-import { Image } from "@/interfaces/models";
 import { Carousel } from "rsuite";
+
+import { Image } from "@/interfaces/models";
+
+import NoImage from "@/assets/images/No_Image.png";
 
 import "./styles/card-images.css";
 
@@ -12,7 +15,14 @@ const ImageCarousel = ({ images = [], roomName }: Props) => {
 	return (
 		<div>
 			{images.length == 0 ? (
-				<p>No imagenes</p>
+				<img
+					src={NoImage}
+					style={{
+						width: "100%",
+						height: "100%",
+						objectFit: "fill",
+					}}
+				/>
 			) : (
 				<Carousel className="custom-slider">
 					{images.map((image) => (
