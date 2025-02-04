@@ -122,7 +122,7 @@ const FormConfirmBooking = () => {
 
 	return (
 		<form onSubmit={formHook.handleSubmit(submit)}>
-			<Stack gap={1}>
+			<Stack gap={2}>
 				<InputForm id="name" label="Nombre" formHook={formHook} required />
 				<InputForm
 					id="last_name"
@@ -143,7 +143,10 @@ const FormConfirmBooking = () => {
 					required
 					type="email"
 				/>
-				<Button type="submit"> Pagar </Button>
+				<Button type="submit" variant="contained">
+					{" "}
+					Pagar{" "}
+				</Button>
 			</Stack>
 		</form>
 	);

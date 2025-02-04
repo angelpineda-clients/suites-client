@@ -29,12 +29,12 @@ const ConfirmBooking = () => {
 	}
 
 	return (
-		<Container>
+		<Container sx={{ marginY: 4 }}>
+			<Typography variant="h2" component="h2" marginY={2}>
+				{room.name}
+			</Typography>
 			<Stack direction="row" justifyContent="space-between" alignItems="center">
 				<Container sx={{ width: "50%" }}>
-					<Typography variant="h2" component="h2">
-						{room.name}
-					</Typography>
 					<ImageCarousel images={room.images} roomName={room.name} />
 				</Container>
 				<Container sx={{ width: "50%" }}>
