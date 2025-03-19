@@ -188,6 +188,8 @@ const roomService = {
 				throw new Error("Error al obtener la busqueda de cuartos.");
 			}
 
+			console.log(response);
+
 			const data = adapterRoomPrice(response.data);
 
 			return data;
@@ -209,10 +211,10 @@ function adapterRoomPrice(data: IRoomPriceResponse) {
 			priceID: price?.id,
 			seasonID: season?.id,
 			amount: price?.amount || 0,
-			seasonName: season.name || price.season.alias || "No season name",
+			seasonName: season?.name || price?.season?.alias || "No season name",
 			seasonAlias: season?.alias || "",
-			start: season.initial_date || "no date",
-			end: season.final_date || "no date",
+			start: season?.initial_date || "no date",
+			end: season?.final_date || "no date",
 		};
 	});
 

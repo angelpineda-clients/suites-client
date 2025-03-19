@@ -107,6 +107,8 @@ const FormConfirmBooking = () => {
 	async function submit(data: any) {
 		const response = await bookingService.store(data);
 
+		console.log(response);
+
 		if (response) {
 			setCustomer({
 				name: data.name,
@@ -114,6 +116,7 @@ const FormConfirmBooking = () => {
 				phoneNumber: data.phone_number,
 				email: data.email,
 			});
+
 			handleLocalStorage.setItem("clientSecret", response);
 
 			return navigate(`/payment`);

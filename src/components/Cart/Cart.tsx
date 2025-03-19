@@ -120,7 +120,7 @@ const Cart = ({ room, closeDrawer }: Props) => {
 
 		setBasePrice(response.price || room?.price);
 
-		response.prices.map((price) => {
+		response?.prices.map((price) => {
 			const { start, end } = price;
 
 			const days = generateDaysFromInterval(start, end);
@@ -209,7 +209,7 @@ const Cart = ({ room, closeDrawer }: Props) => {
 
 			<Stack>
 				<Typography variant="h6" component="h6">
-					{room.name}
+					{room?.name}
 				</Typography>
 
 				<CardImages images={room.images} roomName={room.name} />
