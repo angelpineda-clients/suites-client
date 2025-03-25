@@ -107,8 +107,6 @@ const FormConfirmBooking = () => {
 	async function submit(data: any) {
 		const response = await bookingService.store(data);
 
-		console.log(response);
-
 		if (response) {
 			setCustomer({
 				name: data.name,

@@ -188,8 +188,6 @@ const roomService = {
 				throw new Error("Error al obtener la busqueda de cuartos.");
 			}
 
-			console.log(response);
-
 			const data = adapterRoomPrice(response.data);
 
 			return data;
