@@ -5,21 +5,21 @@ import { devtools } from "zustand/middleware";
 /* interfaces */
 
 interface IUserStore {
-	user: IUser;
-	setUser: (data: IUser) => void;
+  user: IUser;
+  setUser: (data: IUser) => void;
 }
 
 export const useUserStore = create<IUserStore>()(
-	devtools((set) => ({
-		user: {
-			id: "",
-			name: "",
-			email: "",
-		},
-		setUser: (data: IUser) => {
-			const { id, email, name, roles } = data;
+  devtools((set) => ({
+    user: {
+      id: "",
+      name: "",
+      email: "",
+    },
+    setUser: (data: IUser) => {
+      const { id, email, name, roles } = data;
 
-			set({ user: { id, email, name, roles } });
-		},
-	}))
+      set({ user: { id, email, name, roles } });
+    },
+  }))
 );

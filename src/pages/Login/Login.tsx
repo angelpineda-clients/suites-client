@@ -9,48 +9,43 @@ import "./styles/login.css";
 import { useUserStore } from "@/store/user";
 
 const Login = () => {
-	const auth = useAuth();
-	const user = useUserStore((state) => state.user);
+  const auth = useAuth();
+  const user = useUserStore((state) => state.user);
 
-	if (auth.isAuthenticated) {
-		const isAdmin = user.roles?.find((rol) => rol == "admin");
+  if (auth.isAuthenticated) {
+    const isAdmin = user.roles?.find((rol) => rol == "admin");
 
-		if (isAdmin) {
-			return <Navigate to="/dashboard" />;
-		} else {
-			return <Navigate to="/" />;
-		}
-	}
-	return (
-		<Container
-			sx={{
-				minHeight: "80vh",
-				display: "flex",
-				flexDirection: "column",
-				justifyContent: "center",
-			}}
-		>
-			<Box
-				sx={{
-					display: "flex",
-					flexDirection: "column",
-					justifyContent: "center",
-					alignItems: "center",
-				}}
-			>
-				<Typography
-					variant="h5"
-					component="h5"
-					marginBottom={4}
-					textAlign="center"
-				>
-					Login
-				</Typography>
+    if (isAdmin) {
+      return <Navigate to="/dashboard" />;
+    } else {
+      return <Navigate to="/" />;
+    }
+  }
+  return (
+    <Container
+      sx={{
+        minHeight: "80vh",
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+      }}
+    >
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <Typography variant="h5" component="h5" marginBottom={4} textAlign="center">
+          Login
+        </Typography>
 
-				<LoginForm />
-			</Box>
-		</Container>
-	);
+        <LoginForm />
+      </Box>
+    </Container>
+  );
 };
 
 export default Login;

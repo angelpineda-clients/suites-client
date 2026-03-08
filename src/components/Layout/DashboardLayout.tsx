@@ -12,95 +12,95 @@ import { AppProvider } from "@toolpad/core/react-router-dom";
 import { Box, Button, Typography } from "@mui/material";
 
 interface LayoutProps {
-	children: React.ReactNode;
+  children: React.ReactNode;
 }
 
 const NAVIGATION: Navigation = [
-	{
-		kind: "header",
-		title: "Dashboard",
-	},
-	{
-		segment: "dashboard",
-		title: "Dashboard",
-		icon: <ShoppingCartOutlinedIcon />,
-	},
-	{
-		segment: "orders",
-		title: "Reservaciones",
-		icon: <BookOutlinedIcon />,
-	},
-	{
-		kind: "divider",
-	},
-	{
-		kind: "header",
-		title: "Administracion",
-	},
-	{
-		segment: "rooms",
-		title: "Habitaciones",
-		icon: <BedOutlinedIcon />,
-	},
-	{
-		segment: "catalogs",
-		title: "Catalogos",
-		icon: <LayersIcon />,
-	},
+  {
+    kind: "header",
+    title: "Dashboard",
+  },
+  {
+    segment: "dashboard",
+    title: "Dashboard",
+    icon: <ShoppingCartOutlinedIcon />,
+  },
+  {
+    segment: "orders",
+    title: "Reservaciones",
+    icon: <BookOutlinedIcon />,
+  },
+  {
+    kind: "divider",
+  },
+  {
+    kind: "header",
+    title: "Administracion",
+  },
+  {
+    segment: "rooms",
+    title: "Habitaciones",
+    icon: <BedOutlinedIcon />,
+  },
+  {
+    segment: "catalogs",
+    title: "Catalogos",
+    icon: <LayersIcon />,
+  },
 ];
 
 const demoTheme = extendTheme({
-	colorSchemeSelector: "class",
-	breakpoints: {
-		values: {
-			xs: 0,
-			sm: 600,
-			md: 600,
-			lg: 1200,
-			xl: 1536,
-		},
-	},
+  colorSchemeSelector: "class",
+  breakpoints: {
+    values: {
+      xs: 0,
+      sm: 600,
+      md: 600,
+      lg: 1200,
+      xl: 1536,
+    },
+  },
 });
 
 const BRANDING = {
-	title: "",
-	logo: "",
+  title: "",
+  logo: "",
 };
 
 function Logout() {
-	const user = useUserStore((state) => state.user);
-	const auth = useAuth();
+  const user = useUserStore((state) => state.user);
+  const auth = useAuth();
 
-	return (
-		<Box
-			sx={{
-				display: "flex",
-				alignItems: "center",
-				alignContent: "space-between",
-				width: "100%",
-			}}
-		>
-			<Typography sx={{ mr: 2 }}>{user.name}</Typography>
-			<Button onClick={auth.logout} variant="outlined">
-				Logout
-			</Button>
-		</Box>
-	);
+  return (
+    <Box
+      sx={{
+        display: "flex",
+        alignItems: "center",
+        alignContent: "space-between",
+        width: "100%",
+      }}
+    >
+      <Typography sx={{ mr: 2 }}>{user.name}</Typography>
+      <Button onClick={auth.logout} variant="outlined">
+        Logout
+      </Button>
+    </Box>
+  );
 }
 
 const DashboardLayout = ({ children }: LayoutProps) => {
-	return (
-		<AppProvider navigation={NAVIGATION} theme={demoTheme} branding={BRANDING}>
-			<Layout
-				slots={{
-					toolbarActions: Logout,
-				}}
-				defaultSidebarCollapsed
-			>
-				{children}
-			</Layout>
-		</AppProvider>
-	);
+  return (
+    <AppProvider navigation={NAVIGATION} theme={demoTheme} branding={BRANDING}>
+      <Layout
+        slots={{
+          toolbarActions: Logout,
+        }}
+        defaultSidebarCollapsed
+      >
+        {children}
+      </Layout>
+    </AppProvider>
+  );
 };
 
 export default DashboardLayout;

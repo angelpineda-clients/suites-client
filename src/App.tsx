@@ -15,29 +15,29 @@ import Payment from "./pages/Payment/Payment";
 import SuccessOrder from "./pages/SuccessOrder/SuccessOrder";
 
 function App() {
-	return (
-		<>
-			<Routes>
-				<Route element={<Layout />}>
-					<Route path="/login" element={<Login />} />
-					<Route path="/search-room" element={<SearchRoom />} />
-					<Route path="/confirm-booking" element={<ConfirmBooking />} />
-					<Route path="/payment" element={<Payment />} />
-					<Route path="/sucess-order" element={<SuccessOrder />} />
-					<Route path="/" element={<Home />} />
-				</Route>
+  return (
+    <>
+      <Routes>
+        <Route element={<Layout />}>
+          <Route path="/login" element={<Login />} />
+          <Route path="/search-room" element={<SearchRoom />} />
+          <Route path="/confirm-booking" element={<ConfirmBooking />} />
+          <Route path="/payment" element={<Payment />} />
+          <Route path="/sucess-order" element={<SuccessOrder />} />
+          <Route path="/" element={<Home />} />
+        </Route>
 
-				<Route element={<ProtectedRoutes />}>
-					<Route path="/dashboard" element={<Dashboard />} />
-					<Route path="/catalogs" element={<Catalogs />} />
-					<Route path="/rooms" element={<Rooms />} />
-					<Route path="/rooms/:slug" element={<RoomDetails />} />
-				</Route>
+        <Route element={<ProtectedRoutes />}>
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/catalogs" element={<Catalogs />} />
+          <Route path="/rooms" element={<Rooms />} />
+          <Route path="/rooms/:slug" element={<RoomDetails />} />
+        </Route>
 
-				<Route path="*" element={<h2>404 Not found.</h2>} />
-			</Routes>
-		</>
-	);
+        <Route path="*" element={<h2>404 Not found.</h2>} />
+      </Routes>
+    </>
+  );
 }
 
 export default App;

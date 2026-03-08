@@ -10,17 +10,11 @@ import { ModalProvider } from "./context/modals/ModalProvider.tsx";
 import { BrowserRouter } from "react-router-dom";
 
 createRoot(document.getElementById("root")!).render(
-	<BrowserRouter>
-		<Compose
-			components={[
-				AxiosProvider,
-				AuthProvider,
-				CustomThemeProvider,
-				UiProvider,
-				ModalProvider,
-			]}
-		>
-			<App />
-		</Compose>
-	</BrowserRouter>
+  <BrowserRouter>
+    <Compose
+      components={[AxiosProvider, AuthProvider, CustomThemeProvider, UiProvider, ModalProvider]}
+    >
+      <App />
+    </Compose>
+  </BrowserRouter>
 );

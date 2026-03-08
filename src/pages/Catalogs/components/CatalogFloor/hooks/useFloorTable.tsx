@@ -23,91 +23,91 @@ import floorForm from "../utils/floorForm";
  * pagination,
  */
 const useFloorTable = () => {
-	const { showFormModal, formHook } = useFormModal({
-		defaultValues: {
-			name: "",
-			alias: "",
-		},
-	});
-	const { pagination, setPagination, onPagination } = usePagination();
-	const [rows, setRows] = useState<IFloor[]>([]);
+  const { showFormModal, formHook } = useFormModal({
+    defaultValues: {
+      name: "",
+      alias: "",
+    },
+  });
+  const { pagination, setPagination, onPagination } = usePagination();
+  const [rows, setRows] = useState<IFloor[]>([]);
 
-	useEffect(() => {
-		fetchData();
-	}, [pagination.page, pagination.pageSize]);
+  useEffect(() => {
+    fetchData();
+  }, [pagination.page, pagination.pageSize]);
 
-	/**
-	 * fetchData
-	 * fetch services
-	 */
-	async function fetchData() {
-		const data = await floorService.getAll({
-			page: pagination.page,
-			pageSize: pagination.pageSize,
-		});
-		if (data) {
-			setRows(data.items);
-			setPagination(data.pagination);
-		}
-	}
+  /**
+   * fetchData
+   * fetch services
+   */
+  async function fetchData() {
+    const data = await floorService.getAll({
+      page: pagination.page,
+      pageSize: pagination.pageSize,
+    });
+    if (data) {
+      setRows(data.items);
+      setPagination(data.pagination);
+    }
+  }
 
-	/**
-	 * handleForm
-	 * make petitions for post and put method
-	 *
-	 * @param {IFloor} [data]
-	 */
-	async function handleForm(data?: IFloor) {
-		try {
-			showFormModal<PaginatedData<IFloor>>(
-				floorForm({
-					data,
-					formHook,
-					page: pagination.page,
-					pageSize: pagination.pageSize,
-				})
-			).then((data) => {
-				if (data) {
-					setRows(data.items);
-					setPagination(data.pagination);
-					customAlert.success();
-				}
-			});
-		} catch (error) {
-			console.error(error);
-		}
-	}
+  /**
+   * handleForm
+   * make petitions for post and put method
+   *
+   * @param {IFloor} [data]
+   */
+  async function handleForm(data?: IFloor) {
+    try {
+      showFormModal<PaginatedData<IFloor>>(
+        floorForm({
+          data,
+          formHook,
+          page: pagination.page,
+          pageSize: pagination.pageSize,
+        })
+      ).then((data) => {
+        if (data) {
+          setRows(data.items);
+          setPagination(data.pagination);
+          customAlert.success();
+        }
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  }
 
-	/**
-	 * deleteService
-	 *
-	 * @param {IFloor} floor
-	 */
-	async function remove(floor: IFloor) {
-		try {
-			customAlert.warning({ name: floor.name }).then(async (response) => {
-				if (response.isConfirmed) {
-					const data = await floorService.remove({ id: floor?.id });
+  /**
+   * deleteService
+   *
+   * @param {IFloor} floor
+   */
+  async function remove(floor: IFloor) {
+    try {
+      customAlert.warning({ name: floor.name }).then(async (response) => {
+        if (response.isConfirmed) {
+          const data = await floorService.remove({ id: floor?.id });
 
-					if (data) {
-						setRows(data.items);
-						setPagination(data.pagination);
+          if (data) {
+            setRows(data.items);
+            setPagination(data.pagination);
 
-						customAlert.success();
-					}
-				}
-			});
-		} catch (error) {}
-	}
+            customAlert.success();
+          }
+        }
+      });
+    } catch (error) {}
+  }
 
-	return {
-		fetchData,
-		handleForm,
-		remove,
-		onPagination,
-		rows,
-		pagination,
-	};
+  return {
+    fetchData,
+    handleForm,
+    remove,
+    onPagination,
+    rows,
+    pagination,
+  };
 };
 
 export default useFloorTable;

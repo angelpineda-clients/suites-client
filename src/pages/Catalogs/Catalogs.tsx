@@ -5,14 +5,14 @@ import CatalogSize from "./components/CatalogSize/CatalogSize";
 import CatalogFloor from "./components/CatalogFloor/CatalogFloor";
 
 const Catalogs = () => {
-	return (
-		<Container>
-			<CatalogService />
-			<CatalogSeason />
-			<CatalogSize />
-			<CatalogFloor />
-		</Container>
-	);
+  return (
+    <Container>
+      <CatalogService />
+      <CatalogSeason />
+      <CatalogSize />
+      <CatalogFloor />
+    </Container>
+  );
 };
 
 export default Catalogs;

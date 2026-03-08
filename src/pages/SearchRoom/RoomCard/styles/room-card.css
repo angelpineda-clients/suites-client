@@ -1,53 +1,53 @@
 .card-container {
-	display: flex;
-	border-bottom: thin solid gray;
-	flex-direction: column;
-	padding: 12px 0;
-	width: 100%;
-	min-height: 500px;
+  display: flex;
+  border-bottom: thin solid gray;
+  flex-direction: column;
+  padding: 12px 0;
+  width: 100%;
+  min-height: 500px;
 }
 
 .card {
-	display: flex;
-	width: 100%;
-	max-width: 1100px;
-	margin: 12px auto;
-	background-color: white;
-	justify-content: space-between;
+  display: flex;
+  width: 100%;
+  max-width: 1100px;
+  margin: 12px auto;
+  background-color: white;
+  justify-content: space-between;
 }
 
 .card p {
-	font-size: 16px;
+  font-size: 16px;
 }
 
 .card .card-info {
-	width: 45%;
+  width: 45%;
 }
 
 .card-grid-item {
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	margin-top: 32px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 32px;
 }
 
 .card-grid-item span {
-	font-size: 12px;
-	width: 100%;
-	text-align: center;
+  font-size: 12px;
+  width: 100%;
+  text-align: center;
 }
 
 .card-grid-item svg {
-	margin-right: 8px;
+  margin-right: 8px;
 }
 
 .card-grid-item .info {
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .card-container .btn-booking {
-	align-self: center;
-	font-weight: bold;
+  align-self: center;
+  font-weight: bold;
 }

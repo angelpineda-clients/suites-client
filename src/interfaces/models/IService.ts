@@ -1,4 +1,4 @@
 export interface IService {
-	id: number;
-	name: string;
+  id: number;
+  name: string;
 }

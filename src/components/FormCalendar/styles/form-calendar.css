@@ -1,38 +1,38 @@
 .form-calendar {
-	font-family: "-apple-system", "BlinkMacSystemFont", '"Segoe UI"', "Roboto",
-		'"Helvetica Neue"', "Arial", "sans-serif", '"Apple Color Emoji"',
-		"Segoe UI Emoji", "Segoe UI Symbol";
+  font-family:
+    "-apple-system", "BlinkMacSystemFont", '"Segoe UI"', "Roboto", '"Helvetica Neue"', "Arial",
+    "sans-serif", '"Apple Color Emoji"', "Segoe UI Emoji", "Segoe UI Symbol";
 }
 
 .form-calendar.vertical {
-	.react-datepicker {
-		display: flex;
-		flex-direction: column;
-		position: absolute;
-		top: 0;
-		left: -230px;
-	}
+  .react-datepicker {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    top: 0;
+    left: -230px;
+  }
 }
 
 .form-calendar .react-datepicker-wrapper {
-	border-radius: 8px;
+  border-radius: 8px;
 }
 
 /* .react-datepicker__input-container{
 } */
 
 .form-calendar .react-datepicker__input-container input {
-	padding: 10px 8px;
-	border: 1px solid rgba(128, 128, 128, 0.5);
-	border-radius: 6px;
+  padding: 10px 8px;
+  border: 1px solid rgba(128, 128, 128, 0.5);
+  border-radius: 6px;
 }
 
 .form-calendar .react-datepicker {
-	display: flex;
-	flex-direction: row;
-	position: absolute;
-	top: 0;
-	left: -10vw;
+  display: flex;
+  flex-direction: row;
+  position: absolute;
+  top: 0;
+  left: -10vw;
 }
 
 /* @media (max-width: 800px){
@@ -42,20 +42,20 @@
 } */
 
 .form-calendar .react-datepicker-popper .react-datepicker__triangle {
-	display: none;
+  display: none;
 }
 
 .form-calendar .react-datepicker-popper {
-	border: thin solid red;
-	display: flex;
-	flex-direction: column;
+  border: thin solid red;
+  display: flex;
+  flex-direction: column;
 }
 
 .form-calendar .react-datepicker__day-name {
-	width: 4rem;
-	min-width: 50px;
-	max-width: 60px;
-	padding: 2px;
+  width: 4rem;
+  min-width: 50px;
+  max-width: 60px;
+  padding: 2px;
 }
 
 /* .react-datepicker__month-container{} */
@@ -65,9 +65,9 @@
 /* .react-datepicker__week{} */
 
 .form-calendar .react-datepicker__day {
-	width: 4rem;
-	min-width: 50px;
-	max-width: 60px;
-	height: 40px;
-	padding: 1px;
+  width: 4rem;
+  min-width: 50px;
+  max-width: 60px;
+  height: 40px;
+  padding: 1px;
 }

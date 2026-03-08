@@ -9,47 +9,43 @@ import { IModal } from "../interfaces/Modal";
 import "../styles/modal.css";
 
 interface Props {
-	modals: IModal[];
+  modals: IModal[];
 }
 
 const ModalContainer = ({ modals }: Props) => {
-	const { removeModal } = useModalContext();
-	return (
-		<>
-			{modals?.map(({ id, title, element }) => (
-				<Modal
-					key={id}
-					open={true}
-					onClose={() => removeModal(id)}
-					aria-labelledby="modal-modal-title"
-					aria-describedby="modal-modal-description"
-					className="modal"
-				>
-					<Stack className="modal_container">
-						<Stack
-							direction="row"
-							justifyContent="space-between"
-							alignItems="center"
-							paddingBottom={2}
-						>
-							<Typography variant="h6" component="h3">
-								{title}
-							</Typography>
-							<Button
-								onClick={() => removeModal(id)}
-								variant="contained"
-								color="error"
-							>
-								<Close />
-							</Button>
-						</Stack>
-						<Divider />
-						{element}
-					</Stack>
-				</Modal>
-			))}
-		</>
-	);
+  const { removeModal } = useModalContext();
+  return (
+    <>
+      {modals?.map(({ id, title, element }) => (
+        <Modal
+          key={id}
+          open={true}
+          onClose={() => removeModal(id)}
+          aria-labelledby="modal-modal-title"
+          aria-describedby="modal-modal-description"
+          className="modal"
+        >
+          <Stack className="modal_container">
+            <Stack
+              direction="row"
+              justifyContent="space-between"
+              alignItems="center"
+              paddingBottom={2}
+            >
+              <Typography variant="h6" component="h3">
+                {title}
+              </Typography>
+              <Button onClick={() => removeModal(id)} variant="contained" color="error">
+                <Close />
+              </Button>
+            </Stack>
+            <Divider />
+            {element}
+          </Stack>
+        </Modal>
+      ))}
+    </>
+  );
 };
 
 export default ModalContainer;

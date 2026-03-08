@@ -12,106 +12,106 @@ import { PaginatedData } from "@/interfaces/IPagination";
 import RoomsForm from "../components/RoomsForm";
 
 const useRoomTable = () => {
-	const { showFormModal, formHook } = useFormModal({});
-	const { pagination, setPagination, onPagination } = usePagination();
-	const [rows, setRows] = useState<IRoom[]>([]);
+  const { showFormModal, formHook } = useFormModal({});
+  const { pagination, setPagination, onPagination } = usePagination();
+  const [rows, setRows] = useState<IRoom[]>([]);
 
-	useEffect(() => {
-		fetchData();
-	}, [pagination.page, pagination.pageSize]);
+  useEffect(() => {
+    fetchData();
+  }, [pagination.page, pagination.pageSize]);
 
-	/**
-	 * fetchData
-	 * fetch rooms
-	 */
-	async function fetchData() {
-		const data = await roomService.getAll({
-			page: pagination.page,
-			pageSize: pagination.pageSize,
-		});
-		if (data) {
-			setRows(data.items);
-			setPagination(data.pagination);
-		}
-	}
+  /**
+   * fetchData
+   * fetch rooms
+   */
+  async function fetchData() {
+    const data = await roomService.getAll({
+      page: pagination.page,
+      pageSize: pagination.pageSize,
+    });
+    if (data) {
+      setRows(data.items);
+      setPagination(data.pagination);
+    }
+  }
 
-	/**
-	 * handleForm
-	 * make petitions for post and put method
-	 *
-	 * @param {IRoom} [data]
-	 */
-	async function handleForm(data?: IRoom) {
-		let request: IRequest;
+  /**
+   * handleForm
+   * make petitions for post and put method
+   *
+   * @param {IRoom} [data]
+   */
+  async function handleForm(data?: IRoom) {
+    let request: IRequest;
 
-		if (data?.id) {
-			request = {
-				endpoint: (room: IRoom) =>
-					roomService.update({
-						id: data.id,
-						room,
-						page: pagination.page,
-						pageSize: pagination.pageSize,
-					}),
-			};
-		} else {
-			request = {
-				endpoint: (room: IRoom) =>
-					roomService.create({
-						room,
-						page: pagination.page,
-						pageSize: pagination.pageSize,
-					}),
-			};
-		}
+    if (data?.id) {
+      request = {
+        endpoint: (room: IRoom) =>
+          roomService.update({
+            id: data.id,
+            room,
+            page: pagination.page,
+            pageSize: pagination.pageSize,
+          }),
+      };
+    } else {
+      request = {
+        endpoint: (room: IRoom) =>
+          roomService.create({
+            room,
+            page: pagination.page,
+            pageSize: pagination.pageSize,
+          }),
+      };
+    }
 
-		try {
-			showFormModal<PaginatedData<IRoom>>({
-				title: data?.id ? "Editar cuarto." : "Crear cuarto.",
-				children: <RoomsForm formHook={formHook} />,
-				request: request,
-			}).then((data) => {
-				if (data) {
-					setRows(data.items);
-					setPagination(data.pagination);
-					customAlert.success();
-				}
-			});
-		} catch (error) {
-			console.error(error);
-		}
-	}
+    try {
+      showFormModal<PaginatedData<IRoom>>({
+        title: data?.id ? "Editar cuarto." : "Crear cuarto.",
+        children: <RoomsForm formHook={formHook} />,
+        request: request,
+      }).then((data) => {
+        if (data) {
+          setRows(data.items);
+          setPagination(data.pagination);
+          customAlert.success();
+        }
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  }
 
-	/**
-	 * deleteService
-	 *
-	 * @param {IRoom} floor
-	 */
-	async function remove(room: IRoom) {
-		try {
-			customAlert.warning({ name: room.name }).then(async (response) => {
-				if (response.isConfirmed) {
-					const data = await roomService.remove({ id: room?.id });
+  /**
+   * deleteService
+   *
+   * @param {IRoom} floor
+   */
+  async function remove(room: IRoom) {
+    try {
+      customAlert.warning({ name: room.name }).then(async (response) => {
+        if (response.isConfirmed) {
+          const data = await roomService.remove({ id: room?.id });
 
-					if (data) {
-						setRows(data.items);
-						setPagination(data.pagination);
+          if (data) {
+            setRows(data.items);
+            setPagination(data.pagination);
 
-						customAlert.success();
-					}
-				}
-			});
-		} catch (error) {}
-	}
+            customAlert.success();
+          }
+        }
+      });
+    } catch (error) {}
+  }
 
-	return {
-		fetchData,
-		handleForm,
-		remove,
-		onPagination,
-		rows,
-		pagination,
-	};
+  return {
+    fetchData,
+    handleForm,
+    remove,
+    onPagination,
+    rows,
+    pagination,
+  };
 };
 
 export default useRoomTable;

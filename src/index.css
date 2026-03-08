@@ -1,37 +1,38 @@
 @import "animate.css";
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap");
 
 :root {
-	--sand-white: #fff7ed;
-	--sand: #bfa888;
-	--sand-dark: #4f4537;
+  --sand-white: #fff7ed;
+  --sand: #bfa888;
+  --sand-dark: #4f4537;
 
-	--emerald-white: #00a6ce;
-	--emerald-white-30: #00a5ce42;
-	--emerald: #26b8bc;
-	--emerald-dark: #2e8fd2;
+  --emerald-white: #00a6ce;
+  --emerald-white-30: #00a5ce42;
+  --emerald: #26b8bc;
+  --emerald-dark: #2e8fd2;
 }
 
 *,
 *::after,
 *::before {
-	margin: 0;
-	padding: 0;
-	box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 @font-face {
-	font-family: "Island";
-	src: url("./assets/fonts/IslandMoments-Regular.ttf") format("truetype");
+  font-family: "Island";
+  src: url("./assets/fonts/IslandMoments-Regular.ttf") format("truetype");
 }
 
 #ui-portal {
-	position: absolute;
-	z-index: 99999;
+  position: absolute;
+  z-index: 99999;
 }
 
 /* React calendar  */
 .rs-picker-popup-daterange {
-	z-index: 99999;
+  z-index: 99999;
 }
 
 /* Input styles */
@@ -39,11 +40,11 @@
 /* Chrome, Safari, Edge, Opera */
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
-	-webkit-appearance: none;
-	margin: 0;
+  -webkit-appearance: none;
+  margin: 0;
 }
 
 /* Firefox */
 input[type="number"] {
-	-moz-appearance: textfield;
+  -moz-appearance: textfield;
 }

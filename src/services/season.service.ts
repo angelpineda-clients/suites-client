@@ -12,152 +12,152 @@ import { parse } from "date-fns";
 import set from "date-fns/set";
 
 const seasonService = {
-	create: async ({
-		season,
-		page = 0,
-		pageSize = 10,
-	}: IPagination & {
-		season: ISeason;
-	}): Promise<PaginatedData<ISeason> | null> => {
-		try {
-			const response: ResponsePaginated<ISeasonResponse> = await axios.post(
-				`/season?page=${page + 1}&per_page=${pageSize}`,
-				{
-					...season,
-				}
-			);
+  create: async ({
+    season,
+    page = 0,
+    pageSize = 10,
+  }: IPagination & {
+    season: ISeason;
+  }): Promise<PaginatedData<ISeason> | null> => {
+    try {
+      const response: ResponsePaginated<ISeasonResponse> = await axios.post(
+        `/season?page=${page + 1}&per_page=${pageSize}`,
+        {
+          ...season,
+        }
+      );
 
-			if (!response?.success) {
-				throw new Error("Error al obtener la temporada creada.");
-			}
+      if (!response?.success) {
+        throw new Error("Error al obtener la temporada creada.");
+      }
 
-			const pagination = adapterPagination(response.data.pagination);
-			const items = adapterSeason(response.data.items);
+      const pagination = adapterPagination(response.data.pagination);
+      const items = adapterSeason(response.data.items);
 
-			return { items, pagination };
-		} catch (error: any) {
-			console.error(error);
+      return { items, pagination };
+    } catch (error: any) {
+      console.error(error);
 
-			if (error instanceof Error) {
-				toast.error(error.message);
-			}
+      if (error instanceof Error) {
+        toast.error(error.message);
+      }
 
-			return null;
-		}
-	},
-	getAll: async ({
-		page = 0,
-		pageSize = 10,
-	}: IPagination = {}): Promise<PaginatedData<ISeason> | null> => {
-		try {
-			const response: ResponsePaginated<ISeasonResponse> = await axios.get(
-				`/season?page=${page + 1}&per_page=${pageSize}`
-			);
+      return null;
+    }
+  },
+  getAll: async ({
+    page = 0,
+    pageSize = 10,
+  }: IPagination = {}): Promise<PaginatedData<ISeason> | null> => {
+    try {
+      const response: ResponsePaginated<ISeasonResponse> = await axios.get(
+        `/season?page=${page + 1}&per_page=${pageSize}`
+      );
 
-			if (!response?.success) {
-				throw new Error("Error al obtener todas las temporadas.");
-			}
+      if (!response?.success) {
+        throw new Error("Error al obtener todas las temporadas.");
+      }
 
-			const pagination = adapterPagination(response.data.pagination);
-			const items = adapterSeason(response.data.items);
+      const pagination = adapterPagination(response.data.pagination);
+      const items = adapterSeason(response.data.items);
 
-			return { items, pagination };
-		} catch (error: any) {
-			console.error(error);
+      return { items, pagination };
+    } catch (error: any) {
+      console.error(error);
 
-			if (error instanceof Error) {
-				toast.error(error.message);
-			}
+      if (error instanceof Error) {
+        toast.error(error.message);
+      }
 
-			return null;
-		}
-	},
+      return null;
+    }
+  },
 
-	update: async ({
-		id,
-		season,
-		page = 0,
-		pageSize = 10,
-	}: IPagination & {
-		id: number;
-		season: ISeason;
-	}): Promise<PaginatedData<ISeason> | null> => {
-		try {
-			const response: ResponsePaginated<ISeasonResponse> = await axios.put(
-				`/season/${id}?page=${page + 1}&per_page=${pageSize}`,
-				{
-					...season,
-				}
-			);
+  update: async ({
+    id,
+    season,
+    page = 0,
+    pageSize = 10,
+  }: IPagination & {
+    id: number;
+    season: ISeason;
+  }): Promise<PaginatedData<ISeason> | null> => {
+    try {
+      const response: ResponsePaginated<ISeasonResponse> = await axios.put(
+        `/season/${id}?page=${page + 1}&per_page=${pageSize}`,
+        {
+          ...season,
+        }
+      );
 
-			if (!response) {
-				throw new Error("Error al obtener la temporada actualizada");
-			}
+      if (!response) {
+        throw new Error("Error al obtener la temporada actualizada");
+      }
 
-			const pagination = adapterPagination(response.data.pagination);
-			const items = adapterSeason(response.data.items);
+      const pagination = adapterPagination(response.data.pagination);
+      const items = adapterSeason(response.data.items);
 
-			return { items, pagination };
-		} catch (error) {
-			console.error(error);
+      return { items, pagination };
+    } catch (error) {
+      console.error(error);
 
-			if (error instanceof Error) {
-				toast.error(error.message);
-			}
+      if (error instanceof Error) {
+        toast.error(error.message);
+      }
 
-			return null;
-		}
-	},
-	remove: async ({
-		id,
-		page = 0,
-		pageSize = 10,
-	}: IPagination & {
-		id: number;
-	}): Promise<PaginatedData<ISeason> | null> => {
-		try {
-			const response: ResponsePaginated<ISeasonResponse> = await axios.delete(
-				`/season/${id}?page=${page + 1}&per_page=${pageSize}`
-			);
+      return null;
+    }
+  },
+  remove: async ({
+    id,
+    page = 0,
+    pageSize = 10,
+  }: IPagination & {
+    id: number;
+  }): Promise<PaginatedData<ISeason> | null> => {
+    try {
+      const response: ResponsePaginated<ISeasonResponse> = await axios.delete(
+        `/season/${id}?page=${page + 1}&per_page=${pageSize}`
+      );
 
-			if (!response) {
-				throw new Error("Error al obtener la temporada eleminada");
-			}
+      if (!response) {
+        throw new Error("Error al obtener la temporada eleminada");
+      }
 
-			const pagination = adapterPagination(response.data.pagination);
-			const items = adapterSeason(response.data.items);
+      const pagination = adapterPagination(response.data.pagination);
+      const items = adapterSeason(response.data.items);
 
-			return { items, pagination };
-		} catch (error) {
-			console.error(error);
+      return { items, pagination };
+    } catch (error) {
+      console.error(error);
 
-			if (error instanceof Error) {
-				toast.error(error.message);
-			}
+      if (error instanceof Error) {
+        toast.error(error.message);
+      }
 
-			return null;
-		}
-	},
-	takenDates: async (seasonID?: number) => {
-		try {
-			const response: any[] = await axios.get(
-				`/season-exists${seasonID ? `?season_id=${seasonID}` : ""}`
-			);
+      return null;
+    }
+  },
+  takenDates: async (seasonID?: number) => {
+    try {
+      const response: any[] = await axios.get(
+        `/season-exists${seasonID ? `?season_id=${seasonID}` : ""}`
+      );
 
-			const dates = response.map((dateString: string) => {
-				const currentYear = new Date().getFullYear();
-				const date = parse(dateString, "yyyy-MM-dd", new Date());
-				const dateWithCurrentYear = set(date, { year: currentYear });
+      const dates = response.map((dateString: string) => {
+        const currentYear = new Date().getFullYear();
+        const date = parse(dateString, "yyyy-MM-dd", new Date());
+        const dateWithCurrentYear = set(date, { year: currentYear });
 
-				return dateWithCurrentYear;
-			});
+        return dateWithCurrentYear;
+      });
 
-			return dates;
-		} catch (error) {
-			console.log(error);
-			return null;
-		}
-	},
+      return dates;
+    } catch (error) {
+      console.log(error);
+      return null;
+    }
+  },
 };
 
 export { seasonService };

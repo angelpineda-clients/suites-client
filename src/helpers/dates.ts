@@ -2,25 +2,25 @@ import { TypeDate } from "@/components/FormCalendar/interfaces/IFormCalendar";
 import { eachDayOfInterval, getDate, getMonth, parse } from "date-fns";
 
 function generateDaysFromInterval(startDate: TypeDate, endDate: TypeDate) {
-	const start = startDate ? parse(startDate, "yyyy-MM-dd", new Date()) : null;
-	const end = endDate ? parse(endDate, "yyyy-MM-dd", new Date()) : null;
+  const start = startDate ? parse(startDate, "yyyy-MM-dd", new Date()) : null;
+  const end = endDate ? parse(endDate, "yyyy-MM-dd", new Date()) : null;
 
-	let days: Date[] = [];
+  let days: Date[] = [];
 
-	if (start && end) {
-		days = eachDayOfInterval({ start, end });
-	}
+  if (start && end) {
+    days = eachDayOfInterval({ start, end });
+  }
 
-	return days;
+  return days;
 }
 
 function parseDateToMonthDay(date: Date) {
-	const dayNumber = getDate(date);
-	const month = getMonth(date) + 1;
+  const dayNumber = getDate(date);
+  const month = getMonth(date) + 1;
 
-	const dateParsed = `${month}-${dayNumber}`;
+  const dateParsed = `${month}-${dayNumber}`;
 
-	return dateParsed;
+  return dateParsed;
 }
 
 export { generateDaysFromInterval, parseDateToMonthDay };

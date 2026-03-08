@@ -8,6 +8,10 @@
     "build": "tsc -b && vite build",
     "build:test": "vite build --mode test",
     "lint": "eslint . --fix",
+    "lint:pretty": "eslint . -f pretty",
+    "lint:all": "eslint . --fix -f pretty && prettier --check .",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
     "preview": "vite preview"
   },
   "dependencies": {
@@ -45,10 +49,15 @@
     "@vitejs/plugin-react-swc": "^3.5.0",
     "dotenv": "^16.4.5",
     "eslint": "^9.13.0",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-formatter-pretty": "^5.0.0",
+    "eslint-plugin-prettier": "^5.5.5",
     "eslint-plugin-react-hooks": "^5.1.0-rc.0",
     "eslint-plugin-react-refresh": "^0.4.12",
     "globals": "^15.11.0",
+    "prettier": "^3.8.1",
     "typescript": "^5.5.3",
+    "typescript-eslint": "^8.56.1",
     "vite": "^5.4.8",
     "vite-tsconfig-paths": "^5.0.1"
   }

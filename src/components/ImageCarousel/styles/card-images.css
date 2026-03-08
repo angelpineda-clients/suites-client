@@ -1,9 +1,9 @@
 @import "rsuite/dist/rsuite.css";
 
 .custom-slider {
-	border-radius: 2px;
+  border-radius: 2px;
 }
 
 .custom-slider img {
-	aspect-ratio: 16/9;
+  aspect-ratio: 16/9;
 }
