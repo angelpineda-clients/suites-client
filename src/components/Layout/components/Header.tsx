@@ -9,7 +9,7 @@ export const Header = () => {
   const navigate = useNavigate();
   const auth = useAuth();
   return (
-    <Container component="header" id="header">
+    <Container component="header" id="header" maxWidth={false} disableGutters>
       <NavLink to="/">
         <Typography variant="h1" component="h2" className="header-title">
           Suites Ordoñez
