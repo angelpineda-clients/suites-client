@@ -1,75 +1,82 @@
-import { Box, Button, Container, Typography } from "@mui/material";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import FBicon from "@/assets/images/Facebook_Logo_Primary.png";
-import "./styles/header.css";
-import { NavLink, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/context/auth/AuthProvider";
+import {
+  ActionButton,
+  ActionsStack,
+  ContactLink,
+  ContactNumbers,
+  ContactStack,
+  FbImage,
+  FbLink,
+  HeaderContainer,
+  HeaderInfo,
+  HeaderRoot,
+  HeaderTitle,
+  NavContainer,
+  NavItem,
+  NavList,
+} from "./Header.styled";
+import { Stack } from "@mui/material";
 
 export const Header = () => {
   const navigate = useNavigate();
   const auth = useAuth();
   return (
-    <Container component="header" id="header" maxWidth={false} disableGutters>
-      <NavLink to="/">
-        <Typography variant="h1" component="h2" className="header-title">
-          Suites Ordoñez
-        </Typography>
-      </NavLink>
+    <HeaderRoot>
+      <HeaderContainer maxWidth={false} disableGutters>
+        <NavItem to="/">
+          <HeaderTitle variant="h1" component="h2">
+            Suites Ordoñez
+          </HeaderTitle>
+        </NavItem>
 
-      <Box className="header-info">
-        <div className="contact">
-          <div>
-            <a href="tel:7444859626">Tel: (744) 485-9626</a>
-            <a href="tel:7444856731">Tel: (744) 485-6731</a>
-          </div>
+        <HeaderInfo>
+          <ContactStack>
+            <ContactNumbers>
+              <ContactLink href="tel:7444859626">Tel: (744) 485-9626</ContactLink>
+              <ContactLink href="tel:7444856731">Tel: (744) 485-6731</ContactLink>
+            </ContactNumbers>
 
-          <a
-            href="https://www.facebook.com/suitesordonez/"
-            rel="noopener"
-            target="_blank"
-            className="fb-icon"
-          >
-            <img
-              src={FBicon}
-              style={{
-                width: 32,
-              }}
-            />
-          </a>
-        </div>
+            <FbLink href="https://www.facebook.com/suitesordonez/" rel="noopener" target="_blank">
+              <Stack alignItems="center" justifyContent="center">
+                <FbImage src={FBicon} alt="Facebook" />
+              </Stack>
+            </FbLink>
+          </ContactStack>
 
-        <nav className="navbar">
-          <ul>
-            <li>
-              <NavLink className={({ isActive }) => `${isActive ? "active" : ""}`} to="/about">
-                Nosotros
-              </NavLink>
-            </li>
-            <li>
-              <a href="/rooms">Habitaciones</a>
-            </li>
-            <li>
-              <a href="/contact">Contacto</a>
-            </li>
-          </ul>
-        </nav>
+          <NavContainer>
+            <NavList>
+              <li>
+                <NavItem to="/about">Nosotros</NavItem>
+              </li>
+              <li>
+                <NavItem to="/rooms">Habitaciones</NavItem>
+              </li>
+              <li>
+                <NavItem to="/contact">Contacto</NavItem>
+              </li>
+            </NavList>
+          </NavContainer>
 
-        <div className="actions">
-          {auth.isAuthenticated ? (
-            <Button variant="outlined" onClick={() => auth.logout()}>
-              logout
-            </Button>
-          ) : (
-            <Button variant="outlined" onClick={() => navigate("/login")}>
-              Login
-            </Button>
-          )}
+          <ActionsStack>
+            {auth.isAuthenticated ? (
+              <ActionButton variant="outlined" onClick={() => auth.logout()}>
+                logout
+              </ActionButton>
+            ) : (
+              <ActionButton variant="outlined" onClick={() => navigate("/login")}>
+                Login
+              </ActionButton>
+            )}
 
-          <Button variant="contained">
-            <ShoppingCartIcon />
-          </Button>
-        </div>
-      </Box>
-    </Container>
+            <ActionButton variant="contained">
+              <ShoppingCartIcon />
+            </ActionButton>
+          </ActionsStack>
+        </HeaderInfo>
+      </HeaderContainer>
+    </HeaderRoot>
   );
 };

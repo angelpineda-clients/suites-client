@@ -2,10 +2,11 @@ import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
-import { Box, Button, TextField } from "@mui/material";
+import { Box, TextField } from "@mui/material";
 import { IStoreBooking, useBookingStore } from "@/store/booking";
 import { IDateRange } from "@/components/FormCalendar/interfaces/IFormCalendar";
 import FormCalendar from "@/components/FormCalendar/FormCalendar";
+import { AppButton } from "@/components/AppButton/AppButton";
 import "./styles/search-room-form.css";
 
 interface ISearchRoomForm {
@@ -183,9 +184,9 @@ const SearchRoomForm = ({ onSubmit }: ISearchRoomForm) => {
             <AddIcon />
           </button>
         </div>
-        <Button variant="outlined" type="submit">
+        <AppButton appVariant="primary" type="submit">
           Buscar
-        </Button>
+        </AppButton>
       </form>
     </Box>
   );

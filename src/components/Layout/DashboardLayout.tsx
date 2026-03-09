@@ -9,7 +9,8 @@ import { DashboardLayout as Layout } from "@toolpad/core/DashboardLayout";
 import { useUserStore } from "@/store/user";
 import { useAuth } from "@/context/auth/AuthProvider";
 import { AppProvider } from "@toolpad/core/react-router-dom";
-import { Box, Button, Typography } from "@mui/material";
+import { Box, Typography } from "@mui/material";
+import { AppButton } from "@/components/AppButton/AppButton";
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -81,9 +82,9 @@ function Logout() {
       }}
     >
       <Typography sx={{ mr: 2 }}>{user.name}</Typography>
-      <Button onClick={auth.logout} variant="outlined">
+      <AppButton onClick={auth.logout} appVariant="ghost">
         Logout
-      </Button>
+      </AppButton>
     </Box>
   );
 }

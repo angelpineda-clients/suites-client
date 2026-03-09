@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
-import { Button, Stack, Typography } from "@mui/material";
+import { Stack, Typography } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import { useBookingStore } from "@/store/booking";
 import FormCalendar from "@/components/FormCalendar/FormCalendar";
@@ -13,6 +13,16 @@ import { formatToCurrency } from "@/utils/FormatToCurrency";
 import formatNumberToPesosMX from "@/helpers/currencyFormat";
 import { generateDaysFromInterval, parseDateToMonthDay } from "@/helpers/dates";
 import CardImages from "@/components/ImageCarousel/CardImages";
+import {
+  CalendarDay,
+  CartRoot,
+  CloseRow,
+  ConfirmButton,
+  DayNumber,
+  DayPrice,
+  LabelText,
+  TotalText,
+} from "./Cart.styled";
 
 interface Props {
   room: IRoom;
@@ -49,7 +59,7 @@ const Cart = ({ room, closeDrawer }: Props) => {
    * fetch booked dates by room
    */
   async function getTakenDates() {
-    const data = await bookingService.takenDates(room.id);
+    const data = await bookingService.takenDates(Number(room.id));
     setDisabledDates(data);
   }
 
@@ -107,7 +117,7 @@ const Cart = ({ room, closeDrawer }: Props) => {
    * fetch prices by season
    */
   async function getPricesBySeason() {
-    const response = await roomService.prices(room?.id);
+    const response = await roomService.prices(Number(room?.id));
     const dayWithPrices: ISeasonPrices[] = [];
 
     setBasePrice(response.price || room?.price);
@@ -137,43 +147,33 @@ const Cart = ({ room, closeDrawer }: Props) => {
    */
   function createDayContentForCalendar(day: number, date: Date) {
     const dateParsed = parseDateToMonthDay(date);
-
     const isSeasonDate = seasonPrices.find((date) => date.day == dateParsed);
+    const price = isSeasonDate ? isSeasonDate.price : basePrice;
 
-    if (isSeasonDate) {
-      return (
-        <div style={{ display: "flex", flexDirection: "column" }}>
-          <span style={{ height: "15px" }}>{day}</span>
-          <small style={{ fontSize: "10px" }}>{formatToCurrency(isSeasonDate.price)}</small>
-        </div>
-      );
-    } else {
-      return (
-        <div style={{ display: "flex", flexDirection: "column" }}>
-          <span style={{ height: "15px" }}>{day}</span>
-          <small style={{ fontSize: "10px" }}>{formatNumberToPesosMX.format(basePrice)}</small>
-        </div>
-      );
-    }
+    return (
+      <CalendarDay>
+        <DayNumber variant="body2" component="span">
+          {day}
+        </DayNumber>
+        <DayPrice variant="caption" component="span">
+          {formatNumberToPesosMX.format(price)}
+        </DayPrice>
+      </CalendarDay>
+    );
   }
 
   function handleConfirmNavigation() {
     navigate(`/confirm-booking?room_id=${room.id}`);
-    return closeDrawer();
+    return closeDrawer?.();
   }
 
   return (
-    <Stack
-      sx={{
-        padding: "20px",
-        width: "500px",
-        textAlign: "center",
-      }}
-      gap={4}
-    >
-      <Button onClick={closeDrawer} variant="outlined" color="error" sx={{ alignSelf: "flex-end" }}>
-        <CloseIcon />
-      </Button>
+    <CartRoot>
+      <CloseRow>
+        <ConfirmButton onClick={closeDrawer} variant="outlined" color="error">
+          <CloseIcon />
+        </ConfirmButton>
+      </CloseRow>
       <FormCalendar
         handleChange={handleDatesChange}
         dates={{ start: booking.checkIn, end: booking.checkOut }}
@@ -183,10 +183,10 @@ const Cart = ({ room, closeDrawer }: Props) => {
 
       <Stack gap={1}>
         <Typography variant="subtitle2">
-          <strong>Entrada:</strong> {generateDateFromText(booking.checkIn)}
+          <LabelText component="span">Entrada:</LabelText> {generateDateFromText(booking.checkIn)}
         </Typography>
         <Typography variant="subtitle2">
-          <strong>Salida:</strong> {generateDateFromText(booking.checkOut)}
+          <LabelText component="span">Salida:</LabelText> {generateDateFromText(booking.checkOut)}
         </Typography>
       </Stack>
 
@@ -199,21 +199,15 @@ const Cart = ({ room, closeDrawer }: Props) => {
       </Stack>
 
       <Stack textAlign="center">
-        <Typography
-          variant="h5"
-          component="h4"
-          sx={{
-            marginBottom: "16px",
-          }}
-        >
+        <TotalText variant="h5" component="h4">
           Total: {total}
-        </Typography>
+        </TotalText>
 
-        <Button variant="outlined" onClick={handleConfirmNavigation}>
+        <ConfirmButton variant="outlined" onClick={handleConfirmNavigation}>
           Confirmar
-        </Button>
+        </ConfirmButton>
       </Stack>
-    </Stack>
+    </CartRoot>
   );
 };
 

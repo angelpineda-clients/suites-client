@@ -1,16 +1,8 @@
-import {
-  Box,
-  Button,
-  FormControl,
-  InputLabel,
-  MenuItem,
-  Select,
-  SelectChangeEvent,
-  TextField,
-} from "@mui/material";
+import { Box, FormControl, InputLabel, MenuItem, Select, SelectChangeEvent } from "@mui/material";
 import { Add } from "@mui/icons-material";
 import { useEffect, useState } from "react";
 import { FieldValues, UseFormReturn } from "react-hook-form";
+import { AppButton } from "@/components/AppButton/AppButton";
 
 interface Props {
   id: string;
@@ -72,15 +64,15 @@ const SelectWithButton = ({
         </Select>
       </FormControl>
 
-      <Button
+      <AppButton
         onClick={handleButtonClick}
-        variant="outlined"
+        appVariant="ghost"
         sx={{
           ml: 2,
         }}
       >
         <Add />
-      </Button>
+      </AppButton>
     </Box>
   );
 };
