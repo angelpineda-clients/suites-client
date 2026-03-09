@@ -1,5 +1,7 @@
+import { type ReactElement } from "react";
+
 export interface IModal {
   id: string;
-  element: JSX.Element;
-  title?: string | JSX.Element;
+  element: ReactElement;
+  title?: string | ReactElement;
 }

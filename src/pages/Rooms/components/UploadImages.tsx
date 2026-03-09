@@ -1,5 +1,6 @@
 import { Uploader } from "rsuite";
 import { FieldValues, UseFormReturn } from "react-hook-form";
+import { UploadLabel, UploadWrapper, DropZone } from "./UploadImages.styled";
 
 interface Props {
   formHook: UseFormReturn<FieldValues, any, undefined>;
@@ -11,15 +12,8 @@ const UploadImages = ({ formHook }: Props) => {
   }
 
   return (
-    <>
-      <label
-        style={{
-          margin: "8px 0",
-          display: "inline-block",
-        }}
-      >
-        Imagenes
-      </label>
+    <UploadWrapper>
+      <UploadLabel variant="subtitle2">Imagenes</UploadLabel>
       <Uploader
         action=""
         draggable
@@ -28,18 +22,9 @@ const UploadImages = ({ formHook }: Props) => {
         accept="image/png, image/jpeg"
         multiple
       >
-        <div
-          style={{
-            height: 200,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-        >
-          <span>Click or Drag files to this area to upload</span>
-        </div>
+        <DropZone>Click or Drag files to this area to upload</DropZone>
       </Uploader>
-    </>
+    </UploadWrapper>
   );
 };
 

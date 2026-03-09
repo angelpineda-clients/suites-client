@@ -11,15 +11,20 @@ const ProtectedRoutes = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!auth.isAuthenticated && !auth.isLoading) {
-      navigate("/");
+    if (auth.isLoading) return;
+    if (!auth.isAuthenticated) {
+      navigate("/", { replace: true });
     }
-  }, [auth.isAuthenticated]);
+  }, [auth.isAuthenticated, auth.isLoading, navigate]);
 
-  const isAdmin = user.roles?.includes("admin");
+  const isAdmin = Array.isArray(user.roles) && user.roles.includes("admin");
 
   if (auth.isLoading) {
     return <Loader />;
+  }
+
+  if (!auth.isAuthenticated) {
+    return <Navigate to="/" replace />;
   }
 
   return isAdmin ? (
@@ -27,7 +32,7 @@ const ProtectedRoutes = () => {
       <Outlet />
     </DashboardLayout>
   ) : (
-    <Navigate to="/" />
+    <Navigate to="/" replace />
   );
 };
 

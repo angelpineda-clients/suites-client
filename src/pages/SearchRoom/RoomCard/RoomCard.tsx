@@ -1,5 +1,5 @@
 import { IRoom } from "@/interfaces/models/IRoom";
-import { Box, Button, Container, Grid2 as Grid, Stack, Typography } from "@mui/material";
+import { Typography } from "@mui/material";
 // icons
 import PeopleIcon from "@mui/icons-material/People";
 import KingBedIcon from "@mui/icons-material/KingBed";
@@ -8,10 +8,21 @@ import { useBookingStore } from "@/store/booking";
 import formatNumberToPesosMX from "@/helpers/currencyFormat";
 import CardImages from "@/components/ImageCarousel/CardImages";
 import CardServices from "./CardServices";
-import "./styles/room-card.css";
 import Cart from "@/components/Cart/Cart";
+import {
+  BookButton,
+  CardInfo,
+  GalleryStack,
+  MetaGrid,
+  MetaInfo,
+  MetaItem,
+  MetaLabel,
+  RoomCardBody,
+  RoomCardContainer,
+} from "./RoomCard.styled";
 
-const GRID_RESPONSIVE = { xs: 6, md: 4 };
+const GRID_XS = 6;
+const GRID_MD = 4;
 
 const RoomCard = (data: IRoom = {} as IRoom) => {
   const setRomID = useBookingStore((store) => store.setRoomID);
@@ -26,75 +37,71 @@ const RoomCard = (data: IRoom = {} as IRoom) => {
   }
 
   return (
-    <Container className="card-container animate__animated animate__fadeIn">
-      <Box className="card">
-        <Stack className="card-info" gap={2}>
+    <RoomCardContainer className="animate__animated animate__fadeIn">
+      <RoomCardBody>
+        <CardInfo>
           <Typography variant="h4" component="h4">
             {name}
           </Typography>
 
-          <p>{description}</p>
+          <Typography variant="body1" color="text.secondary">
+            {description}
+          </Typography>
 
-          <Grid container>
-            <Grid size={GRID_RESPONSIVE} className="card-grid-item">
-              <span>Desde</span>
+          <MetaGrid container spacing={2}>
+            <MetaItem item xs={GRID_XS} md={GRID_MD}>
+              <MetaLabel variant="caption">Desde</MetaLabel>
+              <MetaInfo>
+                <Typography variant="h6">{formatNumberToPesosMX.format(price)}</Typography>
+              </MetaInfo>
+            </MetaItem>
 
-              <div className="info">
-                <p>{formatNumberToPesosMX.format(price)}</p>
-              </div>
-            </Grid>
+            <MetaItem item xs={GRID_XS} md={GRID_MD}>
+              <MetaLabel variant="caption">Capacidad</MetaLabel>
+              <MetaInfo>
+                <PeopleIcon />
+                <Typography>{capacity}</Typography>
+              </MetaInfo>
+            </MetaItem>
 
-            <Grid size={GRID_RESPONSIVE} className="card-grid-item">
-              <span>Capacidad</span>
+            <MetaItem item xs={GRID_XS} md={GRID_MD}>
+              <MetaLabel variant="caption">Camas</MetaLabel>
+              <MetaInfo>
+                <KingBedIcon />
+                <Typography>{beds}</Typography>
+              </MetaInfo>
+            </MetaItem>
 
-              <div className="info">
-                <PeopleIcon /> <p>{capacity}</p>
-              </div>
-            </Grid>
+            <MetaItem item xs={GRID_XS} md={GRID_MD}>
+              <MetaLabel variant="caption">Tamaño</MetaLabel>
+              <MetaInfo>
+                <Typography>{size?.alias || size?.name}</Typography>
+              </MetaInfo>
+            </MetaItem>
 
-            <Grid size={GRID_RESPONSIVE} className="card-grid-item">
-              <span>Camas</span>
-              <div className="info">
-                <KingBedIcon /> <p> {beds}</p>
-              </div>
-            </Grid>
+            <MetaItem item xs={GRID_XS} md={GRID_MD}>
+              <MetaLabel variant="caption">Piso</MetaLabel>
+              <MetaInfo>
+                <Typography>{floor?.name}</Typography>
+              </MetaInfo>
+            </MetaItem>
 
-            <Grid size={GRID_RESPONSIVE} className="card-grid-item">
-              <span>Tamaño</span>
-              <div className="info">
-                <p>{size?.alias || size?.name}</p>
-              </div>
-            </Grid>
-
-            <Grid size={GRID_RESPONSIVE} className="card-grid-item">
-              <span>Piso</span>
-              <div className="info">
-                <p>{floor?.name}</p>
-              </div>
-            </Grid>
-
-            <Grid size={12} className="card-grid-item">
-              <span>Servicios</span>
-              <div className="info">
+            <MetaItem item xs={12}>
+              <MetaLabel variant="caption">Servicios</MetaLabel>
+              <MetaInfo>
                 <CardServices services={services} />
-              </div>
-            </Grid>
-          </Grid>
-        </Stack>
-        <Stack
-          sx={{
-            width: "45%",
-            justifyContent: "space-between",
-            alignItems: "center",
-          }}
-        >
+              </MetaInfo>
+            </MetaItem>
+          </MetaGrid>
+        </CardInfo>
+        <GalleryStack>
           <CardImages images={images} />
-        </Stack>
-      </Box>
-      <Button variant="contained" className="btn-booking" onClick={openDrawer}>
+        </GalleryStack>
+      </RoomCardBody>
+      <BookButton appVariant="primary" onClick={openDrawer}>
         Reservar
-      </Button>
-    </Container>
+      </BookButton>
+    </RoomCardContainer>
   );
 };
 

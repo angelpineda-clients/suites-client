@@ -1,123 +1,152 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
 import axios from "axios";
 import { useAxios } from "../axios/AxiosProvider";
 import { useUserStore } from "@/store/user";
 import { handleLocalStorage } from "@/helpers/handleLocalStorage";
+import { IUser } from "@/interfaces/models/IUser";
 
-interface IAuthContext {
+type AuthContextValue = {
   logout: () => void;
   isAuthenticated: boolean;
   getAccessToken: () => string;
   accessToken: string;
   setAuthTokens: (_accessToken: string, _refreshToken: string) => void;
   isLoading: boolean;
-}
+};
 
-const AuthContext = createContext<IAuthContext>({
-  logout: () => {},
-  isAuthenticated: false,
-  getAccessToken: () => "",
-  accessToken: "",
-  setAuthTokens: (_accessToken: string, _refreshToken: string) => {},
-  isLoading: false,
-});
+type RefreshResponse = {
+  auth: {
+    access_token: string;
+    refresh_token: string;
+  };
+  user: IUser & {
+    roles?: Array<{ name: string } | string>;
+  };
+};
 
 interface AuthProviderProps {
   children: React.ReactNode;
 }
 
+const AuthContext = createContext<AuthContextValue | undefined>(undefined);
+
 export function AuthProvider({ children }: AuthProviderProps) {
   const { setAxiosToken } = useAxios();
-  const [accessToken, setAccessToken] = useState("");
-  const [refreshToken, setRefreshToken] = useState("");
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
+  const [accessToken, setAccessToken] = useState<string>("");
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   const setUser = useUserStore((state) => state.setUser);
 
-  function setAuthTokens(accessToken: string, refreshToken: string) {
-    setAccessToken(accessToken);
-    setRefreshToken(refreshToken);
+  const setAuthTokens = useCallback(
+    (nextAccessToken: string, nextRefreshToken: string) => {
+      setAccessToken(nextAccessToken);
 
-    if (accessToken && refreshToken) {
-      setIsAuthenticated(true);
-      setAxiosToken(accessToken);
-    }
+      const hasTokens = Boolean(nextAccessToken && nextRefreshToken);
 
-    handleLocalStorage.setItem("token", refreshToken);
-  }
+      setIsAuthenticated(hasTokens);
 
-  function getAccessToken() {
-    return accessToken;
-  }
+      if (hasTokens) {
+        setAxiosToken(nextAccessToken);
+      }
 
-  function logout() {
+      handleLocalStorage.setItem("token", nextRefreshToken);
+    },
+    [setAxiosToken]
+  );
+
+  const getAccessToken = useCallback(() => accessToken, [accessToken]);
+
+  const logout = useCallback(() => {
     handleLocalStorage.removeItem("token");
 
     setAccessToken("");
-    setRefreshToken("");
     setIsAuthenticated(false);
-  }
+  }, []);
 
-  async function checkAuth() {
+  const normalizeRoles = useCallback((roles: RefreshResponse["user"]["roles"]): string[] => {
+    if (!Array.isArray(roles)) return [];
+
+    return roles
+      .map((role) => {
+        const currentRole = role as unknown;
+        if (typeof currentRole === "string") return currentRole;
+        if (isNamedRole(currentRole)) return currentRole.name;
+        return "";
+      })
+      .filter(Boolean);
+  }, []);
+
+  const checkAuth = useCallback(async () => {
     setIsLoading(true);
 
     try {
       if (accessToken) {
-        setAccessToken(accessToken);
         setIsAuthenticated(true);
-      } else {
-        const token = handleLocalStorage.getItem("token");
-
-        if (token) {
-          const refreshToken = JSON.parse(token);
-
-          const response = await axios.post(`/refresh`, {
-            refresh_token: refreshToken,
-          });
-
-          const { access_token, refresh_token } = response.data.auth;
-
-          setAuthTokens(access_token, refresh_token);
-
-          const roles: string[] = [];
-
-          if (response.data.user.roles.length >= 1) {
-            response.data.user?.roles.forEach((element) => {
-              roles.push(element.name);
-            });
-          }
-
-          setUser({
-            ...response.data?.user,
-            roles: roles,
-          });
-        }
+        setAxiosToken(accessToken);
+        return;
       }
-    } catch (error) {
+
+      const storedToken = handleLocalStorage.getItem("token");
+      const refreshTokenValue = typeof storedToken === "string" ? storedToken : null;
+
+      if (!refreshTokenValue) {
+        setIsAuthenticated(false);
+        return;
+      }
+
+      const response = await axios.post<RefreshResponse, RefreshResponse>(`/refresh`, {
+        refresh_token: refreshTokenValue,
+      });
+
+      const { access_token, refresh_token } = response.auth;
+
+      setAuthTokens(access_token, refresh_token);
+
+      setUser({
+        ...response.user,
+        roles: normalizeRoles(response.user.roles),
+      });
+    } catch (error: unknown) {
       logout();
     } finally {
       setIsLoading(false);
     }
-  }
+  }, [accessToken, logout, normalizeRoles, setAuthTokens, setAxiosToken, setUser]);
 
   useEffect(() => {
     checkAuth();
-  }, []);
+  }, [checkAuth]);
 
-  return (
-    <AuthContext.Provider
-      value={{
-        logout,
-        setAuthTokens,
-        getAccessToken,
-        accessToken,
-        isAuthenticated,
-        isLoading,
-      }}
-    >
-      {children}
-    </AuthContext.Provider>
+  const value = useMemo<AuthContextValue>(
+    () => ({
+      logout,
+      setAuthTokens,
+      getAccessToken,
+      accessToken,
+      isAuthenticated,
+      isLoading,
+    }),
+    [accessToken, getAccessToken, isAuthenticated, isLoading, logout, setAuthTokens]
   );
+
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
 
-export const useAuth = () => useContext(AuthContext);
+export const useAuth = () => {
+  const context = useContext(AuthContext);
+
+  if (!context) {
+    throw new Error("useAuth must be used within AuthProvider");
+  }
+
+  return context;
+};
+
+function isNamedRole(role: unknown): role is { name: string } {
+  return (
+    role !== null &&
+    typeof role === "object" &&
+    "name" in role &&
+    typeof (role as { name?: unknown }).name === "string"
+  );
+}
